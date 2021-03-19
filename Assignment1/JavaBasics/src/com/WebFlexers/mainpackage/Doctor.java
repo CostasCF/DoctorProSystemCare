@@ -1,12 +1,13 @@
 package com.WebFlexers.mainpackage;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 public class Doctor extends Users{
 
     private List<String> Schedule;
-    private static List<String> Specialties;
+    private static List<String> Specialties = Arrays.asList("ophthalmologist", "orthopedic", "internist");
     private Date date;
 
     public Doctor(String username, String password, String name, String surname) {
@@ -34,17 +35,7 @@ public class Doctor extends Users{
      */
     public void cancelAppointment(String cancelAppointment)
     {
-    }
 
-
-    /**
-     * Initializes available doctors' specialty.(Etc. ophthalmologist,orthopedic,internist)
-     */
-    public void doctorsSpecialty()
-    {
-        Specialties.add("ophthalmologist");
-        Specialties.add("orthopedic");
-        Specialties.add("internist");
     }
 
 }

@@ -1,5 +1,9 @@
 package com.WebFlexers.mainpackage;
 
-public class Appointment {
+import java.util.Date;
 
+public class Appointment {
+    Patient patient;
+    Doctor doctor;
+    Date date;
 }
