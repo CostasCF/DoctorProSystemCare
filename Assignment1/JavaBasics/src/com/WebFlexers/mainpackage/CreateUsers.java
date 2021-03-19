@@ -23,6 +23,7 @@ public class CreateUsers {
     	{   
     		System.out.print("Choose role: ");
         	selection = scan.nextInt(); 
+        	scan.nextLine();
     	}
     	while(selection < 1 || selection > 3);
     	
