@@ -80,6 +80,9 @@ local.properties
 .scala_dependencies
 .worksheet
 
+.project
+.classpath
+
 #-------------------Intellij-------------------
 # User-specific stuff
 .idea/**/workspace.xml
