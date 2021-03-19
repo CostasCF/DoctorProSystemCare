@@ -1,8 +1,8 @@
 package com.WebFlexers.mainpackage;
 
-public class Main {
+public class CreateUsers {
 
     public static void main(String[] args) {
-
+        
     }
 }
