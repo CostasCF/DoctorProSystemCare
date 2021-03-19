@@ -6,9 +6,8 @@ import java.util.List;
 public class Doctor extends Users{
 
     private List<String> Schedule;
-    private List<String> Specialties;
+    private static List<String> Specialties;
     private Date date;
-
 
     public Doctor(String username, String password, String name, String surname) {
         super(username, password, name, surname);
@@ -17,16 +16,15 @@ public class Doctor extends Users{
     /**
      * Doctor inserts the date he is available to check in patients
      */
-    public void insertDoctorAvailability(String doctorAvailability)
+    public void insertDateAvailability(String doctorAvailability)
     {
         date = new Date();
-
     }
 
     /**
-     * View doctor's patient availability
+     * View doctor's appointment availability
      */
-    public void viewDoctorAvailability(List<String> Schedule)
+    public void viewAppointmentAvailability(List<String> Schedule)
     {
 
     }
