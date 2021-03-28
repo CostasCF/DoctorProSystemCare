@@ -9,11 +9,19 @@ public class CreateUsers {
     	
     	Admin admin_user = new Admin("admin", "1234567890LT", "25670GTA!", "LEFTERIS", "KONTOURIS");
     	System.out.println("Admin: " + admin_user.getUsername() + ", "+ admin_user.getPassword() + ", " + admin_user.getSuperuserPassword() + ", " + admin_user.getName() + " " + admin_user.getSurname());
-    	System.out.println("***********Admin created***********\n");   	  	
+    	System.out.println("Admin created\n");   	  	
     	
     	Doctor doctor_user = new Doctor("kostas2001", "26483dgdun", "KOSTAS", "KALOGEROPOULOS");
     	System.out.println("Doctor: " + doctor_user.getUsername() + ", "+ doctor_user.getPassword() + ", " + doctor_user.getName() + " " + doctor_user.getSurname());
-    	System.out.println("***********Doctor created***********\n");   
+    	System.out.println("Doctor created");
+    	
+    	admin_user.InsertDoctor(doctor_user);    
+    	admin_user.DeleteDoctor(doctor_user);
+    	System.out.print("\n");
+    	
+    	Patient patient_user = new Patient("MichaelX26", "89054809HDHJ", "MIXALIS", "STYLIANIDIS", "280501014523");
+    	System.out.println("Patient: " + patient_user.getUsername() + ", "+ patient_user.getPassword() + ", " + patient_user.getName() + " " + patient_user.getSurname() + ", " + patient_user.getAmka());
+    	System.out.println("Patient created\n");
     	
     	//4.6
     	Scanner scan = new Scanner(System.in);
@@ -24,14 +32,13 @@ public class CreateUsers {
     	String surname;
     	
     	System.out.println("-------Main Menu-------");
-    	System.out.println("1. Admin");
-    	System.out.println("2. Doctor");
-    	System.out.println("3. Patient");
+    	System.out.println("1. Doctor");
+    	System.out.println("1. Patient");
     	
     	int selection;
     	do
     	{   
-    		System.out.print("Choose entity to add: ");
+    		System.out.print("Choose entity to add(enter number): ");
         	selection = scan.nextInt(); 
         	scan.nextLine();
     	}
@@ -94,10 +101,6 @@ public class CreateUsers {
     	}  
     	
     	if(selection == 1)
-    	{
-    		System.out.println("Admin created!");
-    	}
-    	else if(selection == 2)
     	{
     		System.out.println("Doctor created!");
     	}

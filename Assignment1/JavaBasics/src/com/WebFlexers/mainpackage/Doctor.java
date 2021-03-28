@@ -27,7 +27,7 @@ public class Doctor extends Users{
      */
     public void viewAppointmentAvailability(List<String> Schedule)
     {
-
+    	
     }
 
     /**

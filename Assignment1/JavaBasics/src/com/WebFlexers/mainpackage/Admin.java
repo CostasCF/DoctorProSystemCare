@@ -21,13 +21,13 @@ public class Admin extends Users {
      * Inserts Doctor to database
      */
 	public void InsertDoctor(Doctor doctor)	{		
-		System.out.println(doctor.getName() + " inserted to database");
+		System.out.println(doctor.getName() + " " + doctor.getSurname() + " inserted to database");
 	}
 	
 	/**
      * Removes Doctor from database
      */
 	public void DeleteDoctor(Doctor doctor)	{		
-		System.out.println(doctor.getName() + " removed from database");
+		System.out.println(doctor.getName() + " " + doctor.getSurname() + " removed from database");
 	}	
 }
