@@ -6,6 +6,16 @@ import java.util.Scanner;
 public class CreateUsers {
 
     public static void main(String[] args) {
+    	
+    	Admin admin_user = new Admin("admin", "1234567890LT", "25670GTA!", "LEFTERIS", "KONTOURIS");
+    	System.out.println("Admin: " + admin_user.getUsername() + ", "+ admin_user.getPassword() + ", " + admin_user.getSuperuserPassword() + ", " + admin_user.getName() + " " + admin_user.getSurname());
+    	System.out.println("***********Admin created***********\n");   	  	
+    	
+    	Doctor doctor_user = new Doctor("kostas2001", "26483dgdun", "KOSTAS", "KALOGEROPOULOS");
+    	System.out.println("Doctor: " + doctor_user.getUsername() + ", "+ doctor_user.getPassword() + ", " + doctor_user.getName() + " " + doctor_user.getSurname());
+    	System.out.println("***********Doctor created***********\n");   
+    	
+    	//4.6
     	Scanner scan = new Scanner(System.in);
     	
     	String username;
@@ -21,7 +31,7 @@ public class CreateUsers {
     	int selection;
     	do
     	{   
-    		System.out.print("Choose role: ");
+    		System.out.print("Choose entity to add: ");
         	selection = scan.nextInt(); 
         	scan.nextLine();
     	}
