@@ -9,14 +9,19 @@ public class Doctor extends Users{
 
     private List<String> schedule;
     private LocalDateTime dateTime;
+    private Specialty specialty;
 
-    private static enum Specialties {
-        ophthalmologist,
-        orthopedic,
-        internist
+    public Specialty getSpecialty() {
+        return specialty;
     }
 
-    public Doctor(String username, String password, String name, String surname) {
+    public enum Specialty {
+        ophthalmologist,
+        orthopedic,
+        internist;
+    }
+
+    public Doctor(String username, String password, String name, String surname, Specialty specialty) {
         super(username, password, name, surname);
     }
 
@@ -31,9 +36,9 @@ public class Doctor extends Users{
     /**
      * View doctor's appointment availability
      */
-    public void viewAppointmentAvailability(List<String> Schedule)
+    public void viewAppointmentAvailability()
     {
-    	
+        System.out.println("The doctor is available 24/7");
     }
 
     /**
