@@ -1,5 +1,11 @@
 package com.WebFlexers.mainpackage;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.util.InputMismatchException;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class CreateUsers {
@@ -30,12 +36,12 @@ public class CreateUsers {
 						System.out.println("The given value is out of bounds. Type an integer between "
 											+ lowBound + " and " + upperBound);
 					}
- 				} catch (Exception e) {
-					System.out.println(e.getMessage());
+ 				} catch (InputMismatchException e) {
 					System.out.println(errorMessage);
+				} catch (Exception e) {
+					System.out.println("An unusual error has occurred. Try again");
 				}
-			}
-			while (selection < lowBound || selection > upperBound);
+			} while (selection < lowBound || selection > upperBound);
 			return selection;
 		}
 
@@ -47,18 +53,16 @@ public class CreateUsers {
 		 * @return The user input
 		 */
 		public static String getStringInput(String displayMessage, String errorMessage) {
-			while(true)
-			{
+			while(true) {
 				Scanner scanner = new Scanner(System.in);
-				try
-				{
+				try {
 					System.out.print(displayMessage);
 					return scanner.nextLine();
-				}
-				catch (Exception e)
-				{
+				} catch (InputMismatchException e) {
 					System.out.println(e.getMessage());
 					System.out.println(errorMessage);
+				} catch (Exception e) {
+					System.out.println("An unusual error has occurred. Try again");
 				}
 			}
 		}
@@ -68,11 +72,13 @@ public class CreateUsers {
 
 		// Create sample objects of each class
     	Admin admin_user = new Admin("admin", "1234567890LT", "25670GTA!", "LEFTERIS", "KONTOURIS");
-    	System.out.println("Admin: " + admin_user.getUsername() + ", "+ admin_user.getPassword() + ", " + admin_user.getSuperuserPassword() + ", " + admin_user.getName() + " " + admin_user.getSurname());
+    	System.out.println("Admin: " + admin_user.getUsername() + ", "+ admin_user.getPassword() + ", " + admin_user.getSuperuserPassword()
+							+ ", " + admin_user.getName() + " " + admin_user.getSurname());
     	System.out.println("Admin created\n");   	  	
     	
     	Doctor doctor_user = new Doctor("kostas2001", "26483dgdun", "KOSTAS", "KALOGEROPOULOS", Doctor.Specialty.internist);
-    	System.out.println("Doctor: " + doctor_user.getUsername() + ", "+ doctor_user.getPassword() + ", " + doctor_user.getName() + " " + doctor_user.getSurname());
+    	System.out.println("Doctor: " + doctor_user.getUsername() + ", "+ doctor_user.getPassword() + ", " + doctor_user.getName() + " "
+							+ doctor_user.getSurname() + " " + doctor_user.getSpecialty().toFirstLetterUppercase());
     	System.out.println("Doctor created\n");
     	
     	admin_user.InsertDoctor(doctor_user);
@@ -80,7 +86,8 @@ public class CreateUsers {
     	System.out.print("\n");
     	
     	Patient patient_user = new Patient("MichaelX26", "89054809HDHJ", "MIXALIS", "STYLIANIDIS", "280501014523");
-    	System.out.println("Patient: " + patient_user.getUsername() + ", "+ patient_user.getPassword() + ", " + patient_user.getName() + " " + patient_user.getSurname() + ", " + patient_user.getAmka());
+    	System.out.println("Patient: " + patient_user.getUsername() + ", "+ patient_user.getPassword() + ", " + patient_user.getName()
+							+ " " + patient_user.getSurname() + ", " + patient_user.getAmka());
     	System.out.println("Patient created\n");
 
     	// Print a menu for choosing what type of user to add
@@ -99,6 +106,7 @@ public class CreateUsers {
 
     	if (entitySelection == 1)
     	{
+    		// Create doctor
 			System.out.println("Select doctor specialty according to the following menu: ");
 
 			// Print all the possible specialties of the Specialty enum
@@ -113,14 +121,15 @@ public class CreateUsers {
 
 			// Create a doctor object and use it's methods
 			Doctor doctor = new Doctor(username, password, name, surname, allDoctorSpecialties[selectedSpecialtyIndex]);
-    		System.out.println(doctor.getSpecialty() + " created!");
+    		System.out.println(doctor.getSpecialty().toFirstLetterUppercase() + " created!");
 
+			doctor.insertDateAvailability("24/7");
     		doctor.viewAppointmentAvailability();
-    		doctor.insertDateAvailability("24/7");
     		// doctor.cancelAppointment(anAppointment);
     	}
     	else
     	{
+    		// Create patient
     		String amka = UserInput.getStringInput("AMKA: ", "Invalid AMKA. Try again");
     		Patient patient = new Patient(username, password, name, surname, amka);
     		System.out.println("Patient created!");
@@ -132,9 +141,31 @@ public class CreateUsers {
     		//patient.addAppointment(aNewAppointment);
     		//patient.cancelAppointment(theAppointmentToBeCancelled);
     		//patient.replaceAppointment(theOldAppointment, theNewAppointment);
-			//patient.setScheduledAppointments();
+			//patient.setScheduledAppointments(aListOfAppointments);
 			patient.viewAppointmentHistory();
     	}
+
+    	// Read a patient from txt
+		File file = new File(System.getProperty("user.dir") + "\\patient.txt");
+		BufferedReader bufferedReader;
+
+    	try {
+    		bufferedReader = new BufferedReader(new FileReader(file));
+
+			String str;
+			while ((str = bufferedReader.readLine()) != null)
+			{
+				String[] fields = str.split("\\s+");
+				Patient patient = new Patient(fields[0], fields[1], fields[2], fields[3], fields[4]);
+				System.out.println("New patient created from text file:");
+				System.out.println("Patient: " + patient.getUsername() + ", "+ patient.getPassword() + ", " + patient.getName()
+						+ " " + patient.getSurname() + ", " + patient.getAmka());
+			}
+		} catch (FileNotFoundException e) {
+    		System.out.println("The specified file was not found");
+		} catch (Exception e) {
+			System.out.println("An unusual error has occurred while reading the file");
+		}
+
     }
 }
-

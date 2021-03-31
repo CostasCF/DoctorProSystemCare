@@ -9,7 +9,7 @@ public class Doctor extends Users{
 
     private List<String> schedule;
     private LocalDateTime dateTime;
-    private Specialty specialty;
+    private final Specialty specialty;
 
     public Specialty getSpecialty() {
         return specialty;
@@ -19,10 +19,16 @@ public class Doctor extends Users{
         ophthalmologist,
         orthopedic,
         internist;
+
+        public String toFirstLetterUppercase() {
+            var temp = this.toString();
+            return temp.substring(0, 1).toUpperCase() + temp.substring(1);
+        }
     }
 
     public Doctor(String username, String password, String name, String surname, Specialty specialty) {
         super(username, password, name, surname);
+        this.specialty = specialty;
     }
 
     /**
@@ -31,6 +37,7 @@ public class Doctor extends Users{
     public void insertDateAvailability(String doctorAvailability)
     {
         dateTime = LocalDateTime.now();
+        System.out.println("Available date added");
     }
 
     /**
@@ -44,9 +51,9 @@ public class Doctor extends Users{
     /**
      * Cancel patient's appointment only if it's scheduled at least 3 days later compared to the current date.
      */
-    public void cancelAppointment(String cancelAppointment)
+    public void cancelAppointment(Appointment appointmentToBeCancelled)
     {
-
+        System.out.println("Appointment Cancelled");
     }
 
 }
