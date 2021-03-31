@@ -1,14 +1,20 @@
 package com.WebFlexers.mainpackage;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 public class Doctor extends Users{
 
-    private List<String> Schedule;
-    private static List<String> Specialties = Arrays.asList("ophthalmologist", "orthopedic", "internist");
-    private Date date;
+    private List<String> schedule;
+    private LocalDateTime dateTime;
+
+    private static enum Specialties {
+        ophthalmologist,
+        orthopedic,
+        internist
+    }
 
     public Doctor(String username, String password, String name, String surname) {
         super(username, password, name, surname);
@@ -19,7 +25,7 @@ public class Doctor extends Users{
      */
     public void insertDateAvailability(String doctorAvailability)
     {
-        date = new Date();
+        dateTime = LocalDateTime.now();
     }
 
     /**

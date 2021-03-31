@@ -13,15 +13,15 @@ public class CreateUsers {
     	
     	Doctor doctor_user = new Doctor("kostas2001", "26483dgdun", "KOSTAS", "KALOGEROPOULOS");
     	System.out.println("Doctor: " + doctor_user.getUsername() + ", "+ doctor_user.getPassword() + ", " + doctor_user.getName() + " " + doctor_user.getSurname());
-    	System.out.println("Doctor created");
+    	System.out.println("Doctor created\n");
     	
-    	admin_user.InsertDoctor(doctor_user);    
+    	admin_user.InsertDoctor(doctor_user);
     	admin_user.DeleteDoctor(doctor_user);
     	System.out.print("\n");
     	
     	Patient patient_user = new Patient("MichaelX26", "89054809HDHJ", "MIXALIS", "STYLIANIDIS", "280501014523");
     	System.out.println("Patient: " + patient_user.getUsername() + ", "+ patient_user.getPassword() + ", " + patient_user.getName() + " " + patient_user.getSurname() + ", " + patient_user.getAmka());
-    	System.out.println("Patient created\n");
+    	System.out.println("Patient created");
     	
     	//4.6
     	Scanner scan = new Scanner(System.in);
@@ -33,12 +33,12 @@ public class CreateUsers {
     	
     	System.out.println("-------Main Menu-------");
     	System.out.println("1. Doctor");
-    	System.out.println("1. Patient");
+    	System.out.println("2. Patient");
     	
     	int selection;
     	do
     	{   
-    		System.out.print("Choose entity to add(enter number): ");
+    		System.out.print("Choose entity to add (enter number): ");
         	selection = scan.nextInt(); 
         	scan.nextLine();
     	}
@@ -50,12 +50,13 @@ public class CreateUsers {
         	{
     			System.out.print("Username: ");
         		username = scan.nextLine();
+				break;
         	}
         	catch (Exception e)
         	{
+				System.out.println(e.getMessage());
         		System.out.println("Invalid username. Try again");
         	}
-    		break;
     	}  	
     	
     	while(true)
@@ -64,12 +65,12 @@ public class CreateUsers {
         	{
     			System.out.print("Password: ");
     			password = scan.nextLine();
+				break;
         	}
         	catch (Exception e)
         	{
         		System.out.println("Invalid password. Try again");
         	}
-    		break;
     	}
     	
     	while(true)
@@ -78,12 +79,12 @@ public class CreateUsers {
         	{
     			System.out.print("Name: ");
     			name = scan.nextLine();
+				break;
         	}
         	catch (Exception e)
         	{
         		System.out.println("Invalid name. Try again");
         	}
-    		break;
     	}
     	    	
     	while(true)
@@ -92,12 +93,12 @@ public class CreateUsers {
         	{
     			System.out.print("Surname: ");
     			surname = scan.nextLine();
+				break;
         	}
         	catch (Exception e)
         	{
         		System.out.println("Invalid surname. Try again");
         	}
-    		break;
     	}  
     	
     	if(selection == 1)

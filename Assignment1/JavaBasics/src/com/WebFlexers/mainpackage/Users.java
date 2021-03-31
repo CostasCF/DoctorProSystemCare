@@ -56,11 +56,11 @@ public class Users {
     }
 
     // Functionality methods
-
     /**
      * User login
      */
     public void login() { }
+
     /**
      * User logout
      */
