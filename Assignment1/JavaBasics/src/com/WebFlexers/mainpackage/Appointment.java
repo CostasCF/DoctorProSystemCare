@@ -39,9 +39,4 @@ public class Appointment {
     public void setDateTime(LocalDateTime dateTime) {
         DateTime = dateTime;
     }
-
-
-
-
-
 }
