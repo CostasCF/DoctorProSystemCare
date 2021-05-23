@@ -165,7 +165,10 @@ public class CreateUsers {
     		System.out.println("The specified file was not found");
 		} catch (Exception e) {
 			System.out.println("An unusual error has occurred while reading the file");
+			System.out.println(e.getMessage());
 		}
+
+
 
     }
 }
