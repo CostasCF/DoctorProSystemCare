@@ -1,3 +1,5 @@
+package com.WebFlexers.mainpackage;
+
 public class Admin extends Users {
 	
 	protected String superuserPassword;

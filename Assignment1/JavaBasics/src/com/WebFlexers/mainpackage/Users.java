@@ -1,3 +1,5 @@
+package com.WebFlexers.mainpackage;
+
 public class Users {
 
     private String username;

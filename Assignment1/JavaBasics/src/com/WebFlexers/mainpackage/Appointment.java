@@ -1,3 +1,5 @@
+package com.WebFlexers.mainpackage;
+
 import java.time.LocalDateTime;
 
 public class Appointment {
