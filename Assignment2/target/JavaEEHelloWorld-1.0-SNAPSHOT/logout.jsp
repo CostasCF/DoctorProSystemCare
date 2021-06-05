@@ -8,9 +8,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>Logout</title>
 </head>
 <body>
-
+<% session.removeAttribute("username");
+    session.removeAttribute("password");
+    session.invalidate();
+    %>
+<h1>Logout was successful</h1>
 </body>
 </html>
