@@ -13,19 +13,16 @@
 <body>
 <h2>
 <%
-    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-    response.setHeader("Pragma", "no-cache"); // HTTP 1
+   response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+  response.setHeader("Pragma", "no-cache"); // HTTP 1
     response.setHeader("Expires", "0");
 
     if(session.getAttribute("username") == null)
         response.sendRedirect("login.jsp");
-
-
 %>
 
     Welcome <% session.getAttribute("username"); %>
 </h2>
-
 <a href="showDetails.jsp">Show details</a>
 <a href="logout.jsp">Logout</a>
 </body>

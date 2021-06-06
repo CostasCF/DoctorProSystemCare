@@ -9,20 +9,23 @@
 <html>
 <head>
     <title>Login</title>
-
 </head>
 <style>
     <%@include file="/WEB-INF/loginCSS.css"%>
 </style>
 <body>
-<form action="/login" method="post">
+<form action="LoginServlet" method="post">
 
     <div class="container">
         <%--@declare id="uname"--%><%--@declare id="psw"--%><label for="uname"><b>Username</b></label>
-        <input type="text" placeholder="Enter Username" name="username" required>
+        <label>
+            <input type="text" placeholder="Enter Username" name="username" required>
+        </label>
 
         <label for="psw"><b>Password</b></label>
-        <input type="password" placeholder="Enter Password" name="password" required>
+        <label>
+            <input type="password" placeholder="Enter Password" name="password" required>
+        </label>
 
         <button type="submit">Login</button>
         <label>
