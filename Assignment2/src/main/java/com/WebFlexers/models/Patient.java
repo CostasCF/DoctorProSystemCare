@@ -89,12 +89,12 @@ public class Patient extends Users {
     /**
      * Prints out the scheduled appointments
      */
-    public void viewScheduledAppointments() {
+  /*  public void viewScheduledAppointments() {
         for (var appointment : scheduledAppointments) {
             System.out.println(appointment);
         }
     }
-
+*/
     /**
      * Prints out the appointment history
      */

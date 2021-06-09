@@ -9,8 +9,8 @@
         <module name="DoctorPro" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel target="8">
-      <module name="DoctorPro" target="8" />
+    <bytecodeTargetLevel target="15">
+      <module name="DoctorPro" target="15" />
     </bytecodeTargetLevel>
   </component>
 </project>

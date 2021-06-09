@@ -5,7 +5,7 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
 
-@WebServlet("/loginn")
+@WebServlet("/loginPage")
 public class PatientServlet extends HttpServlet {
 
     @Override

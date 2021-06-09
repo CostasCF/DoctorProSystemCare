@@ -110,6 +110,7 @@ public class CreateUsers {
 			System.out.println("Select doctor specialty according to the following menu: ");
 
 			// Print all the possible specialties of the Specialty enum
+
 			var allDoctorSpecialties = Doctor.Specialty.values();
 			for (int i = 0; i < allDoctorSpecialties.length; i++) {
 				System.out.println(i+1 + ". " + allDoctorSpecialties[i]);
