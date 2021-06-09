@@ -6,16 +6,6 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
-<%
-    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-    response.setHeader("Pragma", "no-cache"); // HTTP 1
-    response.setHeader("Expires", "0");
-
-    if(session.getAttribute("username") == null)
-        response.sendRedirect("index.jsp");
-%>
-
 <html lang="en" class="no-js">
 <head>
     <meta charset="utf-8">
@@ -23,12 +13,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Solid Template</title>
     <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:400,600" rel="stylesheet">
-    <script src="https://unpkg.com/animejs@3.0.1/lib/anime.min.js"></script>
-    <script src="https://unpkg.com/scrollreveal@4.0.0/dist/scrollreveal.min.js"></script>
+    <link rel="stylesheet" href="WEB-INF/scss/style.scss">
 </head>
 
 <style>
-    <%@include file="WEB-INF/dist/css/style.css"%>
+    <%@include file="WEB-INF/scss/style.scss"%>
 </style>
 
 <body class="is-boxed has-animations">
@@ -39,7 +28,7 @@
                 <div class="brand header-brand">
                     <h1 class="m-0">
                         <a href="#">
-                            <img class="header-logo-image" src="WEB-INF/dist/images/logo.svg" alt="Logo">
+                            <img class="header-logo-image" src="dist/images/logo.svg" alt="Logo">
                         </a>
                     </h1>
                 </div>
@@ -82,7 +71,7 @@
                         <div class="feature text-center is-revealing">
                             <div class="feature-inner">
                                 <div class="feature-icon">
-                                    <img src="WEB-INF/dist/images/feature-icon-01.svg" alt="Feature 01">
+                                    <img src="WEB-INF/images/feature-icon-01.svg" alt="Feature 01">
                                 </div>
                                 <h4 class="feature-title mt-24">Be Productive</h4>
                                 <p class="text-sm mb-0">Fermentum posuere urna nec tincidunt praesent semper feugiat nibh. A arcu cursus vitae congue mauris. Nam at lectus urna duis convallis. Mauris rhoncus aenean vel elit scelerisque mauris.</p>
@@ -91,7 +80,7 @@
                         <div class="feature text-center is-revealing">
                             <div class="feature-inner">
                                 <div class="feature-icon">
-                                    <img src="WEB-INF/dist/images/feature-icon-02.svg" alt="Feature 02">
+                                    <img src="WEB-INF/images/feature-icon-02.svg" alt="Feature 02">
                                 </div>
                                 <h4 class="feature-title mt-24">Be Productive</h4>
                                 <p class="text-sm mb-0">Fermentum posuere urna nec tincidunt praesent semper feugiat nibh. A arcu cursus vitae congue mauris. Nam at lectus urna duis convallis. Mauris rhoncus aenean vel elit scelerisque mauris.</p>
@@ -100,7 +89,7 @@
                         <div class="feature text-center is-revealing">
                             <div class="feature-inner">
                                 <div class="feature-icon">
-                                    <img src="WEB-INF/dist/images/feature-icon-03.svg" alt="Feature 03">
+                                    <img src="WEB-INF/images/feature-icon-03.svg" alt="Feature 03">
                                 </div>
                                 <h4 class="feature-title mt-24">Be Productive</h4>
                                 <p class="text-sm mb-0">Fermentum posuere urna nec tincidunt praesent semper feugiat nibh. A arcu cursus vitae congue mauris. Nam at lectus urna duis convallis. Mauris rhoncus aenean vel elit scelerisque mauris.</p>
@@ -109,7 +98,7 @@
                         <div class="feature text-center is-revealing">
                             <div class="feature-inner">
                                 <div class="feature-icon">
-                                    <img src="WEB-INF/dist/images/feature-icon-04.svg" alt="Feature 04">
+                                    <img src="WEB-INF/images/feature-icon-04.svg" alt="Feature 04">
                                 </div>
                                 <h4 class="feature-title mt-24">Be Productive</h4>
                                 <p class="text-sm mb-0">Fermentum posuere urna nec tincidunt praesent semper feugiat nibh. A arcu cursus vitae congue mauris. Nam at lectus urna duis convallis. Mauris rhoncus aenean vel elit scelerisque mauris.</p>
@@ -118,7 +107,7 @@
                         <div class="feature text-center is-revealing">
                             <div class="feature-inner">
                                 <div class="feature-icon">
-                                    <img src="WEB-INF/dist/images/feature-icon-05.svg" alt="Feature 05">
+                                    <img src="WEB-INF/images/feature-icon-05.svg" alt="Feature 05">
                                 </div>
                                 <h4 class="feature-title mt-24">Be Productive</h4>
                                 <p class="text-sm mb-0">Fermentum posuere urna nec tincidunt praesent semper feugiat nibh. A arcu cursus vitae congue mauris. Nam at lectus urna duis convallis. Mauris rhoncus aenean vel elit scelerisque mauris.</p>
@@ -127,7 +116,7 @@
                         <div class="feature text-center is-revealing">
                             <div class="feature-inner">
                                 <div class="feature-icon">
-                                    <img src="WEB-INF/dist/images/feature-icon-06.svg" alt="Feature 06">
+                                    <img src="WEB-INF/images/feature-icon-06.svg" alt="Feature 06">
                                 </div>
                                 <h4 class="feature-title mt-24">Be Productive</h4>
                                 <p class="text-sm mb-0">Fermentum posuere urna nec tincidunt praesent semper feugiat nibh. A arcu cursus vitae congue mauris. Nam at lectus urna duis convallis. Mauris rhoncus aenean vel elit scelerisque mauris.</p>
@@ -195,7 +184,7 @@
             <div class="site-footer-inner">
                 <div class="brand footer-brand">
                     <a href="#">
-                        <img class="header-logo-image" src="WEB-INF/dist/images/logo.svg" alt="Logo">
+                        <img class="header-logo-image" src="WEB-INF/images/logo.svg" alt="Logo">
                     </a>
                 </div>
                 <ul class="footer-links list-reset">
@@ -244,6 +233,78 @@
     </footer>
 </div>
 
-<script src="WEB-INF/dist/js/main.min.js"></script>
+<script>
+    (function () {
+        const win = window
+        const doc = document.documentElement
+
+        doc.classList.remove('no-js')
+        doc.classList.add('js')
+
+        // Reveal animations
+        if (document.body.classList.contains('has-animations')) {
+            /* global ScrollReveal */
+            const sr = window.sr = ScrollReveal()
+
+            sr.reveal('.feature, .pricing-table-inner', {
+                duration: 600,
+                distance: '20px',
+                easing: 'cubic-bezier(0.5, -0.01, 0, 1.005)',
+                origin: 'bottom',
+                interval: 100
+            })
+
+            doc.classList.add('anime-ready')
+            /* global anime */
+            anime.timeline({
+                targets: '.hero-figure-box-05'
+            }).add({
+                duration: 400,
+                easing: 'easeInOutExpo',
+                scaleX: [0.05, 0.05],
+                scaleY: [0, 1],
+                perspective: '500px',
+                delay: anime.random(0, 400)
+            }).add({
+                duration: 400,
+                easing: 'easeInOutExpo',
+                scaleX: 1
+            }).add({
+                duration: 800,
+                rotateY: '-15deg',
+                rotateX: '8deg',
+                rotateZ: '-1deg'
+            })
+
+            anime.timeline({
+                targets: '.hero-figure-box-06, .hero-figure-box-07'
+            }).add({
+                duration: 400,
+                easing: 'easeInOutExpo',
+                scaleX: [0.05, 0.05],
+                scaleY: [0, 1],
+                perspective: '500px',
+                delay: anime.random(0, 400)
+            }).add({
+                duration: 400,
+                easing: 'easeInOutExpo',
+                scaleX: 1
+            }).add({
+                duration: 800,
+                rotateZ: '20deg'
+            })
+
+            anime({
+                targets: '.hero-figure-box-01, .hero-figure-box-02, .hero-figure-box-03, .hero-figure-box-04, .hero-figure-box-08, .hero-figure-box-09, .hero-figure-box-10',
+                duration: anime.random(600, 800),
+                delay: anime.random(600, 800),
+                rotate: [ anime.random(-360, 360), function (el) { return el.getAttribute('data-rotation') } ],
+                scale: [0.7, 1],
+                opacity: [0, 1],
+                easing: 'easeInOutExpo'
+            })
+        }
+    }())
+</script>
 </body>
 </html>
