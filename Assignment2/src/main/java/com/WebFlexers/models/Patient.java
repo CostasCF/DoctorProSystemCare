@@ -1,4 +1,4 @@
-package com.WebFlexers.mainpackage;
+package com.WebFlexers.models;
 
 import javax.print.Doc;
 import java.util.ArrayList;

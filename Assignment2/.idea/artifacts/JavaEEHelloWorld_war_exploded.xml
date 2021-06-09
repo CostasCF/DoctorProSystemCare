@@ -11,13 +11,13 @@
     <root id="root">
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
-          <element id="module-output" name="JavaEEHelloWorld" />
+          <element id="module-output" name="DoctorPro" />
         </element>
       </element>
       <element id="directory" name="META-INF">
         <element id="file-copy" path="$PROJECT_DIR$/target/JavaEEHelloWorld-1.0-SNAPSHOT/META-INF/MANIFEST.MF" />
       </element>
-      <element id="javaee-facet-resources" facet="JavaEEHelloWorld/web/Web" />
+      <element id="javaee-facet-resources" facet="DoctorPro/web/Web" />
     </root>
   </artifact>
 </component>

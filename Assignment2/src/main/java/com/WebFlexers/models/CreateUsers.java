@@ -1,4 +1,4 @@
-package com.WebFlexers.mainpackage;
+package com.WebFlexers.models;
 
 import java.io.BufferedReader;
 import java.io.File;

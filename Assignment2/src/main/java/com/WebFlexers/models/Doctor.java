@@ -1,4 +1,4 @@
-package com.WebFlexers.mainpackage;
+package com.WebFlexers.models;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;

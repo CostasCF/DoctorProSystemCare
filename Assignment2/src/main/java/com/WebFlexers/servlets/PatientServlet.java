@@ -1,20 +1,15 @@
-package com.example.Servlets;
+package com.WebFlexers.servlets;
 
-import java.io.*;
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
+import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
+import java.io.IOException;
 
+@WebServlet("/loginn")
+public class PatientServlet extends HttpServlet {
 
-public class PatientServlet extends HttpServlet
-{
-    public PatientServlet(){
-
-    }
-
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         String address = "";
@@ -33,8 +28,8 @@ public class PatientServlet extends HttpServlet
             address = "/error.jsp";
 
 
-       RequestDispatcher dispatcher = request.getRequestDispatcher(address);
-       dispatcher.forward(request,response);
+        RequestDispatcher dispatcher = request.getRequestDispatcher(address);
+        dispatcher.forward(request,response);
 
 
     }

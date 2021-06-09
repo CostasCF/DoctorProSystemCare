@@ -1,4 +1,4 @@
-package com.example.Servlets;
+package com.WebFlexers.servlets;
 
 import java.io.*;
         import javax.servlet.http.*;

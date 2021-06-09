@@ -1,4 +1,4 @@
-package com.WebFlexers.mainpackage;
+package com.WebFlexers.models;
 
 public class Admin extends Users {
 	

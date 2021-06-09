@@ -14,7 +14,7 @@
     <%@include file="/WEB-INF/loginCSS.css"%>
 </style>
 <body>
-<form action="LoginServlet" method="post">
+<form action="loginn" method="post">
 
     <div class="container">
         <%--@declare id="uname"--%><%--@declare id="psw"--%><label for="uname"><b>Username</b></label>
