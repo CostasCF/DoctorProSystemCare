@@ -16,6 +16,7 @@
         response.sendRedirect("index.jsp");
 %>
 
+<!DOCTYPE html>
 <html lang="en" class="no-js">
 <head>
     <meta charset="utf-8">
@@ -23,14 +24,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Solid Template</title>
     <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:400,600" rel="stylesheet">
+    <link rel="stylesheet" href="dist/css/style.css">
     <script src="https://unpkg.com/animejs@3.0.1/lib/anime.min.js"></script>
     <script src="https://unpkg.com/scrollreveal@4.0.0/dist/scrollreveal.min.js"></script>
 </head>
-
-<style>
-    <%@include file="WEB-INF/dist/css/style.css"%>
-</style>
-
 <body class="is-boxed has-animations">
 <div class="body-wrap">
     <header class="site-header">
@@ -39,7 +36,7 @@
                 <div class="brand header-brand">
                     <h1 class="m-0">
                         <a href="#">
-                            <img class="header-logo-image" src=" ${pageContext.request.contextPath}${logo.svg}" alt="Logo">
+                            <img class="header-logo-image" src="dist/images/logo.svg" alt="Logo">
                         </a>
                     </h1>
                 </div>
@@ -82,7 +79,7 @@
                         <div class="feature text-center is-revealing">
                             <div class="feature-inner">
                                 <div class="feature-icon">
-                                    <img src="WEB-INF/dist/images/feature-icon-01.svg" alt="Feature 01">
+                                    <img src="dist/images/feature-icon-01.svg" alt="Feature 01">
                                 </div>
                                 <h4 class="feature-title mt-24">Be Productive</h4>
                                 <p class="text-sm mb-0">Fermentum posuere urna nec tincidunt praesent semper feugiat nibh. A arcu cursus vitae congue mauris. Nam at lectus urna duis convallis. Mauris rhoncus aenean vel elit scelerisque mauris.</p>
@@ -91,7 +88,7 @@
                         <div class="feature text-center is-revealing">
                             <div class="feature-inner">
                                 <div class="feature-icon">
-                                    <img src="WEB-INF/dist/images/feature-icon-02.svg" alt="Feature 02">
+                                    <img src="dist/images/feature-icon-02.svg" alt="Feature 02">
                                 </div>
                                 <h4 class="feature-title mt-24">Be Productive</h4>
                                 <p class="text-sm mb-0">Fermentum posuere urna nec tincidunt praesent semper feugiat nibh. A arcu cursus vitae congue mauris. Nam at lectus urna duis convallis. Mauris rhoncus aenean vel elit scelerisque mauris.</p>
@@ -100,7 +97,7 @@
                         <div class="feature text-center is-revealing">
                             <div class="feature-inner">
                                 <div class="feature-icon">
-                                    <img src="WEB-INF/dist/images/feature-icon-03.svg" alt="Feature 03">
+                                    <img src="dist/images/feature-icon-03.svg" alt="Feature 03">
                                 </div>
                                 <h4 class="feature-title mt-24">Be Productive</h4>
                                 <p class="text-sm mb-0">Fermentum posuere urna nec tincidunt praesent semper feugiat nibh. A arcu cursus vitae congue mauris. Nam at lectus urna duis convallis. Mauris rhoncus aenean vel elit scelerisque mauris.</p>
@@ -109,7 +106,7 @@
                         <div class="feature text-center is-revealing">
                             <div class="feature-inner">
                                 <div class="feature-icon">
-                                    <img src="WEB-INF/dist/images/feature-icon-04.svg" alt="Feature 04">
+                                    <img src="dist/images/feature-icon-04.svg" alt="Feature 04">
                                 </div>
                                 <h4 class="feature-title mt-24">Be Productive</h4>
                                 <p class="text-sm mb-0">Fermentum posuere urna nec tincidunt praesent semper feugiat nibh. A arcu cursus vitae congue mauris. Nam at lectus urna duis convallis. Mauris rhoncus aenean vel elit scelerisque mauris.</p>
@@ -118,7 +115,7 @@
                         <div class="feature text-center is-revealing">
                             <div class="feature-inner">
                                 <div class="feature-icon">
-                                    <img src="WEB-INF/dist/images/feature-icon-05.svg" alt="Feature 05">
+                                    <img src="dist/images/feature-icon-05.svg" alt="Feature 05">
                                 </div>
                                 <h4 class="feature-title mt-24">Be Productive</h4>
                                 <p class="text-sm mb-0">Fermentum posuere urna nec tincidunt praesent semper feugiat nibh. A arcu cursus vitae congue mauris. Nam at lectus urna duis convallis. Mauris rhoncus aenean vel elit scelerisque mauris.</p>
@@ -127,7 +124,7 @@
                         <div class="feature text-center is-revealing">
                             <div class="feature-inner">
                                 <div class="feature-icon">
-                                    <img src="WEB-INF/dist/images/feature-icon-06.svg" alt="Feature 06">
+                                    <img src="dist/images/feature-icon-06.svg" alt="Feature 06">
                                 </div>
                                 <h4 class="feature-title mt-24">Be Productive</h4>
                                 <p class="text-sm mb-0">Fermentum posuere urna nec tincidunt praesent semper feugiat nibh. A arcu cursus vitae congue mauris. Nam at lectus urna duis convallis. Mauris rhoncus aenean vel elit scelerisque mauris.</p>
@@ -195,7 +192,7 @@
             <div class="site-footer-inner">
                 <div class="brand footer-brand">
                     <a href="#">
-                        <img class="header-logo-image" src="WEB-INF/dist/images/logo.svg" alt="Logo">
+                        <img class="header-logo-image" src="dist/images/logo.svg" alt="Logo">
                     </a>
                 </div>
                 <ul class="footer-links list-reset">
@@ -244,6 +241,6 @@
     </footer>
 </div>
 
-<script src="WEB-INF/dist/js/main.min.js"></script>
+<script src="dist/js/main.min.js"></script>
 </body>
 </html>
