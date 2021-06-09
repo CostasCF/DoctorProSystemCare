@@ -1,7 +1,9 @@
 package com.WebFlexers.models;
 
 import javax.print.Doc;
+import java.sql.*;
 import java.util.ArrayList;
+import java.util.Properties;
 
 public class Patient extends Users {
 
@@ -100,5 +102,36 @@ public class Patient extends Users {
      */
     public void viewAppointmentHistory() {
         System.out.println("The history of appointments");
+    }
+
+    /**
+     * Validates the patient user in the database
+     */
+    public boolean ValidatePatient(String username, String password) throws SQLException {
+
+        boolean st = false;
+
+        String url = "jdbc:postgresql://ec2-52-209-134-160.eu-west-1.compute.amazonaws.com:5432/d35afkue7kt3ri";
+        Properties props = new Properties();
+        props.setProperty("user","dmupmilluzwkvw");
+        props.setProperty("password","1f80c2791969210ee5777c436e20ee52ca006ee7f1c2dbfaf86baa32f976f2fa");
+
+        try{
+            Connection conn = DriverManager.getConnection(url, props);
+            System.out.println("Connected Successfully");
+
+            PreparedStatement ps = conn.prepareStatement("select * from patient where username=? and password=?");
+            ps.setString(1, username);
+            ps.setString(2, password);
+            ResultSet rs =ps.executeQuery();
+            st = rs.next();
+
+            return st;
+        }
+        catch (SQLException ex) {
+            System.out.println("An error occured while connecting to database");
+            System.out.println(ex.toString());
+        }
+        return st;
     }
 }

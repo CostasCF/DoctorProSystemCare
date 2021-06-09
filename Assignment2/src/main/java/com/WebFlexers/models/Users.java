@@ -8,6 +8,8 @@ public class Users {
     private String surname;
     private static int usersCounter = 0;
 
+    public Users() {}
+
     // Constructor
     public Users(String username, String password, String name, String surname) {
         this.username = username;

@@ -35,7 +35,11 @@
 
       <input type="text" name="username" placeholder="Username" />
       <input type="password" name="password" placeholder="Password" />
-
+      <%
+        String login_msg=(String)request.getAttribute("error");
+        if(login_msg!=null)
+          out.println("<font color=red size=4px>"+login_msg+"</font>");
+      %>
       <button type="submit">Sign In</button>
     </form>
   </div>
