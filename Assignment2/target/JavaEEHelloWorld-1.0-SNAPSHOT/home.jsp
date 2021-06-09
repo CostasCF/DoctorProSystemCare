@@ -16,6 +16,9 @@
     <link rel="stylesheet" href="WEB-INF/scss/style.scss">
 </head>
 
+<style>
+    <%@include file="WEB-INF/scss/style.scss"%>
+</style>
 
 <body class="is-boxed has-animations">
 <div class="body-wrap">
