@@ -8,23 +8,21 @@ import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.sql.SQLException;
 
-import com.WebFlexers.models.Patient;
-
 @WebServlet("/loginPage")
 public class PatientServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Patient patient = new Patient("", "","","","");
-        boolean isValid = false;
+        boolean patientIsValid = false;
 
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-        String address = "";
+        String address;
 
         //User validation
         try {
-            isValid = patient.ValidatePatient(username, password);
+            patientIsValid = patient.validatePatient(username, password);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -32,13 +30,13 @@ public class PatientServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
 
         HttpSession session = request.getSession();
-        //authentication with example credentials
 
-        if(isValid)
+        if(patientIsValid)
         {
             session.setAttribute("username",username);
             address= "/home.jsp";
-        }else
+        }
+        else
         {
             request.setAttribute("error","Invalid Username or Password");
             address= "/index.jsp";

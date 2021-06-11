@@ -25,7 +25,7 @@ public class Patient extends Users {
 
     /**
      * Sets the appointment schedule
-     * @param scheduledAppointments
+     * @param scheduledAppointments: Array list with the appointments
      */
     public void setScheduledAppointments(ArrayList<Appointment> scheduledAppointments) {
         this.scheduledAppointments = scheduledAppointments;
@@ -33,7 +33,7 @@ public class Patient extends Users {
 
     /**
      * Adds an appointment to the schedule
-     * @param appointment
+     * @param appointment: The scheduled appointment between the doctor and the patient
      */
     public void addAppointment(Appointment appointment) {
         scheduledAppointments.add(appointment);
@@ -41,7 +41,7 @@ public class Patient extends Users {
 
     /**
      * Removes appointment from the list of scheduled appointments
-     * @param appointment
+     * @param appointment: The scheduled appointment between the doctor and the patient
      */
     public void cancelAppointment(Appointment appointment) {
         scheduledAppointments.remove(appointment);
@@ -49,8 +49,6 @@ public class Patient extends Users {
 
     /**
      * Replaces the old appointment with the new one in the scheduled appointments list
-     * @param oldAppointment
-     * @param newAppointment
      */
     public void replaceAppointment(Appointment oldAppointment, Appointment newAppointment) {
         if (scheduledAppointments.contains(oldAppointment)) {
@@ -107,7 +105,7 @@ public class Patient extends Users {
     /**
      * Validates the patient user in the database
      */
-    public boolean ValidatePatient(String username, String password) throws SQLException {
+    public boolean validatePatient(String username, String password) throws SQLException {
 
         boolean st = false;
 
@@ -118,13 +116,13 @@ public class Patient extends Users {
 
         try{
             Connection conn = DriverManager.getConnection(url, props);
-            System.out.println("Connected Successfully");
+            System.out.println("Connected Successfully to the database");
 
-            PreparedStatement ps = conn.prepareStatement("select * from patient where username=? and password=?");
-            ps.setString(1, username);
-            ps.setString(2, password);
-            ResultSet rs =ps.executeQuery();
-            st = rs.next();
+            PreparedStatement preparedStatement = conn.prepareStatement("select * from patient where username=? and password=?");
+            preparedStatement.setString(1, username);
+            preparedStatement.setString(2, password);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            st = resultSet.next();
 
             return st;
         }

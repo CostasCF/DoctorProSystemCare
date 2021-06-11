@@ -1,4 +1,4 @@
-<%--
+<%@ page import="static java.sql.DriverManager.println" %><%--
   Created by IntelliJ IDEA.
   User: User
   Date: 6/9/2021
@@ -35,12 +35,12 @@
 
       <input type="text" name="username" placeholder="Username" />
       <input type="password" name="password" placeholder="Password" />
+      <button type="submit">Sign In</button>
       <%
         String login_msg=(String)request.getAttribute("error");
         if(login_msg!=null)
-          out.println("<font color=red size=4px>"+login_msg+"</font>");
+          println("<font color=red size=4px>"+login_msg+"</font>");
       %>
-      <button type="submit">Sign In</button>
     </form>
   </div>
 
