@@ -105,9 +105,7 @@ public class Patient extends Users {
     /**
      * Validates the patient user in the database
      */
-    public boolean validatePatient(String username, String password) throws SQLException {
-
-        boolean st = false;
+    public static boolean validatePatient(String username, String password) throws SQLException {
 
         String url = "jdbc:postgresql://ec2-52-209-134-160.eu-west-1.compute.amazonaws.com:5432/d35afkue7kt3ri";
         Properties props = new Properties();
@@ -122,14 +120,14 @@ public class Patient extends Users {
             preparedStatement.setString(1, username);
             preparedStatement.setString(2, password);
             ResultSet resultSet = preparedStatement.executeQuery();
-            st = resultSet.next();
+            return resultSet.next();
 
-            return st;
         }
         catch (SQLException ex) {
             System.out.println("An error occured while connecting to database");
             System.out.println(ex.toString());
         }
-        return st;
+
+        return false;
     }
 }

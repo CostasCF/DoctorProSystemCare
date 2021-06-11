@@ -13,7 +13,6 @@ public class PatientServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Patient patient = new Patient("", "","","","");
         boolean patientIsValid = false;
 
         String username = request.getParameter("username");
@@ -22,7 +21,7 @@ public class PatientServlet extends HttpServlet {
 
         //User validation
         try {
-            patientIsValid = patient.validatePatient(username, password);
+            patientIsValid = Patient.validatePatient(username, password);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
