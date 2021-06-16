@@ -571,15 +571,20 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="#" method="post">
+                    <form action="loginPage" method="post">
                         <div class="form-group">
                             <label for="recipient-name" class="col-form-label">Username</label>
-                            <input type="text" class="form-control" placeholder=" " name="Name" id="recipient-name" required="">
+                            <input type="text" class="form-control" placeholder=" " name="username" id="recipient-name" required="">
                         </div>
                         <div class="form-group">
                             <label for="password" class="col-form-label">Password</label>
-                            <input type="password" class="form-control" placeholder=" " name="Password" id="password" required="">
+                            <input type="password" class="form-control" placeholder=" " name="password" id="password" required="">
                         </div>
+						<%
+							String login_msg=(String)request.getAttribute("error");
+							if(login_msg!=null)
+								out.println("<font color=red size=4px>"+login_msg+"</font>");
+						%>
                         <div class="right-w3l">
                             <input type="submit" class="form-control" value="Login">
                         </div>

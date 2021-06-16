@@ -31,6 +31,17 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <link href="//fonts.googleapis.com/css?family=Montserrat:200,300,400,500,600,700,800,900" rel="stylesheet"><!-- //online-fonts -->
 </head>
 <body>
+<%
+
+    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    response.setHeader("Pragma", "no-cache"); // HTTP 1
+    response.setHeader("Expires", "0");
+
+    if(session.getAttribute("username") == null)
+        response.sendRedirect("index.jsp");
+
+
+%>
         <!-- header -->
         <header>
             <nav class="navbar navbar-expand-lg navbar-light bg-gradient-secondary">
@@ -95,7 +106,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <section class="wthree-row pt-sm-3  pb-sm-5 pb-3">
         <div class="container py-sm-5 py-3">
             <!-- section title -->
-				<h2 class="heading-agileinfo">Typo<span>graphy</span></h2>
+
+				<h2 class="heading-agileinfo"> Welcome <% out.println("<font color=black size=6px>"+ session.getAttribute("username")+"</font>"); %></h2>
             <!-- //section title -->
             <div class="pb-5 mt-md-5 typo-wthree">
                 <h4 class="pt-4 pb-3">Flex</h4>

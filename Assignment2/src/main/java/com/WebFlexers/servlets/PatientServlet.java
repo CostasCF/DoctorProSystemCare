@@ -18,6 +18,9 @@ public class PatientServlet extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         String address;
+        System.out.println(username);
+        System.out.println(password);
+
 
         //User validation
         try {
@@ -33,10 +36,11 @@ public class PatientServlet extends HttpServlet {
         if(patientIsValid)
         {
             session.setAttribute("username",username);
-            address= "/home.jsp";
+            address= "/typo.jsp";
         }
         else
         {
+            System.out.println("Error");
             request.setAttribute("error","Invalid Username or Password");
             address= "/index.jsp";
         }
