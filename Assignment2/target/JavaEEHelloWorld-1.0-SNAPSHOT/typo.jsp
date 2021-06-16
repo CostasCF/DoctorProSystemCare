@@ -47,7 +47,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             <nav class="navbar navbar-expand-lg navbar-light bg-gradient-secondary">
                 <h1>
                     <a class="navbar-brand text-white" href="index.jsp">
-                       Alleviating
+                       DOCTOR PRO
                     </a>
                 </h1>
                 <button class="navbar-toggler ml-md-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -72,7 +72,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="about.jsp">About</a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="typo.jsp">Typography</a>
+                                <a class="dropdown-item" href="typo.jsp">Profile</a>
                             </div>
                         </li>
                         <li class="nav-item mr-3 mt-lg-0 mt-3">
@@ -99,7 +99,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             <li class="breadcrumb-item">
                 <a href="index.jsp">Home</a>
             </li>
-            <li class="breadcrumb-item active" aria-current="page">Typography</li>
+            <li class="breadcrumb-item active" aria-current="page">Profile</li>
         </ol>
     </nav>
 	<!-- typography -->
@@ -110,7 +110,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 				<h2 class="heading-agileinfo"> Welcome <% out.println("<font color=black size=6px>"+ session.getAttribute("username")+"</font>"); %></h2>
             <!-- //section title -->
             <div class="pb-5 mt-md-5 typo-wthree">
-                <h4 class="pt-4 pb-3">Flex</h4>
+                <h4 class="pt-4 pb-3">Profile</h4>
                 <div class="d-flex p-2 bg-flex mb-1">I'm a flexbox container!</div>
                 <div class="d-inline-flex p-2 bg-flex mb-1">I'm an inline flexbox container!</div>
                 <h5 class="pt-4 pb-3">Flex row</h5>
@@ -127,8 +127,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 </div>
                 <h5 class="pt-4 pb-3">Flex column</h5>
                 <div class="d-flex flex-column bg-flex">
-                    <div class="p-2 bg-flex mb-1 bg-flex-item">Flex item 1</div>
-                    <div class="p-2 bg-flex mb-1 bg-flex-item">Flex item 2</div>
+                    <div class="p-2 bg-flex mb-1 bg-flex-item">Name:  <% out.println("<font color=black size=4px>"+ session.getAttribute("username")+"</font>"); %></div>
+                    <div class="p-2 bg-flex mb-1 bg-flex-item">Surname:  <% out.println("<font color=black size=4px>"+ session.getAttribute("surname")+"</font>"); %> </div>
                     <div class="p-2 bg-flex mb-1 bg-flex-item">Flex item 3</div>
                 </div>
                 <h5 class="pt-4 pb-3">Flex column-reverse</h5>
