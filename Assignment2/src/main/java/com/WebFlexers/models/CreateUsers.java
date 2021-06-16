@@ -143,7 +143,7 @@ public class CreateUsers {
     		//patient.cancelAppointment(theAppointmentToBeCancelled);
     		//patient.replaceAppointment(theOldAppointment, theNewAppointment);
 			//patient.setScheduledAppointments(aListOfAppointments);
-			patient.viewAppointmentHistory();
+		//	patient.viewAppointmentHistory();
     	}
 
     	// Read a patient from txt

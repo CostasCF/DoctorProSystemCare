@@ -62,7 +62,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="about.jsp">About</a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="typo.jsp">Typography</a>
+                                <a class="dropdown-item" href="profile.jsp">Typography</a>
                             </div>
                         </li>
                         <li class="nav-item active mr-3 mt-lg-0 mt-3">

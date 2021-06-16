@@ -7,17 +7,27 @@ import java.util.Properties;
 
 public class Patient extends Users {
 
-    private final String amka;
+    //private final String amka;
     private ArrayList<Appointment> scheduledAppointments = new ArrayList<>();
 
-    public Patient(String username, String password, String name, String surname, String amka) {
-        super(username, password, name, surname);
+  //  public Patient(String username, String password, String name, String surname, String amka) {
+        //super(username, password, name, surname);
+     //   this.amka = amka;
+ //   }
+
+  public String amka ,phoneNumber, firstname,surname, email;
+
+    public Patient(String amka,  String phoneNumber, String firstname, String surname, String email){
         this.amka = amka;
+        this.phoneNumber = phoneNumber;
+        this.firstname = firstname;
+        this.surname = surname;
+        this.email= email;
     }
 
     public String getAmka() {
-        return amka;
-    }
+       return amka;
+   }
 
     public ArrayList<Appointment> getScheduledAppointments() {
         return scheduledAppointments;
@@ -96,11 +106,70 @@ public class Patient extends Users {
     }
 */
     /**
+     *  Gets the patient's details from the database
+     */
+    public static Patient viewPatientDetails() {
+        String amka = "",phoneNumber= "", firstname= "",surname= "", email= "";
+        String url = "jdbc:postgresql://ec2-52-209-134-160.eu-west-1.compute.amazonaws.com:5432/d35afkue7kt3ri";
+        Properties props = new Properties();
+        props.setProperty("user","dmupmilluzwkvw");
+        props.setProperty("password","1f80c2791969210ee5777c436e20ee52ca006ee7f1c2dbfaf86baa32f976f2fa");
+        Patient _patient = new Patient("","","","","");
+        try{
+            Connection conn = DriverManager.getConnection(url, props);
+            System.out.println("Connected Successfully to the database");
+
+            PreparedStatement preparedStatement = conn.prepareStatement("select * from patient (amka,firstname,surname,email,phone_num)  values (?, ?, ?,?,?)");
+
+            preparedStatement.setString(1, amka);
+            preparedStatement.setString(2, firstname);
+            preparedStatement.setString(3, surname);
+            preparedStatement.setString(4, email);
+            preparedStatement.setString(5, phoneNumber);
+
+            System.out.println(amka);
+            ResultSet resultSet = preparedStatement.executeQuery();
+           // return resultSet.next();
+             _patient = new Patient(amka,phoneNumber,firstname,surname,email);
+            return _patient;
+        }
+        catch (SQLException ex) {
+            System.out.println("An error occured while connecting to database");
+            System.out.println(ex.toString());
+        }
+        return _patient;
+    }
+
+
+
+
+    /**
      * Prints out the appointment history
      */
-    public void viewAppointmentHistory() {
-        System.out.println("The history of appointments");
-    }
+//    public static boolean viewAppointmentHistory(String amka, String appointmentId, String doctor, String date, String startTime, String endTime, String phoneNumber) {
+//        String url = "jdbc:postgresql://ec2-52-209-134-160.eu-west-1.compute.amazonaws.com:5432/d35afkue7kt3ri";
+//        Properties props = new Properties();
+//        props.setProperty("user","dmupmilluzwkvw");
+//        props.setProperty("password","1f80c2791969210ee5777c436e20ee52ca006ee7f1c2dbfaf86baa32f976f2fa");
+//
+//        try{
+//            Connection conn = DriverManager.getConnection(url, props);
+//            System.out.println("Connected Successfully to the database");
+//
+//            PreparedStatement preparedStatement = conn.prepareStatement("select * from patient ");
+//
+//            preparedStatement.setString(1, username);
+//            preparedStatement.setString(2, password);
+//            ResultSet resultSet = preparedStatement.executeQuery();
+//            return resultSet.next();
+//
+//        }
+//        catch (SQLException ex) {
+//            System.out.println("An error occured while connecting to database");
+//            System.out.println(ex.toString());
+//        }
+//        return false;
+//    }
 
     /**
      * Validates the patient user in the database
@@ -130,4 +199,7 @@ public class Patient extends Users {
 
         return false;
     }
+
+
+
 }

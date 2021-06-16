@@ -14,13 +14,13 @@ public class PatientServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         boolean patientIsValid = false;
-
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         String address;
         System.out.println(username);
         System.out.println(password);
 
+        Patient _patient;
 
         //User validation
         try {
@@ -35,8 +35,16 @@ public class PatientServlet extends HttpServlet {
 
         if(patientIsValid)
         {
+            _patient = Patient.viewPatientDetails();
             session.setAttribute("username",username);
-            address= "/typo.jsp";
+            session.setAttribute("amka",_patient.amka);
+            session.setAttribute("phoneNumber",_patient.phoneNumber);
+            session.setAttribute("firstname",_patient.firstname);
+            session.setAttribute("surname",_patient.surname);
+            session.setAttribute("email",_patient.email);
+
+
+            address= "/profile.jsp";
         }
         else
         {
