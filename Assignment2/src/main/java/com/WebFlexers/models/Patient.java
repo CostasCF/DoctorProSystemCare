@@ -108,8 +108,8 @@ public class Patient extends Users {
     /**
      *  Gets the patient's details from the database
      */
-    public static Patient viewPatientDetails() {
-        String amka = "",phoneNumber= "", firstname= "",surname= "", email= "";
+    public static Patient viewPatientDetails(String amka) {
+        String  phoneNumber= "", firstname= "",surname= "", email= "";
         String url = "jdbc:postgresql://ec2-52-209-134-160.eu-west-1.compute.amazonaws.com:5432/d35afkue7kt3ri";
         Properties props = new Properties();
         props.setProperty("user","dmupmilluzwkvw");

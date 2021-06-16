@@ -35,7 +35,7 @@ public class PatientServlet extends HttpServlet {
 
         if(patientIsValid)
         {
-            _patient = Patient.viewPatientDetails();
+            _patient = Patient.viewPatientDetails(""); //dinoume to amka gia na psaksei kai ta upoloipa stoixeia
             session.setAttribute("username",username);
             session.setAttribute("amka",_patient.amka);
             session.setAttribute("phoneNumber",_patient.phoneNumber);
