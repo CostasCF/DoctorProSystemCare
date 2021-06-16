@@ -108,68 +108,75 @@ public class Patient extends Users {
     /**
      *  Gets the patient's details from the database
      */
-    public static Patient viewPatientDetails(String amka) {
-        String  phoneNumber= "", firstname= "",surname= "", email= "";
+    public static String[] getPatientDetails(String username) {
+
+        String details[] = new String[7];
+
+        //Connecting to database
         String url = "jdbc:postgresql://ec2-52-209-134-160.eu-west-1.compute.amazonaws.com:5432/d35afkue7kt3ri";
         Properties props = new Properties();
         props.setProperty("user","dmupmilluzwkvw");
         props.setProperty("password","1f80c2791969210ee5777c436e20ee52ca006ee7f1c2dbfaf86baa32f976f2fa");
-        Patient _patient = new Patient("","","","","");
+
         try{
             Connection conn = DriverManager.getConnection(url, props);
             System.out.println("Connected Successfully to the database");
 
-            PreparedStatement preparedStatement = conn.prepareStatement("select * from patient (amka,firstname,surname,email,phone_num)  values (?, ?, ?,?,?)");
+            PreparedStatement statement = conn.prepareStatement("SELECT * FROM patient WHERE username=?");
+            statement.setString(1, username);
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.next();
+            for(int i = 1; i<=7; i++)
+                details[i-1] = resultSet.getString(i);
 
-            preparedStatement.setString(1, amka);
-            preparedStatement.setString(2, firstname);
-            preparedStatement.setString(3, surname);
-            preparedStatement.setString(4, email);
-            preparedStatement.setString(5, phoneNumber);
-
-            System.out.println(amka);
-            ResultSet resultSet = preparedStatement.executeQuery();
-           // return resultSet.next();
-             _patient = new Patient(amka,phoneNumber,firstname,surname,email);
-            return _patient;
+            return details;
         }
         catch (SQLException ex) {
             System.out.println("An error occured while connecting to database");
             System.out.println(ex.toString());
         }
-        return _patient;
+        return details;
     }
 
 
 
 
     /**
-     * Prints out the appointment history
+     * Gets patient's appointment history from the database
      */
-//    public static boolean viewAppointmentHistory(String amka, String appointmentId, String doctor, String date, String startTime, String endTime, String phoneNumber) {
-//        String url = "jdbc:postgresql://ec2-52-209-134-160.eu-west-1.compute.amazonaws.com:5432/d35afkue7kt3ri";
-//        Properties props = new Properties();
-//        props.setProperty("user","dmupmilluzwkvw");
-//        props.setProperty("password","1f80c2791969210ee5777c436e20ee52ca006ee7f1c2dbfaf86baa32f976f2fa");
-//
-//        try{
-//            Connection conn = DriverManager.getConnection(url, props);
-//            System.out.println("Connected Successfully to the database");
-//
-//            PreparedStatement preparedStatement = conn.prepareStatement("select * from patient ");
-//
-//            preparedStatement.setString(1, username);
-//            preparedStatement.setString(2, password);
-//            ResultSet resultSet = preparedStatement.executeQuery();
-//            return resultSet.next();
-//
-//        }
-//        catch (SQLException ex) {
-//            System.out.println("An error occured while connecting to database");
-//            System.out.println(ex.toString());
-//        }
-//        return false;
-//    }
+    public static ArrayList<String[]> getAppointmentsHistory(String amka) {
+        ArrayList<String[]> appointment_details = new ArrayList<String[]>();
+
+        //Connecting to database
+        String url = "jdbc:postgresql://ec2-52-209-134-160.eu-west-1.compute.amazonaws.com:5432/d35afkue7kt3ri";
+        Properties props = new Properties();
+        props.setProperty("user","dmupmilluzwkvw");
+        props.setProperty("password","1f80c2791969210ee5777c436e20ee52ca006ee7f1c2dbfaf86baa32f976f2fa");
+
+        try{
+            Connection conn = DriverManager.getConnection(url, props);
+            System.out.println("Connected Successfully to the database");
+
+            PreparedStatement statement = conn.prepareStatement("SELECT * FROM appointment WHERE patient=?");
+            statement.setString(1, amka);
+            ResultSet resultSet = statement.executeQuery();
+
+            String temp[] = new String[6];
+            while(resultSet.next())
+            {
+                for(int i = 1; i<=6; i++)
+                    temp[i-1] = resultSet.getString(i);
+
+                appointment_details.add(temp);
+            }
+            return appointment_details;
+        }
+        catch (SQLException ex) {
+            System.out.println("An error occured while connecting to database");
+            System.out.println(ex.toString());
+        }
+        return appointment_details;
+    }
 
     /**
      * Validates the patient user in the database

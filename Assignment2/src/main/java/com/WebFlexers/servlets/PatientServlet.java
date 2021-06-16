@@ -7,6 +7,7 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 @WebServlet("/loginPage")
 public class PatientServlet extends HttpServlet {
@@ -35,14 +36,20 @@ public class PatientServlet extends HttpServlet {
 
         if(patientIsValid)
         {
-            _patient = Patient.viewPatientDetails(""); //dinoume to amka gia na psaksei kai ta upoloipa stoixeia
-            session.setAttribute("username",username);
-            session.setAttribute("amka",_patient.amka);
-            session.setAttribute("phoneNumber",_patient.phoneNumber);
-            session.setAttribute("firstname",_patient.firstname);
-            session.setAttribute("surname",_patient.surname);
-            session.setAttribute("email",_patient.email);
+            String patientDetails[] = Patient.getPatientDetails(username);
+            session.setAttribute("amka",patientDetails[0]);
+            session.setAttribute("username",patientDetails[1]);
+            session.setAttribute("firstname",patientDetails[3]);
+            session.setAttribute("surname",patientDetails[4]);
+            session.setAttribute("email",patientDetails[5]);
+            session.setAttribute("phoneNumber",patientDetails[6]);
 
+            ArrayList<String[]> appointmentDetails = Patient.getAppointmentsHistory(patientDetails[0]);
+            for (String[] appointment : appointmentDetails)
+            {
+                for(int i=0; i<6; i++)
+                    session.setAttribute("ap_col"+i, appointment[i]); //appointment_column
+            }
 
             address= "/profile.jsp";
         }
