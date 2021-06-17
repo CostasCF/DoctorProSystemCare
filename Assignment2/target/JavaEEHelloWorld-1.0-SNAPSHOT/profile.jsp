@@ -221,13 +221,15 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                 {
                                     for (String[] appointDetails : appointment_list)
                                     {
-                                        out.println("<li class='list-group-item'>"+ appointDetails[0] + " " + appointDetails[1] + " "
-                                                + appointDetails[2] + " "  + appointDetails[3] + " " + appointDetails[4] + " "
-                                                + appointDetails[5] + " " +"</li>");
+                                        out.println("<li class='list-group-item'>" +
+                                                "ID: " + appointDetails[0] + " DoctorID: " + appointDetails[1] + " "
+                                                 + " | " + appointDetails[3] + " "
+                                                + appointDetails[4] + "-" + appointDetails[5] + " "
+                                                + "</li>");
                                     }
                                 }
                             %>
-                            <li class="list-group-item">Mixali ton pairneis</li>
+<%--                            <li class="list-group-item">Mixali ton pairneis</li>--%>
                         </ul>
                     </div>
 <%--                    <div class="col-md-6">--%>
@@ -343,6 +345,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <%--                </div>--%>
             </div>
         </div>
+        </div>
+
         <!-- //typo container -->
     </section>
     <!-- //typography -->
