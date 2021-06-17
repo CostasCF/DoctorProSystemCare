@@ -1,3 +1,5 @@
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.Iterator" %>
 <!--Template: W3layouts
 Template URL: http://w3layouts.com
 License: Creative Commons Attribution 3.0 Unported
@@ -213,7 +215,21 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     <div class="col-md-6">
                         <h5 class="pt-4 pb-3">Your appointments</h5>
                         <ul class="list-group">
-                            <li class="list-group-item">Cras justo odio</li>
+                            <%
+                                ArrayList<String[]> appointment_list = (ArrayList<String[]>) session.getAttribute("appointment_list");
+                                if(appointment_list != null)
+                                {
+                                    for (String[] appointDetails : appointment_list)
+                                    {
+                                        out.println("<li class='list-group-item'>"
+                                                + appointDetails[0] + " " + appointDetails[1] + " "
+                                                + appointDetails[2] + " " + appointDetails[3] + " "
+                                                + appointDetails[4] + " " + appointDetails[5] + " "
+                                                + "</li>");
+                                    }
+                                }
+                            %>
+                            <li class="list-group-item">Mixali ton pairneis</li>
                         </ul>
                     </div>
 <%--                    <div class="col-md-6">--%>

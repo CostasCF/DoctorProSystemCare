@@ -45,11 +45,7 @@ public class PatientServlet extends HttpServlet {
             session.setAttribute("phoneNumber",patientDetails[6]);
 
             ArrayList<String[]> appointmentDetails = Patient.getAppointmentsHistory(patientDetails[0]);
-            for (String[] appointment : appointmentDetails)
-            {
-                for(int i=0; i<6; i++)
-                    session.setAttribute("ap_col"+i, appointment[i]); //appointment_column
-            }
+            session.setAttribute("appointment_list", appointmentDetails); //appointment_column
 
             address= "/profile.jsp";
         }

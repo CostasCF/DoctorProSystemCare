@@ -129,6 +129,8 @@ public class Patient extends Users {
             for(int i = 1; i<=7; i++)
                 details[i-1] = resultSet.getString(i);
 
+            conn.close();
+
             return details;
         }
         catch (SQLException ex) {
@@ -159,16 +161,21 @@ public class Patient extends Users {
 
             PreparedStatement statement = conn.prepareStatement("SELECT * FROM appointment WHERE patient=?");
             statement.setString(1, amka);
-            ResultSet resultSet = statement.executeQuery();
 
-            String temp[] = new String[6];
+            ResultSet resultSet = statement.executeQuery();
             while(resultSet.next())
             {
-                for(int i = 1; i<=6; i++)
-                    temp[i-1] = resultSet.getString(i);
-
+                String[] temp = {
+                        resultSet.getString(1),
+                        resultSet.getString(2),
+                        resultSet.getString(3),
+                        resultSet.getString(4),
+                        resultSet.getString(5),
+                        resultSet.getString(6)
+                };
                 appointment_details.add(temp);
             }
+            conn.close();
             return appointment_details;
         }
         catch (SQLException ex) {
@@ -196,8 +203,9 @@ public class Patient extends Users {
             preparedStatement.setString(1, username);
             preparedStatement.setString(2, password);
             ResultSet resultSet = preparedStatement.executeQuery();
-            return resultSet.next();
+            conn.close();
 
+            return resultSet.next();
         }
         catch (SQLException ex) {
             System.out.println("An error occured while connecting to database");
