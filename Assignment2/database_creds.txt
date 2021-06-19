@@ -1,0 +1,7 @@
+Host: ec2-52-209-134-160.eu-west-1.compute.amazonaws.com
+Database: d35afkue7kt3ri
+User: dmupmilluzwkvw
+Port: 5432
+Password: 1f80c2791969210ee5777c436e20ee52ca006ee7f1c2dbfaf86baa32f976f2fa
+URI: postgres://dmupmilluzwkvw:1f80c2791969210ee5777c436e20ee52ca006ee7f1c2dbfaf86baa32f976f2fa@ec2-52-209-134-160.eu-west-1.compute.amazonaws.com:5432/d35afkue7kt3ri
+Heroku CLI: heroku pg:psql postgresql-fluffy-48172 --app doctor-pro

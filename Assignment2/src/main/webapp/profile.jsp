@@ -215,6 +215,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     <div class="col-md-6">
                         <h5 class="pt-4 pb-3">Your appointments</h5>
                         <ul class="list-group">
+                            <li class='list-group-item'><b>ID, Doctor's AMKA, Patient's AMKA, Date, Start, End</b></li>
                             <%
                                 ArrayList<String[]> appointment_list = (ArrayList<String[]>) session.getAttribute("appointment_list");
                                 if(appointment_list != null)
@@ -222,14 +223,13 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                     for (String[] appointDetails : appointment_list)
                                     {
                                         out.println("<li class='list-group-item'>" +
-                                                "ID: " + appointDetails[0] + " DoctorID: " + appointDetails[1] + " "
-                                                 + " | " + appointDetails[3] + " "
-                                                + appointDetails[4] + "-" + appointDetails[5] + " "
-                                                + "</li>");
+                                                appointDetails[0] + ", " + appointDetails[1] + ", " +
+                                                appointDetails[2] + ", " + appointDetails[3] + ", " +
+                                                appointDetails[4] + ", " + appointDetails[5] + " " +
+                                                "</li>");
                                     }
                                 }
                             %>
-<%--                            <li class="list-group-item">Mixali ton pairneis</li>--%>
                         </ul>
                     </div>
 <%--                    <div class="col-md-6">--%>

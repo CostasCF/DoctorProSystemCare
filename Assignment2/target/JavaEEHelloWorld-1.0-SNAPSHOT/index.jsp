@@ -601,7 +601,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         <p class="text-center dont-do">Don't have an account?
                             <a href="#" data-toggle="modal" data-target="#exampleModalCenter2" class="text-dark font-weight-bold">
                                 Register Now</a>
-								
                         </p>
                     </form>
                 </div>

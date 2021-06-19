@@ -140,9 +140,6 @@ public class Patient extends Users {
         return details;
     }
 
-
-
-
     /**
      * Gets patient's appointment history from the database
      */
@@ -159,7 +156,7 @@ public class Patient extends Users {
             Connection conn = DriverManager.getConnection(url, props);
             System.out.println("Connected Successfully to the database");
 
-            PreparedStatement statement = conn.prepareStatement("SELECT * FROM appointment WHERE patient=?");
+            PreparedStatement statement = conn.prepareStatement("SELECT * FROM appointment WHERE patient_amka=?");
             statement.setString(1, amka);
 
             ResultSet resultSet = statement.executeQuery();
