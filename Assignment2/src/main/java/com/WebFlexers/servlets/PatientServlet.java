@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-@WebServlet("/loginPage")
+@WebServlet("/patient-servlet")
 public class PatientServlet extends HttpServlet {
 
     @Override
