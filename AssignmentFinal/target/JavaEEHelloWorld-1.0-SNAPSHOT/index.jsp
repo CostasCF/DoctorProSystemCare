@@ -3,6 +3,7 @@ Template URL: http://w3layouts.com
 License: Creative Commons Attribution 3.0 Unported
 License URL: http://creativecommons.org/licenses/by/3.0/
 -->
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="zxx">
 <head>
@@ -68,9 +69,13 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                             <a class="nav-link" href="contact.jsp">Contact</a>
                         </li>
                         <li>
-                            <button type="button" class="btn  ml-lg-2 w3ls-btn" data-toggle="modal" aria-pressed="false" data-target="#exampleModal">
-                                Login
-                            </button>
+							<!-- data-toggle="modal" aria-pressed="false" data-target="#exampleModal" -->
+							<form action="logout-servlet" method="post">
+								<button type="submit" name="logoutButton" value="logout" class="btn  ml-lg-2 w3ls-btn">
+									Logout
+								</button>
+							</form>
+
                         </li>
                     </ul>
                 </div>
