@@ -21,14 +21,20 @@ public class Main
         SecureRandom random = new SecureRandom();
         byte[] salt = new byte[16];
         random.nextBytes(salt); //random salt generated
-        KeySpec spec = new PBEKeySpec("password".toCharArray(), salt, 65536, 128);
-        SecretKeyFactory f = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+        KeySpec spec = new PBEKeySpec("password".toCharArray(), salt, 65536, 512);
+        SecretKeyFactory f = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512");
         byte[] hash = f.generateSecret(spec).getEncoded();
 
-        for (byte i:  hash) {
-            System.out.print(String.valueOf(i)+ "\n");
+      // for (byte i:  hash) {
+     //     System.out.print(String.valueOf(i)+ "\n");
+   //   }
 
-        }
+        PasswordAuthentication _passwordauth = new PasswordAuthentication();
+        String hash1 = _passwordauth.hash("test".toCharArray());    //returns a hash to save it into the database.
+        boolean match = _passwordauth.authenticate("test".toCharArray(),hash1); //returns true if password matches the hash
+
+        System.out.print(hash1 + "\n");
+        System.out.println("Password match: " + match);
 
         Base64.Encoder enc = Base64.getEncoder();
         System.out.printf("salt: %s%n", enc.encodeToString(salt));
