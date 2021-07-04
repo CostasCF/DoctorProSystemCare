@@ -586,7 +586,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                             </div>
                         </div>
                         <p class="text-center dont-do">Don't have an account?
-                            <a href="#" data-toggle="modal" data-target="#exampleModalCenter2" class="text-dark font-weight-bold">
+                            <a href="#" data-toggle="modal" data-target="#registerPage" class="text-dark font-weight-bold">
                                 Register Now</a>
                         </p>
                     </form>
@@ -595,8 +595,41 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         </div>
     </div>
     <!-- //login -->
-	 <!--/Register-->
-    <div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-hidden="true">
+
+	<!--/Register Page-->
+	<div class="modal fade" id="registerPage" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header text-center">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+
+				<div class="modal-body">
+					<div class="login px-4 mx-auto mw-100">
+						<h5 class="modal-title text-center text-dark mb-4">Choose your account type</h5>
+							<div class="form-group">
+								<label class="col-form-label">I am a</label>
+								<select class="form-control" id="accountType" required>
+									<option value="Patient"> Patient </option>
+									<option value="Admin"> Admin </option>
+								</select>
+							</div>
+
+							<div class="reg-w3l">
+								<button id="registerUser" class="form-control submit mb-4">Continue</button>
+							</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<!--//Register page-->
+
+	 <!--/Register Admin-->
+    <div class="modal fade" id="registerAdminModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header text-center">
@@ -608,39 +641,108 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     <div class="login px-4 mx-auto mw-100">
                         <h5 class="modal-title text-center text-dark mb-4">REGISTER NOW</h5>
                         <form action="#" method="post">
-                            <div class="form-group">
-                                <label class="col-form-label">First name</label>
+							<div class="form-group">
+								<label class="col-form-label">Username</label>
+								<input type="text" class="form-control" id="usernameAdmin" required>
+							</div>
 
-                                <input type="text" class="form-control" id="validationDefault01" placeholder="" required="">
-                            </div>
-                            <div class="form-group">
-                                <label class="col-form-label">Last name</label>
-                                <input type="text" class="form-control" id="validationDefault02" placeholder="" required="">
-                            </div>
+							<div class="form-group">
+								<label class="mb-2 col-form-label">Password</label>
+								<input type="password" class="form-control" id="passwordAdmin" required>
+							</div>
 
-                            <div class="form-group">
-                                <label class="mb-2 col-form-label">Password</label>
-                                <input type="password" class="form-control" id="password1" placeholder="" required="">
-                            </div>
-                            <div class="form-group">
-                                <label class="col-form-label">Confirm Password</label>
-                                <input type="password" class="form-control" id="password2" placeholder="" required="">
-                            </div>
+							<div class="form-group">
+								<label class="col-form-label">Confirm Password</label>
+								<input type="password" class="form-control" id="passwordConfirmAdmin" required>
+							</div>
+
+							<div class="form-group">
+								<label class="col-form-label">Email</label>
+								<input type="text" class="form-control" id="emailAdmin" required>
+							</div>
+
 							<div class="reg-w3l">
 								<button type="submit" class="form-control submit mb-4">Register</button>
                            </div>
+
 						   <p class="text-center pb-4">
                                 <a href="#" class="text-secondary">By clicking Register, I agree to your terms</a>
                             </p>
                         </form>
-
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
-    <!--//Register-->
+    <!--//Register Admin-->
+
+	<!--/Register Patient-->
+	<div class="modal fade" id="registerPatientModal" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header text-center">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="login px-4 mx-auto mw-100">
+						<h5 class="modal-title text-center text-dark mb-4">REGISTER NOW</h5>
+						<form action="#" method="post">
+							<div class="form-group">
+								<label class="col-form-label">Username</label>
+								<input type="text" class="form-control" id="usernamePatient" required>
+							</div>
+
+							<div class="form-group">
+								<label class="mb-2 col-form-label">Password</label>
+								<input type="password" class="form-control" id="passwordPatient" required>
+							</div>
+
+							<div class="form-group">
+								<label class="col-form-label">Confirm Password</label>
+								<input type="password" class="form-control" id="passwordConfirmPatient" required>
+							</div>
+
+							<div class="form-group">
+								<label class="col-form-label">First name</label>
+								<input type="text" class="form-control" id="firstNamePatient" required>
+							</div>
+
+							<div class="form-group">
+								<label class="col-form-label">Last name</label>
+								<input type="text" class="form-control" id="lastNamePatient" required>
+							</div>
+
+							<div class="form-group">
+								<label class="col-form-label">Amka</label>
+								<input type="text" class="form-control" id="amkaPatient" required>
+							</div>
+
+							<div class="form-group">
+								<label class="col-form-label">Email</label>
+								<input type="text" class="form-control" id="emailPatient" required>
+							</div>
+
+							<div class="form-group">
+								<label class="col-form-label">Phone number</label>
+								<input type="text" class="form-control" id="phoneNumPatient" required>
+							</div>
+
+							<div class="reg-w3l">
+								<button type="submit" class="form-control submit mb-4">Register</button>
+							</div>
+
+							<p class="text-center pb-4">
+								<a href="#" class="text-secondary">By clicking Register, I agree to your terms</a>
+							</p>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- //Register patient -->
 
     <!-- //footer -->
     <!-- js -->
@@ -659,6 +761,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 				<!-- //Calendar -->
 
 	<script defer src="js/jquery.flexslider.js"></script>
+
 	<script>
 		$(window).load(function () {
 			$('.flexslider').flexslider({
@@ -689,6 +792,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         }
     </script>
     <!-- script for password match -->
+
     <!-- start-smooth-scrolling -->
     <script src="js/move-top.js"></script>
     <script src="js/easing.js"></script>
@@ -707,14 +811,12 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <!-- smooth-scrolling-of-move-up -->
     <script>
         $(document).ready(function () {
-            /*
             var defaults = {
                 containerID: 'toTop', // fading element id
                 containerHoverID: 'toTopHover', // fading element hover id
                 scrollSpeed: 1200,
                 easingType: 'linear' 
             };
-            */
 
             $().UItoTop({
                 easingType: 'easeOutQuart'
@@ -724,6 +826,22 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     </script>
     <script src="js/SmoothScroll.min.js"></script>
     <!-- //smooth-scrolling-of-move-up -->
+
+	<!-- Script for managing register windows -->
+	<script>
+		$(document).ready(function(){
+			$("#registerUser").click(function(){
+				if (document.getElementById("accountType").value == "Patient") {
+					$("#registerPatientModal").modal();
+				}
+				else {
+					$("#registerAdminModal").modal();
+				}
+			});
+		});
+	</script>
+	<!-- Script for managing register windows -->
+
     <!-- Bootstrap core JavaScript
 ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
