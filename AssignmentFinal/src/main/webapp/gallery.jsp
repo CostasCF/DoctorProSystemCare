@@ -32,51 +32,64 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <link href="//fonts.googleapis.com/css?family=Montserrat:200,300,400,500,600,700,800,900" rel="stylesheet"><!-- //online-fonts -->
 </head>
 <body>
-        <!-- header -->
-        <header>
-            <nav class="navbar navbar-expand-lg navbar-light bg-gradient-secondary">
-                <h1>
-                    <a class="navbar-brand text-white" href="index.jsp">
-                       Doctor Pro
-                    </a>
-                </h1>
-                <button class="navbar-toggler ml-md-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav ml-lg-auto text-center">
-                        <li class="nav-item  mr-3 mt-lg-0 mt-3">
-                            <a class="nav-link" href="index.jsp">Home
-                                <span class="sr-only">(current)</span>
-                            </a>
-                        </li>
-                        <li class="nav-item dropdown mr-3 mt-lg-0 mt-3">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
-                                aria-expanded="false">
-                                Dropdown
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="about.jsp">About</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="profile.jsp">Typography</a>
-                            </div>
-                        </li>
-                        <li class="nav-item active mr-3 mt-lg-0 mt-3">
-                            <a class="nav-link" href="gallery.jsp">Gallery</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="contact.jsp">Contact</a>
-                        </li>
-                        <li>
-                            <button type="button" class="btn  ml-lg-2 w3ls-btn" data-toggle="modal" aria-pressed="false" data-target="#exampleModal">
-                                Login
-                            </button>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-        </header>
+	<!-- header -->
+	<header>
+		<nav class="navbar navbar-expand-lg navbar-light bg-gradient-secondary">
+			<h1>
+				<a class="navbar-brand text-white" href="index.jsp">
+					Doctor Pro
+				</a>
+			</h1>
+			<button class="navbar-toggler ml-md-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+					aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav ml-lg-auto text-center">
+
+					<li class="nav-item active  mr-3 mt-lg-0 mt-3">
+						<a class="nav-link" href="index.jsp">Home
+							<span class="sr-only">(current)</span>
+						</a>
+					</li>
+
+					<li class="nav-item mr-3 mt-lg-0 mt-3">
+						<a class="nav-link" href="gallery.jsp">Gallery</a>
+					</li>
+
+					<li class="nav-item">
+						<a class="nav-link" href="contact.jsp">Contact</a>
+					</li>
+
+					<li class="nav-item">
+						<a class="nav-link" href="about.jsp">About</a>
+					</li>
+
+					<li>
+						<!-- data-toggle="modal" aria-pressed="false" data-target="#exampleModal" -->
+						<form action="logout-servlet" method="post">
+							<button type="submit" name="logoutButton" value="logout" class="btn  ml-lg-2 w3ls-btn">
+								Logout
+							</button>
+						</form>
+
+					</li>
+
+					<li class="nav-item dropdown mr-3 mt-lg-0 mt-3">
+						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
+						   aria-expanded="false">
+							Account
+						</a>
+						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+							<div class="dropdown-divider"></div>
+							<a class="dropdown-item" href="profile.jsp">Profile</a>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</nav>
+	</header>
  <!-- main image slider container -->
         <div class="inner-banner">
          </div> 
@@ -209,7 +222,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 					</div>
 					<div class="fv3-contact mt-3">
 						<span class="fas fa-envelope-open mr-2"></span>
-						<a href="mailto:example@email.com" class="text-secondary">info@example.com</a>
+						<a href="mailto:doctorpro@protonmail.com" class="text-secondary">doctorpro@protonmail.com</a>
 					</div>
 				</div>
 				<!-- //footer grid1 -->

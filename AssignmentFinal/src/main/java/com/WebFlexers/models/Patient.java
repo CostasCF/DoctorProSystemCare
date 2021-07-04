@@ -1,11 +1,10 @@
 package com.WebFlexers.models;
 
-import javax.print.Doc;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Properties;
 
-public class Patient extends Users {
+public class Patient extends User {
 
     //private final String amka;
     private ArrayList<Appointment> scheduledAppointments = new ArrayList<>();
@@ -15,13 +14,32 @@ public class Patient extends Users {
      //   this.amka = amka;
  //   }
 
-  public String amka ,phoneNumber, firstname,surname, email;
+  public String amka ,phoneNumber, email;
 
-    public Patient(String amka,  String phoneNumber, String firstname, String surname, String email){
+    /**
+     * A patient that is instantiated with data from a database
+     * @param resultSet : The data from the database
+     */
+    public Patient(ResultSet resultSet) {
+        try {
+            amka = resultSet.getString(1);
+            setUsername(resultSet.getString(2));
+            setName(resultSet.getString(4));
+            setSurname(resultSet.getString(5));
+            email = resultSet.getString(6);
+            phoneNumber = resultSet.getString(7);
+        } catch (SQLException ex) {
+            System.out.println("An error occured while connecting to database");
+            System.out.println(ex.toString());
+        }
+
+    }
+
+    public Patient(String amka, String username, String password, String firstname, String surname, String email,
+                   String phoneNumber) {
+        super(username, password, firstname, surname);
         this.amka = amka;
         this.phoneNumber = phoneNumber;
-        this.firstname = firstname;
-        this.surname = surname;
         this.email= email;
     }
 
@@ -109,7 +127,6 @@ public class Patient extends Users {
      *  Gets the patient's details from the database
      */
     public static String[] getPatientDetails(String username) {
-
         String details[] = new String[7];
 
         //Connecting to database
@@ -181,37 +198,5 @@ public class Patient extends Users {
         }
         return appointment_details;
     }
-
-    /**
-     * Validates the patient user in the database
-     */
-    public static boolean validatePatient(String username, String password) throws SQLException {
-
-        String url = "jdbc:postgresql://ec2-52-209-134-160.eu-west-1.compute.amazonaws.com:5432/d35afkue7kt3ri";
-        Properties props = new Properties();
-        props.setProperty("user","dmupmilluzwkvw");
-        props.setProperty("password","1f80c2791969210ee5777c436e20ee52ca006ee7f1c2dbfaf86baa32f976f2fa");
-
-        try{
-            Connection conn = DriverManager.getConnection(url, props);
-            System.out.println("Connected Successfully to the database");
-
-            PreparedStatement preparedStatement = conn.prepareStatement("select * from patient where username=? and password=?");
-            preparedStatement.setString(1, username);
-            preparedStatement.setString(2, password);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            conn.close();
-
-            return resultSet.next();
-        }
-        catch (SQLException ex) {
-            System.out.println("An error occured while connecting to database");
-            System.out.println(ex.toString());
-        }
-
-        return false;
-    }
-
-
 
 }

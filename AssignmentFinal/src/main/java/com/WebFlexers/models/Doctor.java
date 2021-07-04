@@ -1,35 +1,59 @@
 package com.WebFlexers.models;
 
+import java.sql.*;
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 
-public class Doctor extends Users{
+public class Doctor extends User {
 
     private List<String> schedule;
     private LocalDateTime dateTime;
-    private final Specialty specialty;
+    private String amka;
+    private String email;
+    private String phoneNum;
+    private final String specialty;
 
-    public Specialty getSpecialty() {
-        return specialty;
-    }
+    // Getters
+    public String getSpecialty() { return specialty; }
+    public String getAmka() { return amka; }
+    public String getEmail() { return email; }
+    public String getPhoneNum() { return phoneNum; }
 
-    public enum Specialty {
-        ophthalmologist,
-        orthopedic,
-        internist;
+    // Setters
+    public void setEmail(String email) { this.email = email; }
+    public void setPhoneNum(String phoneNum) { this.phoneNum = phoneNum; }
 
-        public String toFirstLetterUppercase() {
-            var temp = this.toString();
-            return temp.substring(0, 1).toUpperCase() + temp.substring(1);
+    /**
+     * A doctor that is instantiated with data from a database
+     * @param resultSet : The data from the database
+     */
+    public Doctor(ResultSet resultSet) {
+        String specialtyTemp = null;
+
+        try {
+            amka = resultSet.getString(1);
+            setUsername(resultSet.getString(2));
+            setName(resultSet.getString(4));
+            setSurname(resultSet.getString(5));
+            setEmail(resultSet.getString(6));
+            setPhoneNum(resultSet.getString(7));
+            specialtyTemp = resultSet.getString(8);
+
+        } catch (SQLException ex) {
+            System.out.println("An error occured while connecting to database");
+            System.out.println(ex.toString());
         }
+
+        specialty = specialtyTemp;
     }
 
-    public Doctor(String username, String password, String name, String surname, Specialty specialty) {
+    public Doctor(String amka, String username, String password, String name, String surname, String specialty) {
         super(username, password, name, surname);
+        this.amka = amka;
         this.specialty = specialty;
     }
+
 
     /**
      * Doctor inserts the date he is available to check in patients

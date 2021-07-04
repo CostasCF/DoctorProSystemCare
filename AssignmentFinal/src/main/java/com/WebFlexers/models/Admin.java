@@ -1,9 +1,27 @@
 package com.WebFlexers.models;
 
-public class Admin extends Users {
+import java.sql.*;
+import java.util.Properties;
+
+public class Admin extends User {
 	
 	protected String superuserPassword;
-	
+	private String email;
+
+	/**
+	 * An admin that is instantiated with data from a database
+	 * @param resultSet : The data from the database
+	 */
+	public Admin(ResultSet resultSet) {
+		try {
+			setUsername(resultSet.getString(2));
+			email = resultSet.getString(4);
+		} catch (SQLException ex) {
+			System.out.println("An error occured while connecting to database");
+			System.out.println(ex.toString());
+		}
+	}
+
 	public Admin(String username, String password, String superuserPassword, String name, String surname) {
 		super(username, password, name, surname);
 		this.superuserPassword = superuserPassword;
@@ -15,8 +33,8 @@ public class Admin extends Users {
 
 	public void setSuperuserPassword(String superuserPassword) {
 		this.superuserPassword = superuserPassword;
-	}	
-	
+	}
+
 	/**
      * Inserts Doctor to database
      */
@@ -29,5 +47,5 @@ public class Admin extends Users {
      */
 	public void DeleteDoctor(Doctor doctor)	{		
 		System.out.println(doctor.getName() + " " + doctor.getSurname() + " removed from database");
-	}	
+	}
 }
