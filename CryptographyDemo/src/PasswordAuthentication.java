@@ -24,18 +24,18 @@ public final class PasswordAuthentication
     /**
      * Each token produced by this class uses this identifier as a prefix.
      */
-    public static final String ID = "$31$";
+    public static final String ID = "$25$";
 
     /**
      * The minimum recommended cost, used by default
      */
-    public static final int DEFAULT_COST = 16;
+    public static final int DEFAULT_COST = 16; // number of iterations to produce the hash in the power of 2. etc 2^16 iterations
 
-    private static final String ALGORITHM = "PBKDF2WithHmacSHA512";
+    private static final String ALGORITHM = "PBKDF2WithHmacSHA512"; //algorithm used to produce the hash
 
-    private static final int SIZE = 128;
+    private static final int SIZE = 128; //hash size
 
-    private static final Pattern layout = Pattern.compile("\\$31\\$(\\d\\d?)\\$(.{43})");
+    private static final Pattern layout = Pattern.compile("\\$25\\$(\\d\\d?)\\$(.{43})"); //hash pattern
 
     private final SecureRandom random;
 
@@ -58,11 +58,16 @@ public final class PasswordAuthentication
         this.random = new SecureRandom();
     }
 
+    /**
+     * Computes the number of iterations based on the specified cost. For example with cost = 16, returns 2^16 number of iterations.
+     * @param cost cost number
+     * @return number of iterations
+     */
     private static int iterations(int cost)
     {
         if ((cost < 0) || (cost > 30))
             throw new IllegalArgumentException("cost: " + cost);
-        return 1 << cost;
+        return 2^cost;
     }
 
     /**
@@ -72,14 +77,14 @@ public final class PasswordAuthentication
      */
     public String hash(char[] password)
     {
-        byte[] salt = new byte[SIZE / 8];
-        random.nextBytes(salt);
-        byte[] dk = pbkdf2(password, salt, 1 << cost);
-        byte[] hash = new byte[salt.length + dk.length];
-        System.arraycopy(salt, 0, hash, 0, salt.length);
-        System.arraycopy(dk, 0, hash, salt.length, dk.length);
-        Base64.Encoder enc = Base64.getUrlEncoder().withoutPadding();
-        return ID + cost + '$' + enc.encodeToString(hash);
+        byte[] salt = new byte[SIZE / 8]; //with SIZE = 128bytes, salt size is 16bytes
+        random.nextBytes(salt);    //produces random salt
+        byte[] dk = pbkdf2(password, salt, 2^cost); //calls pbkdf2(..) that returns the produced hash
+        byte[] hash = new byte[salt.length + dk.length]; //initializing the complete hash array with a specified size which is the (hash size + salt size)
+        System.arraycopy(salt, 0, hash, 0, salt.length); //inputs the salt in the beginning of the hash array
+        System.arraycopy(dk, 0, hash, salt.length, dk.length); //and the hash follows from the salt's last position.  Basically merges the 2 arrays(salt+hash) together.
+        Base64.Encoder enc = Base64.getUrlEncoder().withoutPadding(); //encode to base64
+        return ID + cost + '$' + enc.encodeToString(hash); // returns completed hash encoded to base64
     }
 
     /**
@@ -89,17 +94,19 @@ public final class PasswordAuthentication
      */
     public boolean authenticate(char[] password, String token)
     {
-        Matcher m = layout.matcher(token);
-        if (!m.matches())
+        Matcher m = layout.matcher(token); //gets the hash pattern specified in the layout variable
+        if (!m.matches()) //if the hash doesn't match the layout pattern, throw exception
             throw new IllegalArgumentException("Invalid token format");
-        int iterations = iterations(Integer.parseInt(m.group(1)));
-        byte[] hash = Base64.getUrlDecoder().decode(m.group(2));
-        byte[] salt = Arrays.copyOfRange(hash, 0, SIZE / 8);
-        byte[] check = pbkdf2(password, salt, iterations);
+
+        int iterations = iterations(Integer.parseInt(m.group(1)));  //gets the number of iterations needed specified in the beginning of the hash pattern
+        byte[] hash = Base64.getUrlDecoder().decode(m.group(2));  //decodes the hash from base64
+        byte[] salt = Arrays.copyOfRange(hash, 0, SIZE / 8); //removes the salt from the token
+        byte[] check = pbkdf2(password, salt, iterations); // calls pbkdf2(..) to check later if the specified password produces the same hash
         int zero = 0;
-        for (int idx = 0; idx < check.length; ++idx)
-            zero |= hash[salt.length + idx] ^ check[idx];
-        return zero == 0;
+        for (int i = 0; i < check.length; i++)
+            zero += hash[salt.length + i] ^ check[i];
+        boolean IsPasswordMatched = (zero == 0);
+        return  IsPasswordMatched;
     }
 
     /**
@@ -107,7 +114,7 @@ public final class PasswordAuthentication
      * @param password password to be hashed
      * @param salt random salt generated
      * @param iterations number of iterations
-     * @return Returns a generated a secretKey object from the provided key specification (key material).
+     * @return  an array of bytes containing the produced hash
      */
     private static byte[] pbkdf2(char[] password, byte[] salt, int iterations)
     {
