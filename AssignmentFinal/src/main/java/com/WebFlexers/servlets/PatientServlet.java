@@ -1,9 +1,6 @@
 package com.WebFlexers.servlets;
 
-import com.WebFlexers.models.Admin;
-import com.WebFlexers.models.Doctor;
-import com.WebFlexers.models.Patient;
-import com.WebFlexers.models.User;
+import com.WebFlexers.models.*;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -12,6 +9,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+// Currently in progress, not working
 @WebServlet("/patient-servlet")
 public class PatientServlet extends HttpServlet {
 
@@ -36,16 +34,15 @@ public class PatientServlet extends HttpServlet {
         if (user instanceof Patient)
         {
             Patient patient = (Patient)user;
-            String patientDetails[] = Patient.getPatientDetails(username);
-            session.setAttribute("amka",(patient.amka));
+            session.setAttribute("amka",(patient.getAmka()));
             session.setAttribute("username",patient.getUsername());
             session.setAttribute("firstname",patient.getName());
             session.setAttribute("surname",patient.getSurname());
-            session.setAttribute("email",patient.email);
-            session.setAttribute("phoneNumber",patient.phoneNumber);
+            session.setAttribute("email",patient.getEmail());
+            session.setAttribute("phoneNumber",patient.getPhoneNumber());
 
-            ArrayList<String[]> appointmentDetails = Patient.getAppointmentsHistory(patientDetails[0]);
-            session.setAttribute("appointment_list", appointmentDetails); //appointment_column
+            //ArrayList<Appointment> appointmentDetails = Patient.getAppointmentsHistory(patient.getAmka());
+            //session.setAttribute("appointment_list", appointmentDetails); //appointment_column
 
             address= "/profile.jsp";
         }

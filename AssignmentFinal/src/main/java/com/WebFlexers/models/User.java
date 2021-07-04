@@ -1,7 +1,8 @@
 package com.WebFlexers.models;
 
+import com.WebFlexers.DatabaseManager;
+
 import java.sql.*;
-import java.util.Properties;
 
 public class User {
 
@@ -69,49 +70,39 @@ public class User {
      */
     public static User login(String username, String password) {
 
-        String url = "jdbc:postgresql://ec2-52-209-134-160.eu-west-1.compute.amazonaws.com:5432/d35afkue7kt3ri";
-        Properties props = new Properties();
-        props.setProperty("user","dmupmilluzwkvw");
-        props.setProperty("password","1f80c2791969210ee5777c436e20ee52ca006ee7f1c2dbfaf86baa32f976f2fa");
-
         try {
-            Connection conn = DriverManager.getConnection(url, props);
-            System.out.println("Connected Successfully to the database");
+            Connection connection = DatabaseManager.Connect();
 
-            // Check if a patient with the given credentials exists
-            PreparedStatement preparedStatement = conn.prepareStatement("select * from patient where username=? and password=?");
-            preparedStatement.setString(1, username);
-            preparedStatement.setString(2, password);
-            ResultSet resultSet = preparedStatement.executeQuery();
+            if (connection != null) {
+                // Check if a patient with the given credentials exists
+                Patient patient = DatabaseManager.getPatient(username, password, connection);
 
-            if (resultSet.next()) {
-                Patient patient = new Patient(resultSet);
-                conn.close();
-                return patient;
+                if (patient != null) {
+                    connection.close();
+                    return patient;
+                }
+
+                // Check if a doctor with the given credentials exists
+                Doctor doctor = DatabaseManager.getDoctor(username, password, connection);
+
+                if (doctor != null) {
+                    connection.close();
+                    return doctor;
+                }
+
+                // Check if an admin with the given credentials exists
+                Admin admin = DatabaseManager.getAdmin(username, password, connection);
+
+                if (admin != null) {
+                    connection.close();
+                    return admin;
+                }
+
+                // If the user is not found return null
+                return null;
             }
-
-            // Check if a doctor with the given credentials exists
-            preparedStatement = conn.prepareStatement("select * from doctor where username=? and password=?");
-            preparedStatement.setString(1, username);
-            preparedStatement.setString(2, password);
-            resultSet = preparedStatement.executeQuery();
-
-            if (resultSet.next()) {
-                Doctor doctor = new Doctor(resultSet);
-                conn.close();
-                return doctor;
-            }
-
-            // Check if an admin with the given credentials exists
-            preparedStatement = conn.prepareStatement("select * from admin where username=? and password=?");
-            preparedStatement.setString(1, username);
-            preparedStatement.setString(2, password);
-            resultSet = preparedStatement.executeQuery();
-
-            if (resultSet.next()) {
-                Admin admin = new Admin(resultSet);
-                conn.close();
-                return admin;
+            else {
+                return null;
             }
 
         }

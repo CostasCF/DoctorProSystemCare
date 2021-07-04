@@ -1,5 +1,6 @@
 package com.WebFlexers.models;
 
+import java.sql.ResultSet;
 import java.time.LocalDateTime;
 
 public class Appointment {
@@ -8,7 +9,11 @@ public class Appointment {
     private Doctor doctor;
     private LocalDateTime DateTime;
 
-    // Constructor
+    // Constructors
+    public Appointment(ResultSet resultSet) {
+
+    }
+
     public Appointment(Patient patient, Doctor doctor, LocalDateTime dateTime) {
         this.patient = patient;
         this.doctor = doctor;
