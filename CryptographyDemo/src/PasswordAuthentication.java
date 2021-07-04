@@ -35,7 +35,7 @@ public final class PasswordAuthentication
 
     private static final int SIZE = 128; //hash size
 
-    private static final Pattern layout = Pattern.compile("\\$25\\$(\\d\\d?)\\$(.{43})"); //hash pattern
+    private static final Pattern LAYOUT = Pattern.compile("\\$25\\$(\\d\\d?)\\$(.{43})"); //hash pattern
 
     private final SecureRandom random;
 
@@ -94,8 +94,8 @@ public final class PasswordAuthentication
      */
     public boolean authenticate(char[] password, String token)
     {
-        Matcher m = layout.matcher(token); //gets the hash pattern specified in the layout variable
-        if (!m.matches()) //if the hash doesn't match the layout pattern, throw exception
+        Matcher m = LAYOUT.matcher(token); //gets the hash pattern specified in the layout variable
+        if (!m.matches()) //if the hash(token) doesn't match the layout pattern, throw exception
             throw new IllegalArgumentException("Invalid token format");
 
         int iterations = iterations(Integer.parseInt(m.group(1)));  //gets the number of iterations needed specified in the beginning of the hash pattern
