@@ -31,7 +31,7 @@ public final class PasswordAuthentication
      */
     public static final int DEFAULT_COST = 16;
 
-    private static final String ALGORITHM = "PBKDF2WithHmacSHA1";
+    private static final String ALGORITHM = "PBKDF2WithHmacSHA512";
 
     private static final int SIZE = 128;
 
@@ -102,6 +102,13 @@ public final class PasswordAuthentication
         return zero == 0;
     }
 
+    /**
+     * PBKDF2 Algorithm
+     * @param password password to be hashed
+     * @param salt random salt generated
+     * @param iterations number of iterations
+     * @return Returns a generated a secretKey object from the provided key specification (key material).
+     */
     private static byte[] pbkdf2(char[] password, byte[] salt, int iterations)
     {
         KeySpec spec = new PBEKeySpec(password, salt, iterations, SIZE);
@@ -115,33 +122,6 @@ public final class PasswordAuthentication
         catch (InvalidKeySpecException ex) {
             throw new IllegalStateException("Invalid SecretKeyFactory", ex);
         }
-    }
-
-    /**
-     * Hash a password in an immutable {@code String}.
-     *
-     * <p>Passwords should be stored in a {@code char[]} so that it can be filled
-     * with zeros after use instead of lingering on the heap and elsewhere.
-     *
-     * @deprecated Use {@link #hash(char[])} instead
-     */
-    @Deprecated
-    public String hash(String password)
-    {
-        return hash(password.toCharArray());
-    }
-
-    /**
-     * Authenticate with a password in an immutable {@code String} and a stored
-     * password token.
-     *
-     * @deprecated Use {@link #authenticate(char[],String)} instead.
-     * @see #hash(String)
-     */
-    @Deprecated
-    public boolean authenticate(String password, String token)
-    {
-        return authenticate(password.toCharArray(), token);
     }
 
 }
