@@ -558,7 +558,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="patient-servlet" method="post">
+                    <form action="login-servlet" method="post">
                         <div class="form-group">
                             <label for="recipient-name" class="col-form-label">Username</label>
                             <input type="text" class="form-control" placeholder=" " name="username" id="recipient-name" required="">

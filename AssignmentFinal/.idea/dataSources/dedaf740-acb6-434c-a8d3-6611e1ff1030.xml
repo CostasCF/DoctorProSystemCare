@@ -20787,6 +20787,7 @@ UC/11058690
     </table>
     <table id="4367" parent="4350" name="Patient">
       <ObjectId>11073390</ObjectId>
+      <Outdated>1</Outdated>
       <Owner>snzbrrltdfagct</Owner>
       <StateNumber>47968069</StateNumber>
     </table>

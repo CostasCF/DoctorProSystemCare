@@ -29,7 +29,6 @@ public class DatabaseManager {
 
         } catch (SQLException e) {
             System.out.println("An error occured while connecting to the database");
-            System.out.println(e.getErrorCode());
             return null;
         }
 
@@ -44,12 +43,14 @@ public class DatabaseManager {
      */
     public static Patient getPatient(String username, String password, Connection connection) {
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("select * from patient where username=? and password=?");
+            PreparedStatement preparedStatement = connection.prepareStatement("select * from \"Patient\" where \"username\"=?");
             preparedStatement.setString(1, username);
-            preparedStatement.setString(2, password);
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            if (resultSet.next()) {
+            // Check if the given password corresponds to the stored hash
+            PasswordAuthentication crypto = new PasswordAuthentication();
+            if (resultSet.next() && crypto.authenticate(password.toCharArray(), resultSet.getString(3))) {
+                System.out.println("password match");
                 return new Patient(resultSet);
             }
             else {
@@ -57,8 +58,7 @@ public class DatabaseManager {
             }
 
         } catch (SQLException e) {
-            System.out.println("An error occured while connecting to the database");
-            System.out.println(e.getErrorCode());
+            System.out.println("An error occurred while connecting to the database");
             return null;
         }
     }
@@ -71,7 +71,7 @@ public class DatabaseManager {
      */
     public static Patient getPatient(String amka, Connection connection) {
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("select * from patient where amka=?");
+            PreparedStatement preparedStatement = connection.prepareStatement("select * from \"Patient\" where \"amka\"=?");
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
@@ -83,7 +83,6 @@ public class DatabaseManager {
 
         } catch (SQLException e) {
             System.out.println("An error occured while connecting to the database");
-            System.out.println(e.getErrorCode());
             return null;
         }
     }
@@ -97,12 +96,13 @@ public class DatabaseManager {
      */
     public static Doctor getDoctor(String username, String password, Connection connection) {
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("select * from doctor where username=? and password=?");
+            PreparedStatement preparedStatement = connection.prepareStatement("select * from \"Doctor\" where \"username\"=?");
             preparedStatement.setString(1, username);
-            preparedStatement.setString(2, password);
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            if (resultSet.next()) {
+            // Check if the given password corresponds to the stored hash
+            PasswordAuthentication crypto = new PasswordAuthentication();
+            if (resultSet.next() && crypto.authenticate(password.toCharArray(), resultSet.getString(3))) {
                 return new Doctor(resultSet);
             }
             else {
@@ -111,7 +111,6 @@ public class DatabaseManager {
 
         } catch (SQLException e) {
             System.out.println("An error occured while connecting to the database");
-            System.out.println(e.getErrorCode());
             return null;
         }
     }
@@ -124,7 +123,7 @@ public class DatabaseManager {
      */
     public static Doctor getDoctor(String amka, Connection connection) {
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("select * from doctor where amka=?");
+            PreparedStatement preparedStatement = connection.prepareStatement("select * from \"Doctor\" where \"amka\"=?");
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
@@ -136,7 +135,6 @@ public class DatabaseManager {
 
         } catch (SQLException e) {
             System.out.println("An error occured while connecting to the database");
-            System.out.println(e.getErrorCode());
             return null;
         }
     }
@@ -150,12 +148,13 @@ public class DatabaseManager {
      */
     public static Admin getAdmin(String username, String password, Connection connection) {
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("select * from admin where username=? and password=?");
+            PreparedStatement preparedStatement = connection.prepareStatement("select * from \"Admin\" where \"username\"=?");
             preparedStatement.setString(1, username);
-            preparedStatement.setString(2, password);
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            if (resultSet.next()) {
+            // Check if the given password corresponds to the stored hash
+            PasswordAuthentication crypto = new PasswordAuthentication();
+            if (resultSet.next() && crypto.authenticate(password.toCharArray(), resultSet.getString(3))) {
                 return new Admin(resultSet);
             }
             else {
@@ -164,7 +163,6 @@ public class DatabaseManager {
 
         } catch (SQLException e) {
             System.out.println("An error occured while connecting to the database");
-            System.out.println(e.getErrorCode());
             return null;
         }
     }

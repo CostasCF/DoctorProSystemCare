@@ -57,7 +57,7 @@ public class Patient extends User {
             phoneNumber = resultSet.getString(7);
         } catch (SQLException ex) {
             System.out.println("An error occured while connecting to database");
-            System.out.println(ex.toString());
+            System.out.println("test 3-4?");
         }
         amka = tempAmka;
     }

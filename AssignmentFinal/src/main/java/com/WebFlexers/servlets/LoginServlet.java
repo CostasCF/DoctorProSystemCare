@@ -73,7 +73,7 @@ public class LoginServlet extends HttpServlet {
     }
 
     protected void preparePatientSession(Patient patient, HttpSession session) {
-        session.setAttribute("amka", (patient.getAmka()));
+        session.setAttribute("amka", patient.getAmka());
         session.setAttribute("username", patient.getUsername());
         session.setAttribute("firstname", patient.getName());
         session.setAttribute("surname", patient.getSurname());
