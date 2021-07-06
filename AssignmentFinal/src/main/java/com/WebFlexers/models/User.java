@@ -1,14 +1,10 @@
 package com.WebFlexers.models;
 
-import com.WebFlexers.DatabaseManager;
-
-import java.sql.*;
-
 public class User {
 
     protected String username;
     protected String password;
-    protected String name;
+    protected String firstName;
     protected String surname;
     private static int usersCounter = 0;
 
@@ -18,7 +14,7 @@ public class User {
     public User(String username, String password, String firstname, String surname) {
         this.username = username;
         this.password = password;
-        this.name = firstname;
+        this.firstName = firstname;
         this.surname = surname;
 
         usersCounter += 1;
@@ -41,12 +37,12 @@ public class User {
         this.password = password;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public String getSurname() {

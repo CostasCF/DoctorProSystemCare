@@ -1,7 +1,6 @@
 package com.WebFlexers.models;
 
 import java.sql.*;
-import java.util.Properties;
 
 public class Admin extends User {
 	
@@ -18,8 +17,11 @@ public class Admin extends User {
 	 */
 	public Admin(ResultSet resultSet) {
 		try {
-			setUsername(resultSet.getString(2));
+			username = resultSet.getString(2);
+			password = resultSet.getString(3);
 			email = resultSet.getString(4);
+			firstName = resultSet.getString(5);
+			surname = resultSet.getString(6);
 		} catch (SQLException ex) {
 			System.out.println("An error occured while connecting to database");
 			System.out.println(ex.toString());
@@ -43,13 +45,13 @@ public class Admin extends User {
      * Inserts Doctor to database
      */
 	public void InsertDoctor(Doctor doctor)	{		
-		System.out.println(doctor.getName() + " " + doctor.getSurname() + " inserted to database");
+		System.out.println(doctor.getFirstName() + " " + doctor.getSurname() + " inserted to database");
 	}
 	
 	/**
      * Removes Doctor from database
      */
 	public void DeleteDoctor(Doctor doctor)	{		
-		System.out.println(doctor.getName() + " " + doctor.getSurname() + " removed from database");
+		System.out.println(doctor.getFirstName() + " " + doctor.getSurname() + " removed from database");
 	}
 }

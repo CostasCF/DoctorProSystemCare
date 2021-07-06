@@ -3,7 +3,6 @@ package com.WebFlexers.models;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Properties;
 
 public class Doctor extends User {
 
@@ -34,7 +33,8 @@ public class Doctor extends User {
         try {
             amka = resultSet.getString(1);
             setUsername(resultSet.getString(2));
-            setName(resultSet.getString(4));
+            setPassword(resultSet.getString(3));
+            setFirstName(resultSet.getString(4));
             setSurname(resultSet.getString(5));
             setEmail(resultSet.getString(6));
             setPhoneNum(resultSet.getString(7));

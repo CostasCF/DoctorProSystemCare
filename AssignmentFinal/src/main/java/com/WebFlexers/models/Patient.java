@@ -1,10 +1,7 @@
 package com.WebFlexers.models;
 
-import com.WebFlexers.DatabaseManager;
-
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Properties;
 
 public class Patient extends User {
 
@@ -51,7 +48,7 @@ public class Patient extends User {
         try {
             tempAmka = resultSet.getString(1);
             setUsername(resultSet.getString(2));
-            setName(resultSet.getString(4));
+            setFirstName(resultSet.getString(4));
             setSurname(resultSet.getString(5));
             email = resultSet.getString(6);
             phoneNumber = resultSet.getString(7);

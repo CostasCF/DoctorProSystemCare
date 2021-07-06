@@ -1,13 +1,9 @@
 package com.WebFlexers;
 
-import com.WebFlexers.models.Admin;
-import com.WebFlexers.models.Appointment;
-import com.WebFlexers.models.Doctor;
-import com.WebFlexers.models.Patient;
+import com.WebFlexers.models.*;
 
 import javax.print.Doc;
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.Properties;
 
 public class DatabaseManager {
@@ -54,7 +50,7 @@ public class DatabaseManager {
      * @param password : The password of the user
      * @return The corresponding patient if they exist and null otherwise
      */
-    public Patient getPatient(String username, String password) {
+    public Patient validatePatient(String username, String password) {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("select * from \"Patient\" where \"username\"=?");
             preparedStatement.setString(1, username);
@@ -77,11 +73,11 @@ public class DatabaseManager {
     }
 
     /**
-     * Searches the database for a user that is a patient
+     * Searches the database for a user with the given credential that is a patient
      * @param amka : The patient's amka
      * @return The corresponding patient if they exist and null otherwise
      */
-    public Patient getPatient(String amka) {
+    public Patient getPatientByAmka(String amka) {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("select * from \"Patient\" where \"amka\"=?");
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -100,12 +96,37 @@ public class DatabaseManager {
     }
 
     /**
-     * Searches the database for a user that is a doctor
+     * Search the database for a patient with the given username
+     * @param username : The patient's username
+     * @return The patient if they exist and null otherwise
+     */
+    public Patient getPatientByUsername(String username) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("select * from \"Patient\" where \"username\"=?");
+            preparedStatement.setString(1, username);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                return new Patient(resultSet);
+            }
+            else {
+                return null;
+            }
+
+        } catch (SQLException e) {
+            System.out.println("DatabaseManager: An error occured while searching a patient by username on the database");
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * Searches the database for a user with the given credential that is a doctor
      * @param username : The username of the user
      * @param password : The password of the user
      * @return The corresponding doctor if they exist and null otherwise
      */
-    public Doctor getDoctor(String username, String password) {
+    public Doctor validateDoctor(String username, String password) {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("select * from \"Doctor\" where \"username\"=?");
             preparedStatement.setString(1, username);
@@ -131,7 +152,7 @@ public class DatabaseManager {
      * @param amka : The doctor's amka
      * @return The corresponding doctor if they exist and null otherwise
      */
-    public Doctor getDoctor(String amka) {
+    public Doctor getDoctorByAmka(String amka) {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("select * from \"Doctor\" where \"amka\"=?");
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -150,12 +171,62 @@ public class DatabaseManager {
     }
 
     /**
+     * Search the database for a doctor with the given username
+     * @param username : The doctor's username
+     * @return The doctor if they exist and null otherwise
+     */
+    public Doctor getDoctorByUsername(String username) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("select * from \"Doctor\" where \"username\"=?");
+            preparedStatement.setString(1, username);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                return new Doctor(resultSet);
+            }
+            else {
+                return null;
+            }
+
+        } catch (SQLException e) {
+            System.out.println("DatabaseManager: An error occured while searching a doctor by username on the database");
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * Search the database for an admin with the given username
+     * @param username : The admin's username
+     * @return The admin if they exist and null otherwise
+     */
+    public Admin getAdminByUsername(String username) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("select * from \"Admin\" where \"username\"=?");
+            preparedStatement.setString(1, username);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                return new Admin(resultSet);
+            }
+            else {
+                return null;
+            }
+
+        } catch (SQLException e) {
+            System.out.println("DatabaseManager: An error occured while searching an admin by username on the database");
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+
+    /**
      * Searches the database for a user that is an admin
      * @param username : The username of the user
      * @param password : The password of the user
      * @return The corresponding admin if they exist and null otherwise
      */
-    public Admin getAdmin(String username, String password) {
+    public Admin validateAdmin(String username, String password) {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("select * from \"Admin\" where \"username\"=?");
             preparedStatement.setString(1, username);
@@ -177,6 +248,56 @@ public class DatabaseManager {
     }
 
     /**
+     * Checks if a user with the given username and password exists in the database
+     * @param username : The user's username
+     * @param password : The user's password
+     * @return True if a user with the given credentials matches one in the database and false otherwise
+     */
+    public User validateUser(String username, String password) {
+        if (connection != null) {
+            // Check if a patient with the given credentials exists
+            Patient patient = validatePatient(username, password);
+
+            if (patient != null) {
+                return patient;
+            }
+
+            // Check if a doctor with the given credentials exists
+            Doctor doctor = validateDoctor(username, password);
+
+            if (doctor != null) {
+                return doctor;
+            }
+
+            // Check if an admin with the given credentials exists
+            Admin admin = validateAdmin(username, password);
+            return admin;
+        }
+        // If the user is not found return null
+        else {
+            return null;
+        }
+    }
+
+    /**
+     * Searches the database for a user with the given username
+     * @param username : The username
+     * @return : The user if they exist and null otherwise
+     */
+    public User getUserByUsername(String username) {
+        // Check each category one by one until the user is found
+        Patient patient = getPatientByUsername(username);
+        if (patient != null)
+            return patient;
+
+        Doctor doctor = getDoctorByUsername(username);
+        if (doctor != null)
+            return doctor;
+
+        return getAdminByUsername(username);
+    }
+
+    /**
      * Inserts an admin to the database
      * @param admin : The admin object whose data will be inserted
      */
@@ -193,10 +314,10 @@ public class DatabaseManager {
             preparedStatement.setString(3, hashedPassword);
 
             preparedStatement.setString(4, admin.getEmail());
-            preparedStatement.setString(5, admin.getName());
+            preparedStatement.setString(5, admin.getFirstName());
             preparedStatement.setString(6, admin.getSurname());
 
-            preparedStatement.executeQuery();
+            preparedStatement.execute();
             System.out.println("Successfully added admin to the database");
         } catch (SQLException e) {
             System.out.println("DatabaseManager: An error occured while registering an admin to the database");

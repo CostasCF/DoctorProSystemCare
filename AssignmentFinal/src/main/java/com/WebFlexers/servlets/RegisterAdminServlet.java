@@ -21,6 +21,15 @@ public class RegisterAdminServlet extends HttpServlet {
         String lastName = request.getParameter("lastName");
 
         DatabaseManager database = new DatabaseManager();
-        database.registerAdmin(new Admin(username, password, email, firstName, lastName));
+
+        if (database.getUserByUsername(username) == null) {
+            database.registerAdmin(new Admin(username, password, email, firstName, lastName));
+        }
+        else {
+            System.out.println("User already exists");
+        }
+
+        database.closeConnection();
+
     }
 }
