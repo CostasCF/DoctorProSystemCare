@@ -136,12 +136,12 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 <div class="p-2 bg-flex mb-1 bg-flex-item">Username: <% out.println("<font color=black size=4px>"+ session.getAttribute("username")+"</font>"); %></div>
                 <div class="p-2 bg-flex mb-1 bg-flex-item">Email: <% out.println("<font color=black size=4px>"+ session.getAttribute("email")+"</font>"); %> </div>
             </div>
+            <br><br>
             <div style="text-align: center;">
-                <h1>Books Management</h1>
                 <h2>
-                    <a href="/new">Add New Book</a>
+                    <a href="/new">Add New Doctor</a>
                     &nbsp;&nbsp;&nbsp;
-                    <a href="/list">List All Books</a>
+                    <a href="/list">List All Doctors</a>
 
                 </h2>
             </div>
@@ -159,7 +159,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         <th>phone_num</th>
                         <th>admin_id</th>
                     </tr>
-                    <jsp:useBean id="listDoctors" scope="request" type="java.util.List"/>
                     <c:forEach var="doctor" items="${listDoctors}">
                         <tr>
                             <td><c:out value="${doctor.getAmka()}" /></td>

@@ -453,12 +453,13 @@ public class DatabaseManager {
             while (resultSet.next()) {
                 doctors.add(new Doctor(resultSet));
             }
-
+            return doctors;
         } catch (SQLException e) {
             System.out.println("An error occured while connecting to the database");
             return null;
         }
     }
+    
     // Ignore for now
     /*public static ArrayList<Appointment> getPatientAppointments(String amka, Connection connection) {
 
