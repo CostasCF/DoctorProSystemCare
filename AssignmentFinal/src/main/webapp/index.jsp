@@ -640,25 +640,35 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 <div class="modal-body">
                     <div class="login px-4 mx-auto mw-100">
                         <h5 class="modal-title text-center text-dark mb-4">REGISTER NOW</h5>
-                        <form action="#" method="post">
+                        <form action="register-admin-servlet" method="post">
 							<div class="form-group">
 								<label class="col-form-label">Username</label>
-								<input type="text" class="form-control" id="usernameAdmin" required>
+								<input type="text" class="form-control" name="username" id="usernameAdmin" required>
 							</div>
 
 							<div class="form-group">
 								<label class="mb-2 col-form-label">Password</label>
-								<input type="password" class="form-control" id="passwordAdmin" required>
+								<input type="password" class="form-control" name="password" id="passwordAdmin" required>
 							</div>
 
 							<div class="form-group">
 								<label class="col-form-label">Confirm Password</label>
-								<input type="password" class="form-control" id="passwordConfirmAdmin" required>
+								<input type="password" class="form-control" name="passwordConfirm" id="passwordConfirmAdmin" required>
+							</div>
+
+							<div class="form-group">
+								<label class="col-form-label">First name</label>
+								<input type="text" class="form-control" name="firstName" id="firstNameAdmin" required>
+							</div>
+
+							<div class="form-group">
+								<label class="col-form-label">Last name</label>
+								<input type="text" class="form-control" name="lastName" id="lastNameAdmin" required>
 							</div>
 
 							<div class="form-group">
 								<label class="col-form-label">Email</label>
-								<input type="text" class="form-control" id="emailAdmin" required>
+								<input type="email" class="form-control" name="email" id="emailAdmin" required>
 							</div>
 
 							<div class="reg-w3l">
@@ -688,7 +698,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 				<div class="modal-body">
 					<div class="login px-4 mx-auto mw-100">
 						<h5 class="modal-title text-center text-dark mb-4">REGISTER NOW</h5>
-						<form action="#" method="post">
+						<form action="register-patient-servlet" method="post">
 							<div class="form-group">
 								<label class="col-form-label">Username</label>
 								<input type="text" class="form-control" id="usernamePatient" required>
@@ -716,17 +726,17 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
 							<div class="form-group">
 								<label class="col-form-label">Amka</label>
-								<input type="text" class="form-control" id="amkaPatient" required>
+								<input type="text" pattern="^(\d{11})$" class="form-control" id="amkaPatient" required>
 							</div>
 
 							<div class="form-group">
 								<label class="col-form-label">Email</label>
-								<input type="text" class="form-control" id="emailPatient" required>
+								<input type="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" class="form-control" id="emailPatient" required>
 							</div>
 
 							<div class="form-group">
 								<label class="col-form-label">Phone number</label>
-								<input type="text" class="form-control" id="phoneNumPatient" required>
+								<input type="text" pattern="^(d{10})$" class="form-control" id="phoneNumPatient" required>
 							</div>
 
 							<div class="reg-w3l">
@@ -774,22 +784,36 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 	</script>
 	<!-- //flexSlider (for testimonials) -->
 
-    <!-- script for password match -->
+    <!-- script for form validation -->
     <script>
         window.onload = function () {
-            document.getElementById("password1").onchange = validatePassword;
-            document.getElementById("password2").onchange = validatePassword;
+			// Check for password match
+			document.getElementById("passwordAdmin").onchange = validatePasswordAdmin;
+			document.getElementById("passwordConfirmAdmin").onchange = validatePasswordAdmin;
+			document.getElementById("passwordPatient").onchange = validatePasswordPatient;
+			document.getElementById("passwordConfirmPatient").onchange = validatePasswordPatient;
         }
 
-        function validatePassword() {
-            var pass2 = document.getElementById("password2").value;
-            var pass1 = document.getElementById("password1").value;
-            if (pass1 != pass2)
-                document.getElementById("password2").setCustomValidity("Passwords Don't Match");
-            else
-                document.getElementById("password2").setCustomValidity('');
-            //empty string means no validation error
-        }
+		function validatePasswordPatient() {
+			var passwordField = document.getElementById("passwordPatient");
+			var passwordConfirmField = document.getElementById("passwordConfirmPatient");
+			if (passwordField.value != passwordConfirmField.value) {
+				passwordConfirmField.setCustomValidity("Passwords Don't Match");
+			}
+			else
+				passwordConfirmField.setCustomValidity('');
+			//empty string means no validation error
+		}
+
+		function validatePasswordAdmin() {
+			var passwordField = document.getElementById("passwordAdmin");
+			var passwordConfirmField = document.getElementById("passwordConfirmAdmin");
+			if (passwordField.value != passwordConfirmField.value)
+				passwordConfirmField.setCustomValidity("Passwords Don't Match");
+			else
+				passwordConfirmField.setCustomValidity('');
+			//empty string means no validation error
+		}
     </script>
     <!-- script for password match -->
 

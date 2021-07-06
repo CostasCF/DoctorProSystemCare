@@ -8,6 +8,10 @@ public class Admin extends User {
 	protected String superuserPassword;
 	private String email;
 
+	public String getEmail() {
+		return email;
+	}
+
 	/**
 	 * An admin that is instantiated with data from a database
 	 * @param resultSet : The data from the database
@@ -22,9 +26,9 @@ public class Admin extends User {
 		}
 	}
 
-	public Admin(String username, String password, String superuserPassword, String name, String surname) {
+	public Admin(String username, String password, String name, String surname, String email) {
 		super(username, password, name, surname);
-		this.superuserPassword = superuserPassword;
+		this.email = email;
     }
 	
 	public String getSuperuserPassword() {

@@ -27,49 +27,39 @@ public class LoginServlet extends HttpServlet {
      * @return True if a user with the given credentials matches one in the database and false otherwise
      */
     protected static User userLogin(String username, String password) {
+        DatabaseManager database = new DatabaseManager();
 
-        try {
-            Connection connection = DatabaseManager.Connect();
+        if (database.getConnection() != null) {
+            // Check if a patient with the given credentials exists
+            Patient patient = database.getPatient(username, password);
 
-            if (connection != null) {
-                // Check if a patient with the given credentials exists
-                Patient patient = DatabaseManager.getPatient(username, password, connection);
-
-                if (patient != null) {
-                    connection.close();
-                    return patient;
-                }
-
-                // Check if a doctor with the given credentials exists
-                Doctor doctor = DatabaseManager.getDoctor(username, password, connection);
-
-                if (doctor != null) {
-                    connection.close();
-                    return doctor;
-                }
-
-                // Check if an admin with the given credentials exists
-                Admin admin = DatabaseManager.getAdmin(username, password, connection);
-
-                if (admin != null) {
-                    connection.close();
-                    return admin;
-                }
-
-                // If the user is not found return null
-                return null;
-            }
-            else {
-                return null;
+            if (patient != null) {
+                database.closeConnection();
+                return patient;
             }
 
-        }
-        catch (SQLException ex) {
-            System.out.println("An error occured while connecting to database");
-            System.out.println(ex.toString());
-        }
+            // Check if a doctor with the given credentials exists
+            Doctor doctor = database.getDoctor(username, password);
 
-        return null;
+            if (doctor != null) {
+                database.closeConnection();
+                return doctor;
+            }
+
+            // Check if an admin with the given credentials exists
+            Admin admin = database.getAdmin(username, password);
+
+            if (admin != null) {
+                database.closeConnection();
+                return admin;
+            }
+
+            // If the user is not found return null
+            return null;
+        }
+        else {
+            return null;
+        }
     }
 
     protected void preparePatientSession(Patient patient, HttpSession session) {
