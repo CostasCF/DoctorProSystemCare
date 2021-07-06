@@ -1,11 +1,13 @@
 package com.WebFlexers.models;
 
 import java.sql.*;
+import java.util.List;
 
 public class Admin extends User {
 	
 	protected String superuserPassword;
 	private String email;
+	public  List<Doctor> doctors;
 
 	public String getEmail() {
 		return email;

@@ -11,6 +11,11 @@ public class Doctor extends User {
     private String amka;
     private String email;
     private String phoneNum;
+
+
+
+
+    private String adminID;
     private final String specialty;
 
     // Getters
@@ -18,11 +23,12 @@ public class Doctor extends User {
     public String getAmka() { return amka; }
     public String getEmail() { return email; }
     public String getPhoneNum() { return phoneNum; }
+    public String getAdminID() { return adminID; }
 
     // Setters
     public void setEmail(String email) { this.email = email; }
     public void setPhoneNum(String phoneNum) { this.phoneNum = phoneNum; }
-
+    public void setAdminID(String adminID) { this.adminID = adminID; }
     /**
      * A doctor that is instantiated with data from a database
      * @param resultSet : The data from the database
@@ -39,6 +45,7 @@ public class Doctor extends User {
             setEmail(resultSet.getString(6));
             setPhoneNum(resultSet.getString(7));
             specialtyTemp = resultSet.getString(8);
+            setAdminID(resultSet.getString(9));
 
         } catch (SQLException ex) {
             System.out.println("An error occured while connecting to database");
@@ -48,10 +55,11 @@ public class Doctor extends User {
         specialty = specialtyTemp;
     }
 
-    public Doctor(String amka, String username, String password, String name, String surname, String specialty) {
+    public Doctor(String amka, String username, String password, String name, String surname, String specialty, String adminID) {
         super(username, password, name, surname);
         this.amka = amka;
         this.specialty = specialty;
+        this.adminID = adminID;
     }
 
 
