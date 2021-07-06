@@ -6,7 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page import="java.util.ArrayList" %>
-<%@ page import="java.util.Iterator" %>
+<%@ page import="com.WebFlexers.models.Doctor" %>
 <!--Template: W3layouts
 Template URL: http://w3layouts.com
 License: Creative Commons Attribution 3.0 Unported
@@ -144,10 +144,15 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     <a href="/list">List All Doctors</a>
 
                 </h2>
+                <form action="ad-servlet" method="post">
+                    <button type="submit" name="logoutButton" value="logout" class="btn  ml-lg-2 w3ls-btn">
+                        Logout
+                    </button>
+                </form>
             </div>
             <div align="center">
+                <caption><h2>List of Doctors</h2></caption>
                 <table border="1" cellpadding="5">
-                    <caption><h2>List of Doctors</h2></caption>
                     <tr>
                         <th>AMKA</th>
                         <th>Username</th>
@@ -159,26 +164,26 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         <th>phone_num</th>
                         <th>admin_id</th>
                     </tr>
-                    <jsp:useBean id="listDoctors" scope="request" type="java.util.List"/>
-                    <c:forEach var="doctor" items="${listDoctors}">
-                        <tr>
-                            <td><c:out value="${doctor.getAmka()}" /></td>
-                            <td><c:out value="${doctor.getUsername()}" /></td>
-                            <td><c:out value="${doctor.getFirstName()}" /></td>
-                            <td><c:out value="${doctor.getSurname()}" /></td>
-                            <td><c:out value="${doctor.getSpecialty()}" /></td>
-                            <td><c:out value="${doctor.getEmail()}" /></td>
-                            <td><c:out value="${doctor.getPhoneNum()}" /></td>
-                            <td><c:out value="${doctor.getAdminID()}" /></td>
-                            <td>
-                                <a href="/edit?id=<c:out value='${doctor.amka}' />">Edit</a>
-                                &nbsp;&nbsp;&nbsp;&nbsp;
-                                <a href="/delete?id=<c:out value='${doctor.amka}' />">Delete</a>
-                            </td>
-                        </tr>
-                    </c:forEach>
+
+                    <%
+                        ArrayList<Doctor> doctorList = (ArrayList<Doctor>)request.getAttribute("listDoctors");
+                        for (Doctor doctor: doctorList) {
+                            out.println("<tr>");
+                            out.println("<td>" + doctor.getAmka() + "</td> " +
+                                        "<td>" + doctor.getUsername() + "</td> " +
+                                        "<td>" + doctor.getPassword() + "</td> " +
+                                        "<td>" + doctor.getFirstName() + "</td> " +
+                                        "<td>" + doctor.getSurname() + "</td> " +
+                                        "<td>" + doctor.getSpecialty() + "</td> " +
+                                        "<td>" + doctor.getEmail() + "</td> " +
+                                        "<td>" + doctor.getPhoneNum() + "</td> " +
+                                        "<td>" + doctor.getAdminID() + "</td> ");
+                            out.println("</tr>");
+                        }
+                    %>
                 </table>
             </div>
+            <br>
 
             <h4 class="mt-5 mb-3"></h4>
             <div class="row">

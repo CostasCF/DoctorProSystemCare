@@ -6,7 +6,6 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page import="java.util.ArrayList" %>
-<%@ page import="java.util.Iterator" %>
 <%@ page import="com.WebFlexers.models.Doctor" %>
 <!--Template: W3layouts
 Template URL: http://w3layouts.com
@@ -152,8 +151,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 </form>
             </div>
             <div align="center">
+                <caption><h2>List of Doctors</h2></caption>
                 <table border="1" cellpadding="5">
-                    <caption><h2>List of Doctors</h2></caption>
                     <tr>
                         <th>AMKA</th>
                         <th>Username</th>
@@ -165,82 +164,27 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         <th>phone_num</th>
                         <th>admin_id</th>
                     </tr>
-                    <tr>
-                            <%
-                                for (var doctor: (ArrayList<Doctor>)session.getAttribute("listDoctors")) {
 
-                                } %>
-                    </tr>
-                            <td><c:out value="${doctor.getAmka()}" /></td>
-                            <td><c:out value="${doctor.getUsername()}" /></td>
-                            <td><c:out value="${doctor.getFirstName()}" /></td>
-                            <td><c:out value="${doctor.getSurname()}" /></td>
-                            <td><c:out value="${doctor.getSpecialty()}" /></td>
-                            <td><c:out value="${doctor.getEmail()}" /></td>
-                            <td><c:out value="${doctor.getPhoneNum()}" /></td>
-                            <td><c:out value="${doctor.getAdminID()}" /></td>
-                            <td>
-                                <a href="/edit?id=<c:out value='${doctor.amka}' />">Edit</a>
-                                &nbsp;&nbsp;&nbsp;&nbsp;
-                                <a href="/delete?id=<c:out value='${doctor.amka}' />">Delete</a>
-                            </td>
-
+                    <%
+                        ArrayList<Doctor> doctorList = (ArrayList<Doctor>)request.getAttribute("listDoctors");
+                        for (Doctor doctor: doctorList) {
+                            out.println("<tr>");
+                            out.println("<td>" + doctor.getAmka() + "</td> " +
+                                        "<td>" + doctor.getUsername() + "</td> " +
+                                        "<td>" + doctor.getPassword() + "</td> " +
+                                        "<td>" + doctor.getFirstName() + "</td> " +
+                                        "<td>" + doctor.getSurname() + "</td> " +
+                                        "<td>" + doctor.getSpecialty() + "</td> " +
+                                        "<td>" + doctor.getEmail() + "</td> " +
+                                        "<td>" + doctor.getPhoneNum() + "</td> " +
+                                        "<td>" + doctor.getAdminID() + "</td> ");
+                            out.println("</tr>");
+                        }
+                    %>
                 </table>
             </div>
             <br>
-            <div align="center">
-                <c:if test="${doctor != null}">
-                <form action="update" method="post">
-                    </c:if>
-                    <c:if test="${doctor == null}">
-                    <form action="insert" method="post">
-                        </c:if>
-                        <table border="1" cellpadding="5">
-                            <caption>
-                                <h2>
-                                    <c:if test="${book != null}">
-                                        Edit Book
-                                    </c:if>
-                                    <c:if test="${book == null}">
-                                        Add New Book
-                                    </c:if>
-                                </h2>
-                            </caption>
-                            <c:if test="${doctor != null}">
-                                <input type="hidden" name="id" value="<c:out value='${doctor.id}' />" />
-                            </c:if>
-                            <tr>
-                                <th>Title: </th>
-                                <td>
-                                    <input type="text" name="title" size="45"
-                                           value="<c:out value='${doctor.title}' />"
-                                    />
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>Author: </th>
-                                <td>
-                                    <input type="text" name="author" size="45"
-                                           value="<c:out value='${book.author}' />"
-                                    />
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>Price: </th>
-                                <td>
-                                    <input type="text" name="price" size="5"
-                                           value="<c:out value='${book.price}' />"
-                                    />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2" align="center">
-                                    <input type="submit" value="Save" />
-                                </td>
-                            </tr>
-                        </table>
-                    </form>
-            </div>
+
             <h4 class="mt-5 mb-3"></h4>
             <div class="row">
                 <div class="col-md-6">
