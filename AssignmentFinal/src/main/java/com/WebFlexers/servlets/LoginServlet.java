@@ -18,8 +18,6 @@ import java.io.IOException;
 @WebServlet("/login-servlet")
 public class LoginServlet extends HttpServlet {
 
-
-
     protected void preparePatientSession(Patient patient, HttpSession session) {
         session.setAttribute("amka", patient.getAmka());
         session.setAttribute("username", patient.getUsername());

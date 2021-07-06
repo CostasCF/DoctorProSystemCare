@@ -17,6 +17,10 @@ public class DatabaseManager {
      * Creates a new instance of DatabaseManager and connects to the database
      */
     public DatabaseManager() {
+        createConnection();
+    }
+
+    public void createConnection() {
         try {
             String url = "jdbc:postgresql://ec2-54-73-68-39.eu-west-1.compute.amazonaws.com:5432/d8kt47qh55c24g";
             Properties props = new Properties();
@@ -30,7 +34,6 @@ public class DatabaseManager {
             System.out.println("An error occured while connecting to the database");
             System.out.println(e.getMessage());
         }
-
     }
 
     /**
