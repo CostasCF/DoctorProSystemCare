@@ -1,6 +1,7 @@
 package com.WebFlexers.models;
 
 import java.sql.*;
+import java.util.List;
 
 public class Admin extends User {
 	

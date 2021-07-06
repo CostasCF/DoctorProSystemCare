@@ -4,6 +4,8 @@ import com.WebFlexers.models.*;
 
 import javax.print.Doc;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 public class DatabaseManager {
@@ -360,6 +362,104 @@ public class DatabaseManager {
             System.out.println(e.getMessage());
         }
     }
+
+    /**
+     * Inserts an doctor to the database
+     * @param doctor : The doctor object whose data will be inserted
+     */
+    public void registerDoctor(Doctor doctor) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement
+                    ("insert into \"Doctor\" (\"amka\", \"username\", \"password\", \"email\", \"first_name\", \"last_name\" , speciality ,phone_num,admin_id) " +
+                            "values (?, ?, ?, ?, ?, ?,?,?,?)");
+            preparedStatement.setString(1, doctor.getAmka());
+            preparedStatement.setString(2, doctor.getUsername());
+
+            PasswordAuthentication cryptography = new PasswordAuthentication();
+            String hashedPassword = cryptography.hash(doctor.getPassword().toCharArray());
+            preparedStatement.setString(3, hashedPassword);
+
+            preparedStatement.setString(4, doctor.getEmail());
+            preparedStatement.setString(5, doctor.getFirstName());
+            preparedStatement.setString(6, doctor.getSurname());
+            preparedStatement.setString(7, doctor.getSpecialty());
+            preparedStatement.setString(8, doctor.getPhoneNum());
+            preparedStatement.setString(9, doctor.getAdminID());
+
+            preparedStatement.execute();
+            System.out.println("Successfully added doctor to the database");
+        } catch (SQLException e) {
+            System.out.println("DatabaseManager: An error occured while registering an doctor to the database");
+            System.out.println(e.getMessage());
+        }
+    }
+
+    /**
+     * Deletes a doctor from the database by his AMKA unique id.
+     * @param doctor The doctor object whose data will be deleted
+     */
+    public void deleteDoctor(Doctor doctor)  {
+        try{
+            PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM \"Doctor\" where \"amka\" = ?");
+            preparedStatement.setString(1,doctor.getAmka());
+            preparedStatement.execute();
+            System.out.println("Successfully deleted doctor with AMKA:" +doctor.getAmka() +" from the database");
+
+            preparedStatement.close();
+        }catch (SQLException e){
+            System.out.println("DatabaseManager: An error occured while registering an deleting a doctor from the database");
+            System.out.println(e.getMessage());
+        }
+
+    }
+
+    /**
+     * Updates a doctor from the database based on his AMKA unique id.
+     * @param doctor The doctor object whose data will be updated
+     */
+    public void updateDoctor(Doctor doctor)  {
+        try{
+            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE  \"Doctor\" " +
+                    "SET \"username\" = ? ,\"password\" = ?,\"email\" = ?,\"first_name\" =? ,\"last_name\" =?, \"speciality\" = ?, \"phone_num\" = ? , \"admin_id\"= ?" +
+                    " WHERE \"amka\"= ?");
+            preparedStatement.setString(1,doctor.getAmka());
+            preparedStatement.setString(1,doctor.getPassword());
+            preparedStatement.setString(1,doctor.getEmail());
+            preparedStatement.setString(1,doctor.getFirstName());
+            preparedStatement.setString(1,doctor.getSurname());
+            preparedStatement.setString(1,doctor.getSpecialty());
+            preparedStatement.setString(1,doctor.getPhoneNum());
+            preparedStatement.setString(1,doctor.getAdminID());
+            preparedStatement.execute();
+            System.out.println("Successfully updated doctor with AMKA:" +doctor.getAmka() +" from the database");
+            preparedStatement.close();
+        }catch (SQLException e){
+            System.out.println("DatabaseManager: An error occured while registering an deleting a doctor from the database");
+            System.out.println(e.getMessage());
+        }
+
+    }
+
+    /**
+     * Gets all doctors from the database
+     * @return The doctor object whose data will be added to doctors' list later
+     */
+    public  ArrayList<Doctor> getDoctors() {
+        ArrayList<Doctor> doctors = new ArrayList<>();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("select * from \"Doctor\"");
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                doctors.add(new Doctor(resultSet));
+            }
+            return doctors;
+        } catch (SQLException e) {
+            System.out.println("An error occured while connecting to the database");
+            return null;
+        }
+    }
+
     // Ignore for now
     /*public static ArrayList<Appointment> getPatientAppointments(String amka, Connection connection) {
 

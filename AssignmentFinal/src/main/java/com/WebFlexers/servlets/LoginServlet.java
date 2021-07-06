@@ -14,10 +14,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.ArrayList;
 
 @WebServlet("/login-servlet")
 public class LoginServlet extends HttpServlet {
 
+    protected void prepareAdminSession(Admin admin, HttpSession session) {
+        session.setAttribute("username", admin.getUsername());
+        session.setAttribute("firstname", admin.getFirstName());
+        session.setAttribute("surname", admin.getSurname());
+        session.setAttribute("email", admin.getEmail());
+    }
     protected void preparePatientSession(Patient patient, HttpSession session) {
         session.setAttribute("amka", patient.getAmka());
         session.setAttribute("username", patient.getUsername());
@@ -57,7 +64,9 @@ public class LoginServlet extends HttpServlet {
         }
         else if (user instanceof Admin) {
             System.out.println("The guy is an admin");
-            address = "/profile.jsp";
+            Admin admin = (Admin) user;
+            prepareAdminSession(admin,session);
+            address = "/profileAdmin.jsp";
         }
         else
         {
