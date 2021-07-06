@@ -28,6 +28,7 @@ public class DatabaseManager {
 
         } catch (SQLException e) {
             System.out.println("An error occured while connecting to the database");
+            System.out.println(e.getMessage());
         }
 
     }
@@ -80,6 +81,7 @@ public class DatabaseManager {
     public Patient getPatientByAmka(String amka) {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("select * from \"Patient\" where \"amka\"=?");
+            preparedStatement.setString(1, amka);
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
@@ -155,6 +157,7 @@ public class DatabaseManager {
     public Doctor getDoctorByAmka(String amka) {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("select * from \"Doctor\" where \"amka\"=?");
+            preparedStatement.setString(1, amka);
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
@@ -295,6 +298,36 @@ public class DatabaseManager {
             return doctor;
 
         return getAdminByUsername(username);
+    }
+
+    /**
+     * Inserts an patient to the database
+     * @param patient : The admin object whose data will be inserted
+     */
+    public void registerPatient(Patient patient) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement
+                    ("insert into \"Patient\" (\"amka\", \"username\", \"password\", \"first_name\", \"last_name\", " +
+                            "\"email\", \"phone_num\") values (?, ?, ?, ?, ?, ?, ?)");
+
+            preparedStatement.setString(1, patient.getAmka());
+            preparedStatement.setString(2, patient.getUsername());
+
+            PasswordAuthentication cryptography = new PasswordAuthentication();
+            String hashedPassword = cryptography.hash(patient.getPassword().toCharArray());
+            preparedStatement.setString(3, hashedPassword);
+
+            preparedStatement.setString(4, patient.getFirstName());
+            preparedStatement.setString(5, patient.getSurname());
+            preparedStatement.setString(6, patient.getEmail());
+            preparedStatement.setString(7, patient.getPhoneNumber());
+
+            preparedStatement.execute();
+            System.out.println("Successfully added patient to the database");
+        } catch (SQLException e) {
+            System.out.println("DatabaseManager: An error occured while registering a patient to the database");
+            System.out.println(e.getMessage());
+        }
     }
 
     /**

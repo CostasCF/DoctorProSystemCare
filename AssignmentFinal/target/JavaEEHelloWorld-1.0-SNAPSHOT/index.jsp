@@ -701,42 +701,42 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 						<form action="register-patient-servlet" method="post">
 							<div class="form-group">
 								<label class="col-form-label">Username</label>
-								<input type="text" class="form-control" id="usernamePatient" required>
+								<input type="text" class="form-control" name="username" id="usernamePatient" required>
 							</div>
 
 							<div class="form-group">
 								<label class="mb-2 col-form-label">Password</label>
-								<input type="password" class="form-control" id="passwordPatient" required>
+								<input type="password" class="form-control" name="password" id="passwordPatient" required>
 							</div>
 
 							<div class="form-group">
 								<label class="col-form-label">Confirm Password</label>
-								<input type="password" class="form-control" id="passwordConfirmPatient" required>
+								<input type="password" class="form-control" name="confirmPassword" id="passwordConfirmPatient" required>
 							</div>
 
 							<div class="form-group">
 								<label class="col-form-label">First name</label>
-								<input type="text" class="form-control" id="firstNamePatient" required>
+								<input type="text" class="form-control" name="firstName" id="firstNamePatient" required>
 							</div>
 
 							<div class="form-group">
 								<label class="col-form-label">Last name</label>
-								<input type="text" class="form-control" id="lastNamePatient" required>
+								<input type="text" class="form-control" name="lastName" id="lastNamePatient" required>
 							</div>
 
 							<div class="form-group">
 								<label class="col-form-label">Amka</label>
-								<input type="text" pattern="^(\d{11})$" class="form-control" id="amkaPatient" required>
+								<input type="text" pattern="^(\d{11})$" class="form-control" name="amka" id="amkaPatient" required>
 							</div>
 
 							<div class="form-group">
 								<label class="col-form-label">Email</label>
-								<input type="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" class="form-control" id="emailPatient" required>
+								<input type="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" class="form-control" name="email" id="emailPatient" required>
 							</div>
 
 							<div class="form-group">
 								<label class="col-form-label">Phone number</label>
-								<input type="text" pattern="^(d{10})$" class="form-control" id="phoneNumPatient" required>
+								<input type="text" pattern="^(\d{10})$" class="form-control" name="phoneNum" id="phoneNumPatient" required>
 							</div>
 
 							<div class="reg-w3l">
