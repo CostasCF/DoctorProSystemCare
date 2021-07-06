@@ -159,6 +159,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         <th>phone_num</th>
                         <th>admin_id</th>
                     </tr>
+                    <jsp:useBean id="listDoctors" scope="request" type="java.util.List"/>
                     <c:forEach var="doctor" items="${listDoctors}">
                         <tr>
                             <td><c:out value="${doctor.getAmka()}" /></td>

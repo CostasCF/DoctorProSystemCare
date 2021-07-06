@@ -382,9 +382,9 @@ public class DatabaseManager {
             preparedStatement.setString(4, doctor.getEmail());
             preparedStatement.setString(5, doctor.getFirstName());
             preparedStatement.setString(6, doctor.getSurname());
-            preparedStatement.setString(6, doctor.getSpecialty());
-            preparedStatement.setString(6, doctor.getPhoneNum());
-            preparedStatement.setString(6, doctor.getAdminID());
+            preparedStatement.setString(7, doctor.getSpecialty());
+            preparedStatement.setString(8, doctor.getPhoneNum());
+            preparedStatement.setString(9, doctor.getAdminID());
 
             preparedStatement.execute();
             System.out.println("Successfully added doctor to the database");
@@ -421,7 +421,7 @@ public class DatabaseManager {
         try{
             PreparedStatement preparedStatement = connection.prepareStatement("UPDATE  \"Doctor\" " +
                     "SET \"username\" = ? ,\"password\" = ?,\"email\" = ?,\"first_name\" =? ,\"last_name\" =?, \"speciality\" = ?, \"phone_num\" = ? , \"admin_id\"= ?" +
-                    " WHERE \"amka\"=?");
+                    " WHERE \"amka\"= ?");
             preparedStatement.setString(1,doctor.getAmka());
             preparedStatement.setString(1,doctor.getPassword());
             preparedStatement.setString(1,doctor.getEmail());
@@ -444,8 +444,8 @@ public class DatabaseManager {
      * Gets all doctors from the database
      * @return The doctor object whose data will be added to doctors' list later
      */
-    public List<Doctor> getDoctors() {
-        List<Doctor> doctors = new ArrayList<>();
+    public  ArrayList<Doctor> getDoctors() {
+        ArrayList<Doctor> doctors = new ArrayList<>();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("select * from \"Doctor\"");
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -459,7 +459,7 @@ public class DatabaseManager {
             return null;
         }
     }
-    
+
     // Ignore for now
     /*public static ArrayList<Appointment> getPatientAppointments(String amka, Connection connection) {
 

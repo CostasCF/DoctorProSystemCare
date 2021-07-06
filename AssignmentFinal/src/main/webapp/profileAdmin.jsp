@@ -7,6 +7,7 @@
 --%>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.Iterator" %>
+<%@ page import="com.WebFlexers.models.Doctor" %>
 <!--Template: W3layouts
 Template URL: http://w3layouts.com
 License: Creative Commons Attribution 3.0 Unported
@@ -144,6 +145,11 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     <a href="/list">List All Doctors</a>
 
                 </h2>
+                <form action="ad-servlet" method="post">
+                    <button type="submit" name="logoutButton" value="logout" class="btn  ml-lg-2 w3ls-btn">
+                        Logout
+                    </button>
+                </form>
             </div>
             <div align="center">
                 <table border="1" cellpadding="5">
@@ -159,8 +165,12 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         <th>phone_num</th>
                         <th>admin_id</th>
                     </tr>
-                    <c:forEach var="doctor" items="${listDoctors}">
-                        <tr>
+                    <tr>
+                            <%
+                                for (var doctor: (ArrayList<Doctor>)session.getAttribute("listDoctors")) {
+
+                                } %>
+                    </tr>
                             <td><c:out value="${doctor.getAmka()}" /></td>
                             <td><c:out value="${doctor.getUsername()}" /></td>
                             <td><c:out value="${doctor.getFirstName()}" /></td>
@@ -174,11 +184,63 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                 &nbsp;&nbsp;&nbsp;&nbsp;
                                 <a href="/delete?id=<c:out value='${doctor.amka}' />">Delete</a>
                             </td>
-                        </tr>
-                    </c:forEach>
+
                 </table>
             </div>
-
+            <br>
+            <div align="center">
+                <c:if test="${doctor != null}">
+                <form action="update" method="post">
+                    </c:if>
+                    <c:if test="${doctor == null}">
+                    <form action="insert" method="post">
+                        </c:if>
+                        <table border="1" cellpadding="5">
+                            <caption>
+                                <h2>
+                                    <c:if test="${book != null}">
+                                        Edit Book
+                                    </c:if>
+                                    <c:if test="${book == null}">
+                                        Add New Book
+                                    </c:if>
+                                </h2>
+                            </caption>
+                            <c:if test="${doctor != null}">
+                                <input type="hidden" name="id" value="<c:out value='${doctor.id}' />" />
+                            </c:if>
+                            <tr>
+                                <th>Title: </th>
+                                <td>
+                                    <input type="text" name="title" size="45"
+                                           value="<c:out value='${doctor.title}' />"
+                                    />
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Author: </th>
+                                <td>
+                                    <input type="text" name="author" size="45"
+                                           value="<c:out value='${book.author}' />"
+                                    />
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Price: </th>
+                                <td>
+                                    <input type="text" name="price" size="5"
+                                           value="<c:out value='${book.price}' />"
+                                    />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" align="center">
+                                    <input type="submit" value="Save" />
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+            </div>
             <h4 class="mt-5 mb-3"></h4>
             <div class="row">
                 <div class="col-md-6">

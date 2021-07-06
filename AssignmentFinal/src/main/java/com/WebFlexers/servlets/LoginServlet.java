@@ -66,13 +66,6 @@ public class LoginServlet extends HttpServlet {
             System.out.println("The guy is an admin");
             Admin admin = (Admin) user;
             prepareAdminSession(admin,session);
-            admin.doctors = new ArrayList<>();
-
-            DatabaseManager db = new DatabaseManager();
-            admin.doctors = db.getDoctors();
-            for (var doctor: admin.doctors) {
-                System.out.println(doctor);
-            }
             address = "/profileAdmin.jsp";
         }
         else

@@ -7,7 +7,6 @@ public class Admin extends User {
 	
 	protected String superuserPassword;
 	private String email;
-	public  List<Doctor> doctors;
 
 	public String getEmail() {
 		return email;
