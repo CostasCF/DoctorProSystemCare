@@ -157,7 +157,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         <th>email</th>
                         <th>phone_num</th>
                         <th>admin_id</th>
-                        <th>Actions</th>
 
                     </tr>
 <%--                    "<td>" + doctor.getPassword() + "</td> " +--%>
@@ -172,8 +171,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                         "<td>" + doctor.getSpecialty() + "</td> " +
                                         "<td>" + doctor.getEmail() + "</td> " +
                                         "<td>" + doctor.getPhoneNum() + "</td> " +
-                                        "<td>" + doctor.getAdminID() + "</td> " +
-                                        "<td>" + "<a href=\"edit/>\" /> Edit</a>" +"<a href=\"delete/>\" /> Delete</a>" + "</td> "
+                                        "<td>" + doctor.getAdminID() + "</td> "
                             );
                             out.println("</tr>");
                         }
@@ -181,20 +179,17 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 </table>
             </div>
             <br>
-
-            <h4 class="mt-5 mb-3"></h4>
-            <div class="row">
-                <div class="col-md-6">
-                    <h5 class="pt-4 pb-3"></h5>
-                    <ul class="list-group">
-                        <li class='list-group-item'><b></b></li>
-                    </ul>
+<%--            Deletion form--%>
+            <form action="admin-servlet" method="post">
+                <div class="form-group">
+                    <label for="recipient-name" class="col-form-label">Enter Doctor's AMKA for deletion:</label>
+                    <input type="text" class="form-control" placeholder="Doctor's AMKA.. " name="AMKA" id="doctor-amka" required="">
                 </div>
-
-            </div>
+                <div class="right-w3l">
+                    <input type="submit" class="form-control" value="Delete">
+                </div>
+            </form>
         </div>
-    </div>
-
     <!-- //typo container -->
     </div>
 </section>

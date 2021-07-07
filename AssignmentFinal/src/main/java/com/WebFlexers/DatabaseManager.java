@@ -400,14 +400,14 @@ public class DatabaseManager {
      */
     public void deleteDoctor(Doctor doctor)  {
         try{
-            PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM \"Doctor\" where \"amka\" = ?");
+            PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM \"Doctor\" where \"amka\" = ?"  );
             preparedStatement.setString(1,doctor.getAmka());
             preparedStatement.execute();
             System.out.println("Successfully deleted doctor with AMKA:" +doctor.getAmka() +" from the database");
 
             preparedStatement.close();
         }catch (SQLException e){
-            System.out.println("DatabaseManager: An error occured while registering an deleting a doctor from the database");
+            System.out.println("DatabaseManager: An error occured while deleting a doctor from the database");
             System.out.println(e.getMessage());
         }
 

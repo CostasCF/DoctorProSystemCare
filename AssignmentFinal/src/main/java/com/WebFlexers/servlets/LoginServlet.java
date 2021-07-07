@@ -45,7 +45,6 @@ public class LoginServlet extends HttpServlet {
         //User validation
         DatabaseManager database = new DatabaseManager();
         User user = database.validateUser(username, password);
-        database.closeConnection();
 
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession();
@@ -68,11 +67,11 @@ public class LoginServlet extends HttpServlet {
             System.out.println("The guy is an admin");
             ArrayList<Doctor> doctors;
 
-            DatabaseManager db = new DatabaseManager();
-            doctors = db.getDoctors();
+            doctors = database.getDoctors();
             for (var doctor: doctors) {
                 System.out.println(doctor.getUsername());
             }
+
             request.setAttribute("listDoctors", doctors);
             Admin admin = (Admin) user;
             prepareAdminSession(admin,session);
@@ -84,7 +83,7 @@ public class LoginServlet extends HttpServlet {
             request.setAttribute("error","Invalid Username or Password");
             address= "/index.jsp";
         }
-
+        database.closeConnection();
         RequestDispatcher dispatcher = request.getRequestDispatcher(address);
         dispatcher.forward(request,response);
     }
