@@ -34,11 +34,13 @@ public class LoginServlet extends HttpServlet {
         session.setAttribute("phoneNumber", patient.getPhoneNumber());
     }
 
+
+    String address;
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-        String address;
 
         //User validation
         DatabaseManager database = new DatabaseManager();
@@ -86,4 +88,6 @@ public class LoginServlet extends HttpServlet {
         RequestDispatcher dispatcher = request.getRequestDispatcher(address);
         dispatcher.forward(request,response);
     }
+
+
 }

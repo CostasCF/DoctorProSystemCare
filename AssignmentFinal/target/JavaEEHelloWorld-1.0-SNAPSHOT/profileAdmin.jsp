@@ -137,47 +137,44 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 <div class="p-2 bg-flex mb-1 bg-flex-item">Email: <% out.println("<font color=black size=4px>"+ session.getAttribute("email")+"</font>"); %> </div>
             </div>
             <br><br>
-            <div style="text-align: center;">
-                <h2>
-                    <a href="/new">Add New Doctor</a>
-                    &nbsp;&nbsp;&nbsp;
-                    <a href="/list">List All Doctors</a>
+<%--            <div style="text-align: center;">--%>
+<%--                <h3>--%>
+<%--                    <a href="/new">Add New Doctor</a>--%>
+<%--                    &nbsp;&nbsp;&nbsp;--%>
+<%--                    <a href="/list">List All Doctors</a>--%>
 
-                </h2>
-                <form action="ad-servlet" method="post">
-                    <button type="submit" name="logoutButton" value="logout" class="btn  ml-lg-2 w3ls-btn">
-                        Logout
-                    </button>
-                </form>
-            </div>
+<%--                </h3>--%>
+<%--            </div>--%>
+            <h4>List of Doctors</h4><br>
             <div align="center">
-                <caption><h2>List of Doctors</h2></caption>
                 <table border="1" cellpadding="5">
                     <tr>
                         <th>AMKA</th>
                         <th>Username</th>
-                        <th>Password</th>
                         <th>First_name</th>
                         <th>Last_name</th>
                         <th>speciality</th>
                         <th>email</th>
                         <th>phone_num</th>
                         <th>admin_id</th>
-                    </tr>
+                        <th>Actions</th>
 
+                    </tr>
+<%--                    "<td>" + doctor.getPassword() + "</td> " +--%>
                     <%
                         ArrayList<Doctor> doctorList = (ArrayList<Doctor>)request.getAttribute("listDoctors");
                         for (Doctor doctor: doctorList) {
                             out.println("<tr>");
                             out.println("<td>" + doctor.getAmka() + "</td> " +
                                         "<td>" + doctor.getUsername() + "</td> " +
-                                        "<td>" + doctor.getPassword() + "</td> " +
                                         "<td>" + doctor.getFirstName() + "</td> " +
                                         "<td>" + doctor.getSurname() + "</td> " +
                                         "<td>" + doctor.getSpecialty() + "</td> " +
                                         "<td>" + doctor.getEmail() + "</td> " +
                                         "<td>" + doctor.getPhoneNum() + "</td> " +
-                                        "<td>" + doctor.getAdminID() + "</td> ");
+                                        "<td>" + doctor.getAdminID() + "</td> " +
+                                        "<td>" + "<a href=\"edit/>\" /> Edit</a>" +"<a href=\"delete/>\" /> Delete</a>" + "</td> "
+                            );
                             out.println("</tr>");
                         }
                     %>

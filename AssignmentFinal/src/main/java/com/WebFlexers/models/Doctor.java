@@ -42,9 +42,9 @@ public class Doctor extends User {
             setPassword(resultSet.getString(3));
             setFirstName(resultSet.getString(4));
             setSurname(resultSet.getString(5));
-            setEmail(resultSet.getString(6));
-            setPhoneNum(resultSet.getString(7));
-            specialtyTemp = resultSet.getString(8);
+            specialtyTemp = (resultSet.getString(6));
+            setEmail(resultSet.getString(7));
+            setPhoneNum(resultSet.getString(8));
             setAdminID(resultSet.getString(9));
 
         } catch (SQLException ex) {
