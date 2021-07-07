@@ -1,6 +1,11 @@
 package com.WebFlexers.models;
 
+import com.WebFlexers.DatabaseManager;
+
+import javax.servlet.http.HttpServletRequest;
+import java.security.spec.ECField;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Admin extends User {
@@ -33,7 +38,10 @@ public class Admin extends User {
 		super(username, password, name, surname);
 		this.email = email;
     }
-	
+
+
+
+
 	public String getSuperuserPassword() {
 		return superuserPassword;
 	}
@@ -52,7 +60,15 @@ public class Admin extends User {
 	/**
      * Removes Doctor from database
      */
-	public void DeleteDoctor(Doctor doctor)	{		
-		System.out.println(doctor.getFirstName() + " " + doctor.getSurname() + " removed from database");
+	public static void DeleteDoctor(Doctor doc)	{
+		try{
+		DatabaseManager database = new DatabaseManager();
+		 doc  =  database.getDoctorByAmka(doc.getAmka());
+		database.deleteDoctor(doc);
+	//	System.out.println(doc.getFirstName() + " " + doc.getSurname() + " removed from database");
+		}
+		catch (Exception e){
+			System.out.println(e.getMessage());
+		}
 	}
 }
