@@ -67,25 +67,11 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
                         <li>
 							<!-- data-toggle="modal" aria-pressed="false" data-target="#exampleModal" -->
-							<form action="logout-servlet" method="post">
-								<button type="submit" name="logoutButton" value="logout" class="btn  ml-lg-2 w3ls-btn">
-									Logout
+								<button type="submit" name="loginButton"  data-toggle="modal" value="logout"  data-target="#loginModal"class="btn  ml-lg-2 w3ls-btn">
+									Login
 								</button>
-							</form>
 
                         </li>
-
-						<li class="nav-item dropdown mr-3 mt-lg-0 mt-3">
-							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
-							   aria-expanded="false">
-								Account
-							</a>
-							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-
-								<div class="dropdown-divider"></div>
-								<a class="dropdown-item" href="profile_patient.jsp">Profile</a>
-							</div>
-						</li>
                     </ul>
                 </div>
             </nav>
@@ -102,7 +88,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 					<!-- Login button -->
 					<div class="row">
 						<div class="col text-center">
-							<button class="btn btn-agile w-25" data-toggle="modal" aria-pressed="false" data-target="#exampleModal">Login</button>
+							<button class="btn btn-agile w-25" data-toggle="modal" aria-pressed="false" data-target="#loginModal">Login</button>
 						</div>
 					</div>
                 </div>
@@ -114,7 +100,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 					<!-- Login button -->
 					<div class="row">
 						<div class="col text-center">
-							<button class="btn btn-agile w-25" data-toggle="modal" aria-pressed="false" data-target="#exampleModal">Login</button>
+							<button class="btn btn-agile w-25" data-toggle="modal" aria-pressed="false" data-target="#loginModal">Login</button>
 						</div>
 					</div>
                 </div>
@@ -126,7 +112,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 					<!-- Login button -->
 					<div class="row">
 						<div class="col text-center">
-							<button class="btn btn-agile w-25" data-toggle="modal" aria-pressed="false" data-target="#exampleModal">Login</button>
+							<button class="btn btn-agile w-25" data-toggle="modal" aria-pressed="false" data-target="#loginModal">Login</button>
 						</div>
 					</div>
                 </div>
@@ -548,7 +534,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 	<!-- //footer -->
 
 	<!-- login  -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">

@@ -36,7 +36,7 @@ public class AdminServlet extends HttpServlet {
         try{
            String AMKA = request.getParameter("AMKA");
           DatabaseManager database = new DatabaseManager();
-          Doctor doc  =  database.getDoctorByAmka(AMKA);
+          Doctor doc  =  database.getDoctorByAmka(AMKA); //find the doctor to be deleted via it's amka
           Admin.DeleteDoctor(doc);
           listDoctors(request,database);
             getServletContext().getRequestDispatcher("/profile_admin.jsp").forward(request, response);

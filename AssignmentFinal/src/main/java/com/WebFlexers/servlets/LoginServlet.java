@@ -69,9 +69,9 @@ public class LoginServlet extends HttpServlet {
         else if (user instanceof Admin) {
             System.out.println("The guy is an admin");
             Admin admin = (Admin) user;
-            prepareAdminSession(admin,session);
-            AdminServlet.listDoctors(request,database);
-            address = "/profile_admin.jsp";
+            prepareAdminSession(admin,session); //preparing admin's session
+            AdminServlet.listDoctors(request,database); // listing the doctors
+            address = "/profile_admin.jsp"; // forwarding to admin's profile page
             System.out.println(admin.getAdminID());
         }
         else

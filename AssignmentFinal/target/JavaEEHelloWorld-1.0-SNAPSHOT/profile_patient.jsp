@@ -77,25 +77,16 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         <a class="nav-link" href="about.jsp">About</a>
                     </li>
 
-                    <li>
-                        <!-- data-toggle="modal" aria-pressed="false" data-target="#exampleModal" -->
-                        <form action="logout-servlet" method="post">
-                            <button type="submit" name="logoutButton" value="logout" class="btn  ml-lg-2 w3ls-btn">
-                                Logout
-                            </button>
-                        </form>
-
-                    </li>
-
                     <li class="nav-item dropdown mr-3 mt-lg-0 mt-3">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
                            aria-expanded="false">
                             Account
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="profile_patient.jsp">Profile</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="logout-servlet">Logout</a>
                         </div>
                     </li>
                 </ul>

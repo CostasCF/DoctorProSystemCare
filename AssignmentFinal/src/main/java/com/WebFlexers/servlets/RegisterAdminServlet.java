@@ -43,7 +43,7 @@ public class RegisterAdminServlet extends HttpServlet {
         if (database.getUserByUsername(username) == null) {
             HttpSession session = request.getSession();
             Admin admin = new Admin(username, password, firstName, lastName, email,adminID);
-            boolean isDone = database.registerAdmin(admin);
+            boolean isDone = database.registerAdmin(admin); //if register is successful, redirect to admin's profile page, else print out an error
             if(isDone)
             {
                 LoginServlet loginServlet = new LoginServlet();
