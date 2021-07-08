@@ -339,7 +339,7 @@ public class DatabaseManager {
      * Inserts an admin to the database
      * @param admin : The admin object whose data will be inserted
      */
-    public void registerAdmin(Admin admin) {
+    public boolean registerAdmin(Admin admin) {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement
             ("insert into \"Admin\" (\"admin_id\", \"username\", \"password\", \"email\", \"first_name\", \"last_name\") " +
@@ -357,9 +357,11 @@ public class DatabaseManager {
 
             preparedStatement.execute();
             System.out.println("Successfully added admin to the database");
+            return  true;
         } catch (SQLException e) {
-            System.out.println("DatabaseManager: An error occured while registering an admin to the database");
+            System.out.println("DatabaseManager: An error occurred while registering an admin to the database");
             System.out.println(e.getMessage());
+            return false;
         }
     }
 

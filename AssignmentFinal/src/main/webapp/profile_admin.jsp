@@ -131,10 +131,12 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             <h4 class="pt-4 pb-3">Admin's Profile</h4>
 
             <div class="d-flex flex-column bg-flex">
+                <div class="p-2 bg-flex mb-1 bg-flex-item">ID: <% out.println("<font color=black size=4px>"+ session.getAttribute("adminID")+"</font>"); %> </div>
                 <div class="p-2 bg-flex mb-1 bg-flex-item">Firstname:  <% out.println("<font color=black size=4px>"+ session.getAttribute("firstname")+"</font>"); %></div>
                 <div class="p-2 bg-flex mb-1 bg-flex-item">Surname:  <% out.println("<font color=black size=4px>"+ session.getAttribute("surname")+"</font>"); %> </div>
                 <div class="p-2 bg-flex mb-1 bg-flex-item">Username: <% out.println("<font color=black size=4px>"+ session.getAttribute("username")+"</font>"); %></div>
                 <div class="p-2 bg-flex mb-1 bg-flex-item">Email: <% out.println("<font color=black size=4px>"+ session.getAttribute("email")+"</font>"); %> </div>
+
             </div>
             <br><br>
 <%--            <div style="text-align: center;">--%>

@@ -675,6 +675,11 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 								<button type="submit" class="form-control submit mb-4">Register</button>
                            </div>
 
+							<%
+								String register_msg = (String)request.getAttribute("registerError");
+								if(register_msg!=null)
+									out.println("<font color=red size=4px>"+register_msg+"</font>");
+							%>
 						   <p class="text-center pb-4">
                                 <a href="#" class="text-secondary">By clicking Register, I agree to your terms</a>
                             </p>

@@ -343,13 +343,12 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         </div>
         </div>
 
-        <!-- //typo container -->
+        <!--Make an Appointment Form-->
         </div>
         <div class="container">
             <div class="about-main">
                 <div class="about-right">
                     <h3 class="subheading-w3-agile">Make an Appointment</h3>
-                    <!-- stats -->
                     <div class="stats">
                         <div class="stats_inner">
                             <form action="#" method="post">
@@ -373,10 +372,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         </div>
                     </div>
                     <!-- //stats -->
-
                 </div>
             </div>
-
         </div>
     </section>
     <!-- //typography -->
