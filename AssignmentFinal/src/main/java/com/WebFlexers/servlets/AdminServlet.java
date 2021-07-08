@@ -39,13 +39,13 @@ public class AdminServlet extends HttpServlet {
           Doctor doc  =  database.getDoctorByAmka(AMKA);
           Admin.DeleteDoctor(doc);
           listDoctors(request,database);
-            getServletContext().getRequestDispatcher("/profileAdmin.jsp").forward(request, response);
+            getServletContext().getRequestDispatcher("/profile_admin.jsp").forward(request, response);
 
         }catch (Exception e){
             System.out.println(e.getMessage());
             System.out.println("Deletion problem: Doctor's amka doesn't exist");
         }
-
-
     }
+
+
 }

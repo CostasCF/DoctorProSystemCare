@@ -83,7 +83,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 
 							<div class="dropdown-divider"></div>
-							<a class="dropdown-item" href="profile.jsp">Profile</a>
+							<a class="dropdown-item" href="profile_patient.jsp">Profile</a>
 						</div>
 					</li>
 				</ul>

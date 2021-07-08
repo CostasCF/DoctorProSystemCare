@@ -47,6 +47,6 @@ public class RegisterDoctorServlet extends HttpServlet {
 
         AdminServlet.listDoctors(request,database);
         database.closeConnection();
-        getServletContext().getRequestDispatcher("/profileAdmin.jsp").forward(request, response);
+        getServletContext().getRequestDispatcher("/profile_admin.jsp").forward(request, response);
     }
 }

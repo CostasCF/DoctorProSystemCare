@@ -94,7 +94,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
 
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="profile.jsp">Profile</a>
+                            <a class="dropdown-item" href="profile_patient.jsp">Profile</a>
                         </div>
                     </li>
                 </ul>
@@ -118,7 +118,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         <div class="container py-sm-5 py-3">
             <!-- section title -->
 
-				<h2 class="heading-agileinfo"> Welcome, <% out.println("<font color=black size=6px>"+ session.getAttribute("username")+"</font>"); %></h2>
+				<h2 class="heading-agileinfo"> Welcome Doctor, <% out.println("<font color=black size=6px>"+ session.getAttribute("username")+"</font>"); %></h2>
             <!-- //section title -->
             <div class="pb-5 mt-md-5 typo-wthree">
                 <h4 class="pt-4 pb-3">Profile</h4>

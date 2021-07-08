@@ -60,18 +60,18 @@ public class LoginServlet extends HttpServlet {
             //ArrayList<Appointment> appointmentDetails = Patient.getAppointmentsHistory(patient.getAmka());
             //session.setAttribute("appointment_list", appointmentDetails); //appointment_column
 
-            address= "/profile.jsp";
+            address= "/profile_patient.jsp";
         }
         else if (user instanceof Doctor) {
             System.out.println("The guy is a doctor");
-            address = "/profile.jsp";
+            address = "/profile_doctor.jsp";
         }
         else if (user instanceof Admin) {
             System.out.println("The guy is an admin");
             Admin admin = (Admin) user;
             prepareAdminSession(admin,session);
             AdminServlet.listDoctors(request,database);
-            address = "/profileAdmin.jsp";
+            address = "/profile_admin.jsp";
             System.out.println(admin.getAdminID());
         }
         else
