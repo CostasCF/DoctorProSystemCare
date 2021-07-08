@@ -41,7 +41,6 @@ public class AdminServlet extends HttpServlet {
           listDoctors(request,database);
             getServletContext().getRequestDispatcher("/profileAdmin.jsp").forward(request, response);
 
-      //      address = "/profileAdmin.jsp";
         }catch (Exception e){
             System.out.println(e.getMessage());
             System.out.println("Deletion problem: Doctor's amka doesn't exist");

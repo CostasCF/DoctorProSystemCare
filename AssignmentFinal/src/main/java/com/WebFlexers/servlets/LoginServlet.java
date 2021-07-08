@@ -24,6 +24,9 @@ public class LoginServlet extends HttpServlet {
         session.setAttribute("firstname", admin.getFirstName());
         session.setAttribute("surname", admin.getSurname());
         session.setAttribute("email", admin.getEmail());
+        session.setAttribute( "adminID", admin.getAdminID());
+
+
     }
     protected void preparePatientSession(Patient patient, HttpSession session) {
         session.setAttribute("amka", patient.getAmka());
@@ -69,6 +72,7 @@ public class LoginServlet extends HttpServlet {
             prepareAdminSession(admin,session);
             AdminServlet.listDoctors(request,database);
             address = "/profileAdmin.jsp";
+            System.out.println(admin.getAdminID());
         }
         else
         {

@@ -190,6 +190,83 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 </div>
             </form>
         </div>
+
+        <%-- Add a doctor - button --%>
+        <a href="#" data-toggle="modal" data-target="#registerDoctorModal" class="text-dark font-weight-bold">
+           Add a doctor</a>
+
+
+        <%-- Add a doctor--%>
+        <div class="modal fade" id="registerDoctorModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header text-center">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="login px-4 mx-auto mw-100">
+                            <h5 class="modal-title text-center text-dark mb-4">Add a doctor</h5>
+                            <form action="register-doctor-servlet" method="post">
+                                <div class="form-group">
+                                    <label class="col-form-label">Amka</label>
+                                    <input type="text" pattern="^(\d{11})$" class="form-control" name="amkaD" id="amkaDoctor" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-form-label">Specialty</label>
+                                    <input type="text" class="form-control" name="specialtyD" id="specialtyDoctor" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-form-label">Username</label>
+                                    <input type="text" class="form-control" name="usernameD" id="usernameDoctor" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="mb-2 col-form-label">Password</label>
+                                    <input type="password" class="form-control" name="passwordD" id="passwordDoctor" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-form-label">Confirm Password</label>
+                                    <input type="password" class="form-control" name="confirmPasswordD" id="passwordConfirmDoctor" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-form-label">First name</label>
+                                    <input type="text" class="form-control" name="firstNameD" id="firstNameDoctor" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-form-label">Last name</label>
+                                    <input type="text" class="form-control" name="lastNameD" id="lastNameDoctor" required>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label class="col-form-label">Email</label>
+                                    <input type="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" class="form-control" name="emailD" id="emailDoctor" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-form-label">Phone number</label>
+                                    <input type="text" pattern="^(\d{10})$" class="form-control" name="phoneNumD" id="phoneNumDoctor" required>
+                                </div>
+
+                                <div class="reg-w3l">
+                                    <button type="submit" class="form-control submit mb-4">Add doctor</button>
+                                </div>
+
+                                <p class="text-center pb-4">
+                                    <a href="#" class="text-secondary">By adding a doctor into the database, I agree to your terms</a>
+                                </p>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
     <!-- //typo container -->
     </div>
 </section>

@@ -13,6 +13,15 @@ public class Admin extends User {
 	protected String superuserPassword;
 	private String email;
 
+	public String getAdminID() {
+		return adminID;
+	}
+
+	public void setAdminID(String adminID) {
+		this.adminID = adminID;
+	}
+
+	private String adminID;
 	public String getEmail() {
 		return email;
 	}
@@ -23,6 +32,7 @@ public class Admin extends User {
 	 */
 	public Admin(ResultSet resultSet) {
 		try {
+			adminID = resultSet.getString(1);
 			username = resultSet.getString(2);
 			password = resultSet.getString(3);
 			email = resultSet.getString(4);
@@ -34,9 +44,10 @@ public class Admin extends User {
 		}
 	}
 
-	public Admin(String username, String password, String name, String surname, String email) {
+	public Admin(String username, String password, String name, String surname, String email,String adminID) {
 		super(username, password, name, surname);
 		this.email = email;
+		this.adminID = adminID;
     }
 
 

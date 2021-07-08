@@ -344,7 +344,7 @@ public class DatabaseManager {
             PreparedStatement preparedStatement = connection.prepareStatement
             ("insert into \"Admin\" (\"admin_id\", \"username\", \"password\", \"email\", \"first_name\", \"last_name\") " +
             "values (?, ?, ?, ?, ?, ?)");
-            preparedStatement.setString(1, "PG2345");
+            preparedStatement.setString(1, admin.getAdminID());
             preparedStatement.setString(2, admin.getUsername());
 
             PasswordAuthentication cryptography = new PasswordAuthentication();
