@@ -6,6 +6,7 @@ import com.WebFlexers.models.Doctor;
 import com.WebFlexers.models.Patient;
 import com.WebFlexers.models.User;
 
+import javax.print.Doc;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,7 +20,18 @@ import java.util.ArrayList;
 @WebServlet("/login-servlet")
 public class LoginServlet extends HttpServlet {
 
-    protected void prepareAdminSession(Admin admin, HttpSession session) {
+    private static Boolean isLoggedIn;
+    private static String whoLoggedIn;
+
+    public static String getWhoLoggedIn() {
+        return whoLoggedIn;
+    }
+
+    public static void setWhoLoggedIn(String whoLoggedIn) {
+        LoginServlet.whoLoggedIn = whoLoggedIn;
+    }
+
+    public void prepareAdminSession(Admin admin, HttpSession session) {
         session.setAttribute("username", admin.getUsername());
         session.setAttribute("firstname", admin.getFirstName());
         session.setAttribute("surname", admin.getSurname());
@@ -28,7 +40,7 @@ public class LoginServlet extends HttpServlet {
 
 
     }
-    protected void preparePatientSession(Patient patient, HttpSession session) {
+    public void preparePatientSession(Patient patient, HttpSession session) {
         session.setAttribute("amka", patient.getAmka());
         session.setAttribute("username", patient.getUsername());
         session.setAttribute("firstname", patient.getFirstName());
@@ -36,9 +48,26 @@ public class LoginServlet extends HttpServlet {
         session.setAttribute("email", patient.getEmail());
         session.setAttribute("phoneNumber", patient.getPhoneNumber());
     }
+    public void prepareDoctorSession(Doctor doctor, HttpSession session) {
+        session.setAttribute("amka", doctor.getAmka());
+        session.setAttribute("username", doctor.getUsername());
+        session.setAttribute("firstname", doctor.getFirstName());
+        session.setAttribute("surname", doctor.getSurname());
+        session.setAttribute("email", doctor.getEmail());
+        session.setAttribute("phoneNumber", doctor.getPhoneNum());
+        session.setAttribute("specialty", doctor.getSpecialty());
+    }
 
 
     String address;
+
+    public static Boolean getLoggedIn() {
+        return isLoggedIn;
+    }
+
+    public static void setLoggedIn(Boolean loggedIn) {
+        isLoggedIn = loggedIn;
+    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -56,23 +85,27 @@ public class LoginServlet extends HttpServlet {
         {
             Patient patient = (Patient)user;
             preparePatientSession(patient, session);
-
+            setLoggedIn(true);
             //ArrayList<Appointment> appointmentDetails = Patient.getAppointmentsHistory(patient.getAmka());
             //session.setAttribute("appointment_list", appointmentDetails); //appointment_column
-
+            setWhoLoggedIn("patient");
             address= "/profile_patient.jsp";
         }
         else if (user instanceof Doctor) {
             System.out.println("The guy is a doctor");
+            Doctor doctor = (Doctor)user;
+            prepareDoctorSession(doctor,session);
+            setLoggedIn(true);
+            setWhoLoggedIn("doctor");
             address = "/profile_doctor.jsp";
         }
         else if (user instanceof Admin) {
             System.out.println("The guy is an admin");
             Admin admin = (Admin) user;
             prepareAdminSession(admin,session); //preparing admin's session
-            AdminServlet.listDoctors(request,database); // listing the doctors
             address = "/profile_admin.jsp"; // forwarding to admin's profile page
-            System.out.println(admin.getAdminID());
+            setLoggedIn(true);
+            setWhoLoggedIn("admin");
         }
         else
         {

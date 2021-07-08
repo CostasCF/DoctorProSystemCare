@@ -48,7 +48,6 @@ public class RegisterAdminServlet extends HttpServlet {
             {
                 LoginServlet loginServlet = new LoginServlet();
                 loginServlet.prepareAdminSession(admin,session);
-                AdminServlet.listDoctors(request,database);
                 getServletContext().getRequestDispatcher("/profile_admin.jsp").forward(request, response);
             }else{
                 request.setAttribute("registerError","Email already exists.");

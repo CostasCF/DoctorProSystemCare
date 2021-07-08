@@ -21,14 +21,14 @@ public class AdminServlet extends HttpServlet {
      * @param database DatabaseManager database
      */
     public static void listDoctors(HttpServletRequest request, DatabaseManager database){
-        ArrayList<Doctor> doctors;
+        try{
+            ArrayList<Doctor> doctors;
+            doctors = database.getDoctors();
+            request.setAttribute("listDoctors", doctors);
+        }catch (Exception e){
+            System.out.println("Problem with listing doctors on admin's page : " + e.getMessage());
+        }
 
-        doctors = database.getDoctors();
-//		for (var doctor: doctors) {
-//			System.out.println(doctor.getUsername());
-//		}
-        System.out.println("Successfully listed doctors.");
-        request.setAttribute("listDoctors", doctors);
     }
 
     @Override
@@ -38,8 +38,7 @@ public class AdminServlet extends HttpServlet {
           DatabaseManager database = new DatabaseManager();
           Doctor doc  =  database.getDoctorByAmka(AMKA); //find the doctor to be deleted via it's amka
           Admin.DeleteDoctor(doc);
-          listDoctors(request,database);
-            getServletContext().getRequestDispatcher("/profile_admin.jsp").forward(request, response);
+          getServletContext().getRequestDispatcher("/profile_admin.jsp").forward(request, response);
 
         }catch (Exception e){
             System.out.println(e.getMessage());

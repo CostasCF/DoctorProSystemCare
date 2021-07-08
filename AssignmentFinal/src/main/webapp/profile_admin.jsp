@@ -7,6 +7,9 @@
 --%>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="com.WebFlexers.models.Doctor" %>
+<%@ page import="com.WebFlexers.servlets.AdminServlet" %>
+<%@ page import="javax.xml.crypto.Data" %>
+<%@ page import="com.WebFlexers.DatabaseManager" %>
 <!--Template: W3layouts
 Template URL: http://w3layouts.com
 License: Creative Commons Attribution 3.0 Unported
@@ -46,6 +49,10 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     response.setHeader("Pragma", "no-cache"); // HTTP 1
     response.setHeader("Expires", "0");
 
+    DatabaseManager database = new DatabaseManager();
+    AdminServlet.listDoctors(request,database);  // list doctors every time page refreshes
+    database.closeConnection();
+
     if(session.getAttribute("username") == null)
         response.sendRedirect("index.jsp");
 
@@ -65,9 +72,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ml-lg-auto text-center">
 
-                <li class="nav-item active  mr-3 mt-lg-0 mt-3">
+                <li class="nav-item   mr-3 mt-lg-0 mt-3">
                     <a class="nav-link" href="index.jsp">Home
-                        <span class="sr-only">(current)</span>
                     </a>
                 </li>
 
@@ -83,15 +89,16 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     <a class="nav-link" href="about.jsp">About</a>
                 </li>
 
-                <li class="nav-item dropdown mr-3 mt-lg-0 mt-3">
+                <li class="nav-item active dropdown mr-3 mt-lg-0 mt-3">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
                        aria-expanded="false">
                         Account
+                        <span class="sr-only">(current)</span>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
 
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="profile_patient.jsp">Profile</a>
+                        <a class="dropdown-item" href="profile_admin.jsp">Profile</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="logout-servlet">Logout</a>
                     </div>

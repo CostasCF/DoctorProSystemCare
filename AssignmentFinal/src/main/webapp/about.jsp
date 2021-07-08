@@ -1,3 +1,4 @@
+<%@ page import="com.WebFlexers.servlets.LoginServlet" %>
 <!--Template: W3layouts
 Template URL: http://w3layouts.com
 License: Creative Commons Attribution 3.0 Unported
@@ -31,6 +32,12 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <link href="//fonts.googleapis.com/css?family=Montserrat:200,300,400,500,600,700,800,900" rel="stylesheet"><!-- //online-fonts -->
 </head>
 <body>
+<%         if (LoginServlet.getLoggedIn() == null)
+    LoginServlet.setLoggedIn(false);
+    if(LoginServlet.getLoggedIn())
+        request.setAttribute("whoLoggedIn",LoginServlet.getWhoLoggedIn());
+    request.setAttribute("isLoggedin",LoginServlet.getLoggedIn()); //this commands runs on index.jsp loading and checks if a user is logged in
+%>
     <!-- header -->
     <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-gradient-secondary">
@@ -46,7 +53,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ml-lg-auto text-center">
 
-                    <li class="nav-item active  mr-3 mt-lg-0 mt-3">
+                    <li class="nav-item   mr-3 mt-lg-0 mt-3">
                         <a class="nav-link" href="index.jsp">Home
                             <span class="sr-only">(current)</span>
                         </a>
@@ -60,31 +67,41 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         <a class="nav-link" href="contact.jsp">Contact</a>
                     </li>
 
-                    <li class="nav-item">
+                    <li class="nav-item active">
                         <a class="nav-link" href="about.jsp">About</a>
                     </li>
 
-                    <li>
-                        <!-- data-toggle="modal" aria-pressed="false" data-target="#exampleModal" -->
-                        <form action="logout-servlet" method="post">
-                            <button type="submit" name="logoutButton" value="logout" class="btn  ml-lg-2 w3ls-btn">
-                                Logout
-                            </button>
-                        </form>
+                    <%
+                        boolean isLoggedin = (boolean)request.getAttribute("isLoggedin");
+                        if(!isLoggedin){
+                            out.println("<li>");
+                            out.println("<button type=\"submit\" name=\"loginButton\"  data-toggle=\"modal\" value=\"login\"  data-target=\"#loginModal\"class=\"btn  ml-lg-2 w3ls-btn\">");
+                            out.println("Login");
+                            out.println("</button>");
+                            out.println("</li>");}
+                        else{
+                            out.println("<li class=\"nav-item dropdown mr-3 mt-lg-0 mt-3\">");
+                            out.println("<a class=\"nav-link dropdown-toggle\" href=\"#\" id=\"navbarDropdown\" role=\"button\" data-toggle=\"dropdown\" aria-haspopup=\"true\"\n" +
+                                    "\t\t\t\t\t\t\t   aria-expanded=\"false\">");
+                            out.println("Account");
+                            out.println("</a>");
+                            out.println("\t<div class=\"dropdown-menu\" aria-labelledby=\"navbarDropdown\">");
+                            out.println("<div class=\"dropdown-divider\"></div>");
+                            String whoLoggedIn = (String)request.getAttribute("whoLoggedIn");
+                            if(whoLoggedIn.equals("admin"))
+                                out.println("<a class=\"dropdown-item\" href=\"profile_admin.jsp\">Profile</a>");
+                            else if(whoLoggedIn.equals("doctor"))
+                                out.println("<a class=\"dropdown-item\" href=\"profile_doctor.jsp\">Profile</a>");
+                            else
+                                out.println("<a class=\"dropdown-item\" href=\"profile_patient.jsp\">Profile</a>");
+                            out.println("\t<div class=\"dropdown-divider\"></div>");
+                            out.println("<a class=\"dropdown-item\" href=\"logout-servlet\">Logout</a>");
+                            out.println("</div>");
+                            out.println("</li>");
+                        }
 
-                    </li>
+                    %>
 
-                    <li class="nav-item dropdown mr-3 mt-lg-0 mt-3">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
-                           aria-expanded="false">
-                            Account
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="profile_patient.jsp">Profile</a>
-                        </div>
-                    </li>
                 </ul>
             </div>
         </nav>
@@ -394,7 +411,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 	<!-- //footer -->
 
 	<!-- login  -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">

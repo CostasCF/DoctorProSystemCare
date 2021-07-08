@@ -33,18 +33,36 @@ public class RegisterPatientServlet extends HttpServlet {
         // Check if the username already exists and if a patient or a doctor with the same amka already exists
         if (database.getUserByUsername(username) == null) {
             if (database.getPatientByAmka(amka) == null) {
-                if (database.getDoctorByAmka(amka) == null)
-                    database.registerPatient(new Patient(amka, username, password, firstName, lastName, email, phoneNum));
+                if (database.getDoctorByAmka(amka) == null){
+                    HttpSession session = request.getSession();
+                    Patient patient = new Patient(amka, username, password, firstName, lastName, email, phoneNum);
+                    boolean isDone = database.registerPatient(patient); //if register is successful, redirect to admin's profile page, else print out an error
+                    if(isDone)
+                    {
+                        LoginServlet loginServlet = new LoginServlet();
+                        loginServlet.preparePatientSession(patient,session);
+                        getServletContext().getRequestDispatcher("/profile_patient.jsp").forward(request, response);
+                    }
+                }
                 else {
+                    request.setAttribute("registerError","A doctor with the same amka already exists");
                     System.out.println("A doctor with the same amka already exists");
+                    RequestDispatcher dispatcher = request.getRequestDispatcher("/index.jsp");
+                    dispatcher.forward(request,response);
                 }
             }
             else {
+                request.setAttribute("registerError","A patient with the same amka already exists");
                 System.out.println("A patient with the same amka already exists");
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/index.jsp");
+                dispatcher.forward(request,response);
             }
         }
         else {
+            request.setAttribute("registerError","This username already exists");
             System.out.println("This username already exists");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/index.jsp");
+            dispatcher.forward(request,response);
         }
 
         database.closeConnection();

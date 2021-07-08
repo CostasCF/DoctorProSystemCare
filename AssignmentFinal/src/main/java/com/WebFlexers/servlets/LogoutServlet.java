@@ -19,7 +19,7 @@ public class LogoutServlet extends HttpServlet {
         // Get the session and delete it
         HttpSession session = request.getSession();
         session.invalidate();
-
+        LoginServlet.setLoggedIn(false);
         // Redirect to the home page
         var address = "index.jsp";
         RequestDispatcher dispatcher = request.getRequestDispatcher(address);

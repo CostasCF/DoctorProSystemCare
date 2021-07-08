@@ -1,3 +1,4 @@
+<%@ page import="com.WebFlexers.servlets.LoginServlet" %>
 <!--Template: W3layouts
 Template URL: http://w3layouts.com
 License: Creative Commons Attribution 3.0 Unported
@@ -32,6 +33,12 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <link href="//fonts.googleapis.com/css?family=Montserrat:200,300,400,500,600,700,800,900" rel="stylesheet"><!-- //online-fonts -->
 </head>
 <body>
+<%         if (LoginServlet.getLoggedIn() == null)
+				LoginServlet.setLoggedIn(false);
+			if(LoginServlet.getLoggedIn())
+				request.setAttribute("whoLoggedIn",LoginServlet.getWhoLoggedIn());
+	request.setAttribute("isLoggedin",LoginServlet.getLoggedIn()); //this commands runs on index.jsp loading and checks if a user is logged in
+%>
         <!-- header -->
         <header>
             <nav class="navbar navbar-expand-lg navbar-light bg-gradient-secondary">
@@ -64,14 +71,44 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 						<li class="nav-item">
 							<a class="nav-link" href="about.jsp">About</a>
 						</li>
+						<%
+							boolean isLoggedin = (boolean)request.getAttribute("isLoggedin");
+							if(!isLoggedin){
+								out.println("<li>");
+								out.println("<button type=\"submit\" name=\"loginButton\"  data-toggle=\"modal\" value=\"login\"  data-target=\"#loginModal\"class=\"btn  ml-lg-2 w3ls-btn\">");
+								out.println("Login");
+								out.println("</button>");
+								out.println("</li>");}
+							else{
+								out.println("<li class=\"nav-item dropdown mr-3 mt-lg-0 mt-3\">");
+								out.println("<a class=\"nav-link dropdown-toggle\" href=\"#\" id=\"navbarDropdown\" role=\"button\" data-toggle=\"dropdown\" aria-haspopup=\"true\"\n" +
+										"\t\t\t\t\t\t\t   aria-expanded=\"false\">");
+								out.println("Account");
+								out.println("</a>");
+								out.println("\t<div class=\"dropdown-menu\" aria-labelledby=\"navbarDropdown\">");
+								out.println("<div class=\"dropdown-divider\"></div>");
+								String whoLoggedIn = (String)request.getAttribute("whoLoggedIn");
+								if(whoLoggedIn.equals("admin"))
+									out.println("<a class=\"dropdown-item\" href=\"profile_admin.jsp\">Profile</a>");
+								else if(whoLoggedIn.equals("doctor"))
+									out.println("<a class=\"dropdown-item\" href=\"profile_doctor.jsp\">Profile</a>");
+								else
+									out.println("<a class=\"dropdown-item\" href=\"profile_patient.jsp\">Profile</a>");
+								out.println("\t<div class=\"dropdown-divider\"></div>");
+								out.println("<a class=\"dropdown-item\" href=\"logout-servlet\">Logout</a>");
+								out.println("</div>");
+								out.println("</li>");
+							}
 
-                        <li>
-							<!-- data-toggle="modal" aria-pressed="false" data-target="#exampleModal" -->
-								<button type="submit" name="loginButton"  data-toggle="modal" value="logout"  data-target="#loginModal"class="btn  ml-lg-2 w3ls-btn">
-									Login
-								</button>
+						%>
 
-                        </li>
+<%--                        <li>--%>
+<%--							<!-- data-toggle="modal" aria-pressed="false" data-target="#exampleModal" -->--%>
+<%--								<button type="submit" name="loginButton"  data-toggle="modal" value="logout"  data-target="#loginModal"class="btn  ml-lg-2 w3ls-btn">--%>
+<%--									Login--%>
+<%--								</button>--%>
+
+<%--                        </li>--%>
                     </ul>
                 </div>
             </nav>
@@ -557,6 +594,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 							String login_msg = (String)request.getAttribute("error");
 							if(login_msg!=null)
 								out.println("<font color=red size=4px>"+login_msg+"</font>");
+//							else
+//								isLoggedin = (Boolean) request.getAttribute("isLoggedin");
 						%>
                         <div class="right-w3l">
                             <input type="submit" class="form-control" value="Login">
@@ -734,6 +773,11 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 								<button type="submit" class="form-control submit mb-4">Register</button>
 							</div>
 
+							<%
+								String register_mg = (String)request.getAttribute("registerError");
+								if(register_mg!=null)
+									out.println("<font color=red size=4px>"+register_msg+"</font>");
+							%>
 							<p class="text-center pb-4">
 								<a href="#" class="text-secondary">By clicking Register, I agree to your terms</a>
 							</p>

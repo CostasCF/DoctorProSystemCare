@@ -309,7 +309,7 @@ public class DatabaseManager {
      * Inserts an patient to the database
      * @param patient : The admin object whose data will be inserted
      */
-    public void registerPatient(Patient patient) {
+    public boolean registerPatient(Patient patient) {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement
                     ("insert into \"Patient\" (\"amka\", \"username\", \"password\", \"first_name\", \"last_name\", " +
@@ -329,9 +329,11 @@ public class DatabaseManager {
 
             preparedStatement.execute();
             System.out.println("Successfully added patient to the database");
+            return  true;
         } catch (SQLException e) {
             System.out.println("DatabaseManager: An error occured while registering a patient to the database");
             System.out.println(e.getMessage());
+            return false;
         }
     }
 
