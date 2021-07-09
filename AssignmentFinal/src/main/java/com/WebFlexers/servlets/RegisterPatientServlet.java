@@ -41,6 +41,8 @@ public class RegisterPatientServlet extends HttpServlet {
                     {
                         LoginServlet loginServlet = new LoginServlet();
                         loginServlet.preparePatientSession(patient,session);
+                        LoginServlet.setLoggedIn(true);
+                        LoginServlet.setWhoLoggedIn("patient");
                         getServletContext().getRequestDispatcher("/profile_patient.jsp").forward(request, response);
                     }
                 }
