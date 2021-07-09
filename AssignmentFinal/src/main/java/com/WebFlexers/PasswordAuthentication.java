@@ -18,7 +18,6 @@ import javax.crypto.spec.PBEKeySpec;
  */
 public final class PasswordAuthentication
 {
-
     /**
      * Each token produced by this class uses this identifier as a prefix.
      */

@@ -50,6 +50,7 @@ public class DatabaseManager {
 
     }
 
+    //-----------------PATIENT-----------------
     /**
      * Searches the database for a user that is a patient
      * @param username : The username of the user
@@ -448,7 +449,7 @@ public class DatabaseManager {
      * Gets all doctors from the database
      * @return The doctor object whose data will be added to doctors' list later
      */
-    public  ArrayList<Doctor> getDoctors() {
+    public ArrayList<Doctor> getDoctors() {
         ArrayList<Doctor> doctors = new ArrayList<>();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("select * from \"Doctor\"");
@@ -464,25 +465,24 @@ public class DatabaseManager {
         }
     }
 
-    // Ignore for now
-    /*public static ArrayList<Appointment> getPatientAppointments(String amka, Connection connection) {
+   public ArrayList<Appointment> getAppointmentsByPatient(Patient patient)
+   {
+       ArrayList<Appointment> appointments = new ArrayList<>();
+       try
+       {
+           PreparedStatement preparedStatement = connection.prepareStatement("select * from \"Appointment\" where \"patient_amka\"=?");
+           preparedStatement.setString(1, patient.getAmka());
+           ResultSet resultSet = preparedStatement.executeQuery();
 
-        try {
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM appointment WHERE patient_amka=?");
-            statement.setString(1, amka);
-            ResultSet resultSet = statement.executeQuery();
+           while (resultSet.next()) {
+               appointments.add(new Appointment(resultSet));
+           }
 
-            if (resultSet.next()) {
-
-            }
-            else {
-                return null;
-            }
-        } catch (SQLException e) {
-            System.out.println("An error occured while connecting to the database");
-            System.out.println(e.getErrorCode());
-            return null;
-        }
-
-    }*/
+           return appointments;
+       }
+       catch (SQLException e) {
+           System.out.println("An error occured while fetching appointments from the database");
+           return null;
+       }
+   }
 }
