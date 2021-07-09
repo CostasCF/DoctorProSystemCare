@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 @WebServlet("/login-servlet")
@@ -37,8 +38,6 @@ public class LoginServlet extends HttpServlet {
         session.setAttribute("surname", admin.getSurname());
         session.setAttribute("email", admin.getEmail());
         session.setAttribute( "adminID", admin.getAdminID());
-
-
     }
     public void preparePatientSession(Patient patient, HttpSession session) {
         session.setAttribute("amka", patient.getAmka());
@@ -111,8 +110,9 @@ public class LoginServlet extends HttpServlet {
         {
             System.out.println("Error, Invalid username or password");
             request.setAttribute("error","Invalid Username or Password");
-            address= "/index.jsp";
+            address = "/index.jsp";
         }
+
         database.closeConnection();
         RequestDispatcher dispatcher = request.getRequestDispatcher(address);
         dispatcher.forward(request,response);

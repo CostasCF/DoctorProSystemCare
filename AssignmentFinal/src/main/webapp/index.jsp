@@ -592,10 +592,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         </div>
 						<%
 							String login_msg = (String)request.getAttribute("error");
-							if(login_msg!=null)
+							if(login_msg != null) {
 								out.println("<font color=red size=4px>"+login_msg+"</font>");
-//							else
-//								isLoggedin = (Boolean) request.getAttribute("isLoggedin");
+							}
 						%>
                         <div class="right-w3l">
                             <input type="submit" class="form-control" value="Login">
@@ -819,9 +818,16 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 	</script>
 	<!-- //flexSlider (for testimonials) -->
 
-    <!-- script for form validation -->
+    <!-- script for form validation (and login error message) -->
     <script>
         window.onload = function () {
+
+        	// Print login message error
+			<%
+				if (login_msg != null)
+					out.println("alert('"+ login_msg +"');");
+			%>
+
 			// Check for password match
 			document.getElementById("passwordAdmin").onchange = validatePasswordAdmin;
 			document.getElementById("passwordConfirmAdmin").onchange = validatePasswordAdmin;
