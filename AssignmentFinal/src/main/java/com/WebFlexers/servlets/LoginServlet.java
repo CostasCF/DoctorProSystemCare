@@ -44,7 +44,7 @@ public class LoginServlet extends HttpServlet {
         session.setAttribute("firstname", patient.getFirstName());
         session.setAttribute("surname", patient.getSurname());
         session.setAttribute("email", patient.getEmail());
-        session.setAttribute("phoneNumber", patient.getPhone_num());
+        session.setAttribute("phoneNumber", patient.getPhoneNumber());
         session.setAttribute("listAppointments", patient.getScheduledAppointments());
     }
     public void prepareDoctorSession(Doctor doctor, HttpSession session) {
