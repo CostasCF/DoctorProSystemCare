@@ -9,38 +9,6 @@ public class Patient extends User {
     private final String amka;
     private String phoneNumber, email;
 
-    private String amka2;
-    private String username;
-
-    // Getters and setters
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getAmka() {
-        return amka;
-    }
-
-    public ArrayList<Appointment> getScheduledAppointments() {
-        return scheduledAppointments;
-    }
-
-    public void setScheduledAppointments(ArrayList<Appointment> scheduledAppointments) {
-        this.scheduledAppointments = scheduledAppointments;
-    }
-
     /**
      * A patient that is instantiated with data from a database
      * @param resultSet : The data from the database
@@ -70,21 +38,32 @@ public class Patient extends User {
         this.email= email;
     }
 
+    // Getters and setters
+    public String getPhoneNumber() { return phoneNumber; }
+
+    public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
+
+    public String getEmail() { return email; }
+
+    public void setEmail(String email) { this.email = email; }
+
+    public String getAmka() { return amka; }
+
+    public ArrayList<Appointment> getScheduledAppointments() { return scheduledAppointments; }
+
+    public void setScheduledAppointments(ArrayList<Appointment> scheduledAppointments) { this.scheduledAppointments = scheduledAppointments; }
+
     /**
      * Adds an appointment to the schedule
      * @param appointment: The scheduled appointment between the doctor and the patient
      */
-    public void addAppointment(Appointment appointment) {
-        scheduledAppointments.add(appointment);
-    }
+    public void addAppointment(Appointment appointment) { scheduledAppointments.add(appointment); }
 
     /**
      * Removes appointment from the list of scheduled appointments
      * @param appointment: The scheduled appointment between the doctor and the patient
      */
-    public void cancelAppointment(Appointment appointment) {
-        scheduledAppointments.remove(appointment);
-    }
+    public void cancelAppointment(Appointment appointment) { scheduledAppointments.remove(appointment); }
 
     /**
      * Replaces the old appointment with the new one in the scheduled appointments list
