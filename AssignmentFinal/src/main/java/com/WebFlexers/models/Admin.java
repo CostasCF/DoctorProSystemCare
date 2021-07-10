@@ -12,6 +12,7 @@ public class Admin extends User {
 	
 	protected String superuserPassword;
 	private String email;
+	private String adminID;
 
 	public String getAdminID() {
 		return adminID;
@@ -21,7 +22,6 @@ public class Admin extends User {
 		this.adminID = adminID;
 	}
 
-	private String adminID;
 	public String getEmail() {
 		return email;
 	}
@@ -49,9 +49,6 @@ public class Admin extends User {
 		this.email = email;
 		this.adminID = adminID;
     }
-
-
-
 
 	public String getSuperuserPassword() {
 		return superuserPassword;

@@ -12,9 +12,6 @@ public class Doctor extends User {
     private String email;
     private String phoneNum;
 
-
-
-
     private String adminID;
     private final String specialty;
 

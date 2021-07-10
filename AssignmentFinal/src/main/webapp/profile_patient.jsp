@@ -126,12 +126,27 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 <div class="row">
                     <div class="col-md-6">
                         <h5 class="pt-4 pb-3">Your appointments</h5>
-                        <ul class="list-group">
+                        <table class="list-group">
                             <li class='list-group-item'><b>ID, Doctor's AMKA, Patient's AMKA, Date, Start, End</b></li>
-                        </ul>
+                            <%
+                                ArrayList<Appointment> appointmentsList = (ArrayList<Appointment>)session.getAttribute("listAppointments");
+                                if(appointmentsList==null) return;
+                                for (Appointment appointment: appointmentsList) {
+                                    out.println("<tr>");
+                                    out.println("<td>" + appointment.getAppointment_id() + "</td> " +
+                                            "<td>" + appointment.getDoctor().getAmka() + "</td> " +
+                                            "<td>" + appointment.getPatient().getAmka() + "</td> " +
+                                            "<td>" + appointment.getDateTime() + "</td> " +
+                                            "<td>" + appointment.getStart_time() + "</td> " +
+                                            "<td>" + appointment.getEnd_time() + "</td> "
+                                    );
+                                    System.out.println("</tr>");
+                                }
+                            %>
+                        </table>
                     </div>
+                </div>
             </div>
-        </div>
         </div>
 
         <!--Make an Appointment Form-->

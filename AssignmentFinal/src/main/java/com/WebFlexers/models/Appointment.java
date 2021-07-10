@@ -4,7 +4,7 @@ import com.WebFlexers.DatabaseManager;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class Appointment {
@@ -12,7 +12,9 @@ public class Appointment {
     private String appointment_id;
     private Patient patient;
     private Doctor doctor;
-    private LocalDateTime dateTime;
+    private LocalDate dateTime;
+    private String start_time;
+    private String end_time;
 
     // Constructors
     public Appointment(ResultSet resultSet)
@@ -28,7 +30,10 @@ public class Appointment {
             //Converting string to Local Date Time
             String str = resultSet.getString(4);
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            dateTime = LocalDateTime.parse(str, formatter);
+            dateTime = LocalDate.parse(str, formatter);
+
+            start_time = resultSet.getString(5);
+            end_time = resultSet.getString(6);
         }
         catch (SQLException ex)
         {
@@ -37,35 +42,34 @@ public class Appointment {
         }
     }
 
-    public Appointment(Patient patient, Doctor doctor, LocalDateTime dateTime) {
+    public Appointment(Patient patient, Doctor doctor, LocalDate dateTime) {
         this.patient = patient;
         this.doctor = doctor;
         this.dateTime = dateTime;
     }
 
 
-    // Getters and setters
-    public Patient getPatient() {
-        return patient;
-    }
+    public String getAppointment_id() { return appointment_id; }
 
-    public void setPatient(Patient patient) {
-        this.patient = patient;
-    }
+    public void setAppointment_id(String appointment_id) { this.appointment_id = appointment_id; }
 
-    public Doctor getDoctor() {
-        return doctor;
-    }
+    public Patient getPatient() { return patient; }
 
-    public void setDoctor(Doctor doctor) {
-        this.doctor = doctor;
-    }
+    public void setPatient(Patient patient) { this.patient = patient; }
 
-    public LocalDateTime getDateTime() {
-        return dateTime;
-    }
+    public Doctor getDoctor() { return doctor; }
 
-    public void setDateTime(LocalDateTime dateTime) {
-        this.dateTime = dateTime;
-    }
+    public void setDoctor(Doctor doctor) { this.doctor = doctor; }
+
+    public LocalDate getDateTime() { return dateTime; }
+
+    public void setDateTime(LocalDate dateTime) { this.dateTime = dateTime; }
+
+    public String getStart_time() { return start_time; }
+
+    public void setStart_time(String start_time) { this.start_time = start_time; }
+
+    public String getEnd_time() { return end_time; }
+
+    public void setEnd_time(String end_time) { this.end_time = end_time; }
 }

@@ -1,10 +1,7 @@
 package com.WebFlexers.servlets;
 
 import com.WebFlexers.DatabaseManager;
-import com.WebFlexers.models.Admin;
-import com.WebFlexers.models.Doctor;
-import com.WebFlexers.models.Patient;
-import com.WebFlexers.models.User;
+import com.WebFlexers.models.*;
 
 import javax.print.Doc;
 import javax.servlet.RequestDispatcher;
@@ -16,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 
@@ -47,6 +45,7 @@ public class LoginServlet extends HttpServlet {
         session.setAttribute("surname", patient.getSurname());
         session.setAttribute("email", patient.getEmail());
         session.setAttribute("phoneNumber", patient.getPhoneNumber());
+        session.setAttribute("listAppointments", patient.getScheduledAppointments());
     }
     public void prepareDoctorSession(Doctor doctor, HttpSession session) {
         session.setAttribute("amka", doctor.getAmka());
@@ -84,10 +83,9 @@ public class LoginServlet extends HttpServlet {
         if (user instanceof Patient)
         {
             Patient patient = (Patient)user;
+            patient.setScheduledAppointments(database.getAppointmentsByPatient(patient));
             preparePatientSession(patient, session);
             setLoggedIn(true);
-            //ArrayList<Appointment> appointmentDetails = Patient.getAppointmentsHistory(patient.getAmka());
-            //session.setAttribute("appointment_list", appointmentDetails); //appointment_column
             setWhoLoggedIn("patient");
             address= "/profile_patient.jsp";
         }

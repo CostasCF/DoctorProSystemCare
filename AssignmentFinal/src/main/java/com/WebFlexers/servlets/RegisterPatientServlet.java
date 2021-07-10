@@ -1,10 +1,7 @@
 package com.WebFlexers.servlets;
 
 import com.WebFlexers.DatabaseManager;
-import com.WebFlexers.models.Admin;
-import com.WebFlexers.models.Doctor;
-import com.WebFlexers.models.Patient;
-import com.WebFlexers.models.User;
+import com.WebFlexers.models.*;
 
 import javax.crypto.spec.PSource;
 import javax.servlet.RequestDispatcher;
@@ -15,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.ArrayList;
 
 @WebServlet("/register-patient-servlet")
 public class RegisterPatientServlet extends HttpServlet {

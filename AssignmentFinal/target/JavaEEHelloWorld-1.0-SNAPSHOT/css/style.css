@@ -1367,4 +1367,9 @@ h3.subheading-w3-agile {
 }
 }
 
+.my-table, tr, td{
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
 /* -- //Responsive code -- */

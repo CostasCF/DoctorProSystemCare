@@ -264,7 +264,7 @@ public class DatabaseManager {
      */
     public User validateUser(String username, String password) {
         if (connection != null) {
-            // Check if a patient with the given credentials exists
+            // Check if a patient with the given cedentials exists
             Patient patient = validatePatient(username, password);
 
             if (patient != null) {
@@ -470,12 +470,15 @@ public class DatabaseManager {
        ArrayList<Appointment> appointments = new ArrayList<>();
        try
        {
+           System.out.println("Before the query");
+
            PreparedStatement preparedStatement = connection.prepareStatement("select * from \"Appointment\" where \"patient_amka\"=?");
            preparedStatement.setString(1, patient.getAmka());
            ResultSet resultSet = preparedStatement.executeQuery();
 
            while (resultSet.next()) {
                appointments.add(new Appointment(resultSet));
+               System.out.println("Appointment Added");
            }
 
            return appointments;

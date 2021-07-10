@@ -6,9 +6,11 @@ import java.util.ArrayList;
 public class Patient extends User {
 
     private ArrayList<Appointment> scheduledAppointments = new ArrayList<>();
-
     private final String amka;
     private String phoneNumber, email;
+
+    private String amka2;
+    private String username;
 
     // Getters and setters
     public String getPhoneNumber() {
@@ -52,6 +54,7 @@ public class Patient extends User {
             setSurname(resultSet.getString(5));
             email = resultSet.getString(6);
             phoneNumber = resultSet.getString(7);
+            //scheduledAppointments = appointments;
         } catch (SQLException ex) {
             System.out.println("An error occured while connecting to database");
             System.out.println("test 3-4?");
@@ -131,35 +134,5 @@ public class Patient extends User {
         }
     }
 */
-
-    // Ignore this for now
-    /**
-     * Gets patient's appointment history from the database
-     */
-    /*public static ArrayList<Appointment> getAppointmentsHistory(String amka) {
-
-        try{
-            Connection connection = DatabaseManager.Connect();
-
-            while(resultSet.next())
-            {
-                String[] temp = {
-                        resultSet.getString(1),
-                        resultSet.getString(2),
-                        resultSet.getString(3),
-                        resultSet.getString(4),
-                        resultSet.getString(5),
-                        resultSet.getString(6)
-                };
-            }
-
-            return appointment_details;
-        }
-        catch (SQLException ex) {
-            System.out.println("An error occured while connecting to database");
-            System.out.println(ex.toString());
-        }
-        return appointment_details;
-    }*/
 
 }
