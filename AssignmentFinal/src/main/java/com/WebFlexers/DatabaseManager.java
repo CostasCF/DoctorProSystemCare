@@ -472,7 +472,7 @@ public class DatabaseManager {
        {
            System.out.println("Before the query");
 
-           PreparedStatement preparedStatement = connection.prepareStatement("select * from \"Appointment\" where \"patient_amka\"=?");
+           PreparedStatement preparedStatement = connection.prepareStatement("select * from \"Scheduled_Appointment\" where \"patient_amka\"=?");
            preparedStatement.setString(1, patient.getAmka());
            ResultSet resultSet = preparedStatement.executeQuery();
 

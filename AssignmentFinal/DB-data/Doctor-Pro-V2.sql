@@ -27,7 +27,7 @@ CREATE TABLE "Admin" (
   "email" varchar(255) UNIQUE NOT NULL
 );
 
-CREATE TABLE "Appointment" (
+CREATE TABLE "Scheduled_Appointment" (
   "appointment_id" char(6) UNIQUE PRIMARY KEY,
   "doctor_amka" char(11) NOT NULL,
   "patient_amka" char(11) NOT NULL,
@@ -36,8 +36,18 @@ CREATE TABLE "Appointment" (
   "end_time" time NOT NULL
 );
 
-ALTER TABLE "Appointment" ADD FOREIGN KEY ("patient_amka") REFERENCES "Patient" ("amka");
+CREATE TABLE "Available_Appointment" (
+  "appointment_id" char(6) UNIQUE PRIMARY KEY,
+  "doctor_amka" char(11) NOT NULL,
+  "date" date NOT NULL,
+  "start_time" time NOT NULL,
+  "end_time" time NOT NULL
+);
 
-ALTER TABLE "Appointment" ADD FOREIGN KEY ("doctor_amka") REFERENCES "Doctor" ("amka");
+ALTER TABLE "Scheduled_Appointment" ADD FOREIGN KEY ("patient_amka") REFERENCES "Patient" ("amka");
+
+ALTER TABLE "Scheduled_Appointment" ADD FOREIGN KEY ("doctor_amka") REFERENCES "Doctor" ("amka");
 
 ALTER TABLE "Doctor" ADD FOREIGN KEY ("admin_id") REFERENCES "Admin" ("admin_id");
+
+ALTER TABLE "Available_Appointment" ADD FOREIGN KEY ("doctor_amka") REFERENCES "Doctor" ("amka");
