@@ -466,28 +466,7 @@ public class DatabaseManager {
         }
     }
 
-    public void addDoctorAvailability(String amka, String date, String startTime, String endTime) {
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement
-                    ("insert into \"Available_Appointment\" (\"doctor_amka\", \"date\", \"start_time\", \"end_time\") " +
-                            "values (?, ?, ?, ?)");
-
-            preparedStatement.setString(1, amka);
-            preparedStatement.setString(2, date);
-            preparedStatement.setString(3, startTime);
-            preparedStatement.setString(4, endTime);
-
-            preparedStatement.execute();
-            System.out.println("Successfully added available appointment to the database");
-
-        } catch (SQLException e) {
-            System.out.println("An error occured while connecting to the database");
-            System.out.println(e.getMessage());
-
-        }
-    }
-
-    public static String generateRandomId()
+    public String generateRandomId()
     {
         String letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         String numbers = "1234567890";
@@ -515,18 +494,35 @@ public class DatabaseManager {
         ArrayList<Appointment> appointments = new ArrayList<>();
         try
         {
-            System.out.println("Before the query");
-
             PreparedStatement preparedStatement = connection.prepareStatement("select * from \"Scheduled_Appointment\" where \"patient_amka\"=?");
             preparedStatement.setString(1, patient.getAmka());
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
                 appointments.add(new Appointment(resultSet));
-                System.out.println("Appointment Added");
             }
 
             return appointments;
+        }
+        catch (SQLException e) {
+            System.out.println("An error occured while fetching appointments from the database");
+            return null;
+        }
+    }
+
+    public ArrayList<Appointment> getAvailableAppointmentsByPatient(Patient patient)
+    {
+        ArrayList<Appointment> available_appointments = new ArrayList<>();
+        try
+        {
+            PreparedStatement preparedStatement = connection.prepareStatement("select * from \"Available_Appointment\"");
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                available_appointments.add(new Appointment(resultSet));
+            }
+
+            return available_appointments;
         }
         catch (SQLException e) {
             System.out.println("An error occured while fetching appointments from the database");
