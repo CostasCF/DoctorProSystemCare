@@ -1,6 +1,7 @@
 package com.WebFlexers.servlets;
 
 import com.WebFlexers.DatabaseManager;
+import com.WebFlexers.models.Patient;
 import com.WebFlexers.models.User;
 
 import javax.servlet.*;
@@ -14,14 +15,17 @@ public class AppointmentDeletionServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
+        HttpSession session = request.getSession();
         String appointment_id = request.getParameter("appointment_id");
+        String amka = request.getParameter("amka");
 
-        //User validation
-        //DatabaseManager database = new DatabaseManager();
-        //User user = database;
+        DatabaseManager database = new DatabaseManager();
+        Patient patient = database.getPatientByAmka(amka);
+        //patient.cancelAppointment();
+        database.CancelScheduledAppointment(appointment_id);
 
         response.setContentType("text/html;charset=UTF-8");
-        HttpSession session = request.getSession();
 
+        getServletContext().getRequestDispatcher("/profile_patient.jsp").forward(request, response);
     }
 }

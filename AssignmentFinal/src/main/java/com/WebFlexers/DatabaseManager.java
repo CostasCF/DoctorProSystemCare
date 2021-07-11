@@ -344,7 +344,7 @@ public class DatabaseManager {
     public boolean registerAdmin(Admin admin) {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement
-            ("insert into \"Admin\" (\"admin_id\", \"username\", \"password\", \"email\", \"first_name\", \"last_name\",\"IsSuperUser\") " +
+            ("insert into \"Admin\" (\"admin_id\", \"username\", \"password\", \"email\", \"first_name\", \"last_name\", \"IsSuperUser\") " +
             "values (?, ?, ?, ?, ?, ?,?)");
             preparedStatement.setString(1, admin.getAdminID());
             preparedStatement.setString(2, admin.getUsername());
@@ -508,6 +508,26 @@ public class DatabaseManager {
         return part1Str + part2Str;
     }
 
+    public Appointment getAppointmentById(String appointment_id)
+    {
+        try
+        {
+            PreparedStatement preparedStatement = connection.prepareStatement("select * from \"Scheduled_Appointment\" where \"appointment_id\"=?");
+            preparedStatement.setString(1, appointment_id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()){
+                return new Appointment(resultSet);
+            }
+
+            return null;
+        }
+        catch (SQLException e) {
+            System.out.println("An error occured while fetching appointments from the database");
+            return null;
+        }
+    }
+
     public ArrayList<Appointment> getScheduledAppointmentsByPatient(Patient patient)
     {
         ArrayList<Appointment> appointments = new ArrayList<>();
@@ -555,10 +575,10 @@ public class DatabaseManager {
         {
             PreparedStatement preparedStatement = connection.prepareStatement("delete from \"Scheduled_Appointment\" where \"appointment_id\"=?");
             preparedStatement.setString(1, appointment_id);
-            ResultSet resultSet = preparedStatement.executeQuery();
+            preparedStatement.execute();
         }
         catch (SQLException e) {
-            System.out.println("An error occured while deleting appointment from the database");
+            System.out.println("An error occured while deleting scheduled appointment from the database");
         }
     }
 
@@ -568,10 +588,10 @@ public class DatabaseManager {
         {
             PreparedStatement preparedStatement = connection.prepareStatement("delete from \"Available_Appointment\" where \"appointment_id\"=?");
             preparedStatement.setString(1, appointment_id);
-            ResultSet resultSet = preparedStatement.executeQuery();
+            preparedStatement.execute();
         }
         catch (SQLException e) {
-            System.out.println("An error occured while deleting appointment from the database");
+            System.out.println("An error occured while deleting available appointment from the database");
         }
     }
 }

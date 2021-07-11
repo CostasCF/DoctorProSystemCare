@@ -155,7 +155,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     <form action="appointment-delete-servlet" method="post">
                         <div class="form-group">
                             <label for="recipient-name">Enter Appointment's ID for deletion:</label>
-                            <input type="text" placeholder="Appointment's ID.. " name="appointment_id" id="appointment-id" required="">
+                            <input type="text" placeholder="Appointment's ID.. " name="appointment_id" id="appointmentId" required="">
                         </div>
                         <div class="right-w3l">
                             <input type="submit" value="Delete">
