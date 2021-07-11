@@ -3,6 +3,7 @@ package com.WebFlexers.servlets;
 import com.WebFlexers.DatabaseManager;
 import com.WebFlexers.models.*;
 
+import javax.print.Doc;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,6 +12,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 
 @WebServlet("/login-servlet")
@@ -79,7 +83,7 @@ public class LoginServlet extends HttpServlet {
         if (user instanceof Patient)
         {
             Patient patient = (Patient)user;
-            patient.setScheduledAppointments(database.getScheduledAppointmentsByPatient(patient));
+            patient.setScheduledAppointments(database.getAppointmentsByPatient(patient));
             preparePatientSession(patient, session);
             setLoggedIn(true);
             setWhoLoggedIn("patient");
