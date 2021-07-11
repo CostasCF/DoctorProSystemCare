@@ -149,7 +149,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             <%--                </h3>--%>
             <%--            </div>--%>
             <h4>List of Doctors</h4><br>
-            <div align="center">
+            <div>
                 <table border="1" cellpadding="5">
                     <tr>
                         <th>AMKA</th>
@@ -183,21 +183,22 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             </div>
             <br>
             <%-- Add a doctor - button --%>
-            <a href="#" data-toggle="modal" data-target="#registerDoctorModal" class="text-dark font-weight-bold">
-                Add a doctor</a>
-<br>
-        <%--            Deletion form--%>
+            <button href="#" data-toggle="modal" data-target="#registerDoctorModal" class="text-dark font-weight-bold">
+                Add a doctor</button>
+            <br>
+
+            <br>
+            <%--            Deletion form--%>
             <form action="admin-servlet" method="post">
                 <div class="form-group">
-                    <label for="recipient-name" class="col-form-label">Enter Doctor's AMKA for deletion:</label>
-                    <input type="text" class="form-control" placeholder="Doctor's AMKA.. " name="AMKA" id="doctor-amka" required="">
+                    <label for="recipient-name">Enter Doctor's AMKA for deletion:</label>
+                    <input type="text" placeholder="Doctor's AMKA.. " name="AMKA" id="doctor-amka" required="">
                 </div>
                 <div class="right-w3l">
-                    <input type="submit" class="form-control" value="Delete">
+                    <input type="submit" value="Delete">
                 </div>
             </form>
-        </div>
-
+            <br>
 
     <br>    <br>
 
@@ -233,8 +234,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
 
     <%-- Add an admin - button --%>
-        <a href="#" data-toggle="modal" data-target="#registerAdminModal" class="text-dark font-weight-bold">
-            Add an admin</a>
+        <button href="#" data-toggle="modal" data-target="#registerAdminModal" class="text-dark font-weight-bold">
+            Add an admin</button>
 
         <%-- Add a doctor--%>
         <div class="modal fade" id="registerDoctorModal" tabindex="-1" role="dialog" aria-hidden="true">

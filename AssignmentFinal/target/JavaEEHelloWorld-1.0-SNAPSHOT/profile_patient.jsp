@@ -136,6 +136,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                             <th>Start Time</th>
                             <th>End Time</th>
                         </tr>
+                        </tr>
                         <%
                             ArrayList<Appointment> appointmentsList = (ArrayList<Appointment>)session.getAttribute("listAppointments");
                             if(appointmentsList==null) return;
@@ -152,7 +153,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                             }
                         %>
                     </table><br>
-                    <form action="admin-servlet" method="post">
+                    <form action="appointment-delete-servlet" method="post">
                         <div class="form-group">
                             <label for="recipient-name">Enter Appointment's ID for deletion:</label>
                             <input type="text" placeholder="Appointment's ID.. " name="appointment_id" id="appointment-id" required="">
