@@ -89,7 +89,12 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 								out.println("<div class=\"dropdown-divider\"></div>");
 								String whoLoggedIn = (String)request.getAttribute("whoLoggedIn");
 								if(whoLoggedIn.equals("admin"))
-									out.println("<a class=\"dropdown-item\" href=\"profile_admin.jsp\">Profile</a>");
+								{
+									if(session.getAttribute("IsSuperUser").equals("true"))
+										out.println("<a class=\"dropdown-item\" href=\"profile_admin_superuser.jsp\">Profile</a>");
+									else
+										out.println("<a class=\"dropdown-item\" href=\"profile_admin.jsp\">Profile</a>");
+								}
 								else if(whoLoggedIn.equals("doctor"))
 									out.println("<a class=\"dropdown-item\" href=\"profile_doctor.jsp\">Profile</a>");
 								else
@@ -637,7 +642,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 								<label class="col-form-label">I am a</label>
 								<select class="form-control" id="accountType" required>
 									<option value="Patient"> Patient </option>
-									<option value="Admin"> Admin </option>
 								</select>
 							</div>
 
@@ -652,68 +656,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 	</div>
 	<!--//Register page-->
 
-	 <!--/Register Admin-->
-    <div class="modal fade" id="registerAdminModal" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header text-center">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="login px-4 mx-auto mw-100">
-                        <h5 class="modal-title text-center text-dark mb-4">REGISTER NOW</h5>
-                        <form action="register-admin-servlet" method="post">
-							<div class="form-group">
-								<label class="col-form-label">Username</label>
-								<input type="text" class="form-control" name="username" id="usernameAdmin" required>
-							</div>
 
-							<div class="form-group">
-								<label class="mb-2 col-form-label">Password</label>
-								<input type="password" class="form-control" name="password" id="passwordAdmin" required>
-							</div>
-
-							<div class="form-group">
-								<label class="col-form-label">Confirm Password</label>
-								<input type="password" class="form-control" name="passwordConfirm" id="passwordConfirmAdmin" required>
-							</div>
-
-							<div class="form-group">
-								<label class="col-form-label">First name</label>
-								<input type="text" class="form-control" name="firstName" id="firstNameAdmin" required>
-							</div>
-
-							<div class="form-group">
-								<label class="col-form-label">Last name</label>
-								<input type="text" class="form-control" name="lastName" id="lastNameAdmin" required>
-							</div>
-
-							<div class="form-group">
-								<label class="col-form-label">Email</label>
-								<input type="email" class="form-control" name="email" id="emailAdmin" required>
-							</div>
-
-							<div class="reg-w3l">
-								<button type="submit" class="form-control submit mb-4">Register</button>
-                           </div>
-
-							<%
-								String register_msg = (String)request.getAttribute("registerError");
-								if(register_msg!=null)
-									out.println("<font color=red size=4px>"+register_msg+"</font>");
-							%>
-						   <p class="text-center pb-4">
-                                <a href="#" class="text-secondary">By clicking Register, I agree to your terms</a>
-                            </p>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--//Register Admin-->
 
 	<!--/Register Patient-->
 	<div class="modal fade" id="registerPatientModal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -772,11 +715,11 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 								<button type="submit" class="form-control submit mb-4">Register</button>
 							</div>
 
-							<%
-								String register_mg = (String)request.getAttribute("registerError");
-								if(register_mg!=null)
-									out.println("<font color=red size=4px>"+register_msg+"</font>");
-							%>
+<%--							<%--%>
+<%--								String register_mg = (String)request.getAttribute("registerError");--%>
+<%--								if(register_mg!=null)--%>
+<%--									out.println("<font color=red size=4px>"+register_msg+"</font>");--%>
+<%--							%>--%>
 							<p class="text-center pb-4">
 								<a href="#" class="text-secondary">By clicking Register, I agree to your terms</a>
 							</p>

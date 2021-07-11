@@ -31,6 +31,23 @@ public class AdminServlet extends HttpServlet {
 
     }
 
+    /**
+     * Lists all admins that exist from the database
+     * @param request ttpServletRequest request
+     * @param database DatabaseManager database
+     */
+    public static void listAdmins(HttpServletRequest request, DatabaseManager database){
+        try{
+            ArrayList<Admin> admins;
+            admins = database.getAdmins();
+            request.setAttribute("listAdmins", admins);
+        }catch (Exception e){
+            System.out.println("Problem with listing doctors on admin's page : " + e.getMessage());
+        }
+
+    }
+
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try{
@@ -45,6 +62,5 @@ public class AdminServlet extends HttpServlet {
             System.out.println("Deletion problem: Doctor's amka doesn't exist");
         }
     }
-
 
 }

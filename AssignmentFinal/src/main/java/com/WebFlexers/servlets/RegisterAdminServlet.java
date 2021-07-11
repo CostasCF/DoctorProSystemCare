@@ -19,29 +19,43 @@ import static com.WebFlexers.servlets.AdminServlet.listDoctors;
 public class RegisterAdminServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+<<<<<<< Updated upstream
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         String email = request.getParameter("email");
         String firstName = request.getParameter("firstName");
         String lastName = request.getParameter("lastName");
 
+=======
+        Boolean IsSuperUser;
+        String checkbox = request.getParameter("isSuperUserA");
+        String username = request.getParameter("usernameA");
+        String password = request.getParameter("passwordA");
+        String email = request.getParameter("emailA");
+        String firstName = request.getParameter("firstNameA");
+        String lastName = request.getParameter("lastNameA");
+        if(checkbox != null)
+            IsSuperUser = true;
+        else
+            IsSuperUser = false;
+        System.out.println("Request get parameter ISsuperUser?" + IsSuperUser);
+        String adminID = DatabaseManager.generateRandomId();
+
+        System.out.println(IsSuperUser);
+>>>>>>> Stashed changes
         DatabaseManager database = new DatabaseManager();
         String adminID = database.generateRandomId();
 
         if (database.getUserByUsername(username) == null) {
-            HttpSession session = request.getSession();
-            Admin admin = new Admin(username, password, firstName, lastName, email,adminID);
+            Admin admin = new Admin(username, password, firstName, lastName, email,adminID,IsSuperUser);
             boolean isDone = database.registerAdmin(admin); //if register is successful, redirect to admin's profile page, else print out an error
             if (isDone)
             {
-                LoginServlet loginServlet = new LoginServlet();
-                loginServlet.prepareAdminSession(admin,session);
-                LoginServlet.setLoggedIn(true);
-                LoginServlet.setWhoLoggedIn("admin");
-                getServletContext().getRequestDispatcher("/profile_admin.jsp").forward(request, response);
+                //adminServet.ListAdmins.
+                getServletContext().getRequestDispatcher("/profile_admin_superuser.jsp").forward(request, response);
             } else {
                 request.setAttribute("registerError","Email already exists.");
-                RequestDispatcher dispatcher = request.getRequestDispatcher("/index.jsp");
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/profile_admin_superuser.jsp");
                 dispatcher.forward(request,response);
             }
 
@@ -49,7 +63,7 @@ public class RegisterAdminServlet extends HttpServlet {
         else {
             System.out.println("User already exists");
             request.setAttribute("registerError","User already exists.");
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/index.jsp");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/profile_admin_superuser.jsp");
             dispatcher.forward(request,response);
         }
 

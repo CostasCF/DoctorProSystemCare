@@ -33,6 +33,7 @@ public class LoginServlet extends HttpServlet {
         session.setAttribute("surname", admin.getSurname());
         session.setAttribute("email", admin.getEmail());
         session.setAttribute( "adminID", admin.getAdminID());
+        session.setAttribute( "IsSuperUser", String.valueOf(admin.IsSuperUser()));
     }
     public void preparePatientSession(Patient patient, HttpSession session) {
         session.setAttribute("amka", patient.getAmka());
@@ -97,7 +98,12 @@ public class LoginServlet extends HttpServlet {
             System.out.println("The guy is an admin");
             Admin admin = (Admin) user;
             prepareAdminSession(admin,session); //preparing admin's session
-            address = "/profile_admin.jsp"; // forwarding to admin's profile page
+
+            System.out.println("Is this admin a super user? "+session.getAttribute("IsSuperUser"));
+            if(admin.IsSuperUser())
+               address = "/profile_admin_superuser.jsp"; // forwarding to admin's superuser profile page
+            else
+                address = "/profile_admin.jsp";
             setLoggedIn(true);
             setWhoLoggedIn("admin");
         }

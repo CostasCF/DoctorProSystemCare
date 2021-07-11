@@ -2,10 +2,8 @@ package com.WebFlexers;
 
 import com.WebFlexers.models.*;
 
-import javax.print.Doc;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
 import java.util.Random;
 
@@ -346,8 +344,8 @@ public class DatabaseManager {
     public boolean registerAdmin(Admin admin) {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement
-            ("insert into \"Admin\" (\"admin_id\", \"username\", \"password\", \"email\", \"first_name\", \"last_name\") " +
-            "values (?, ?, ?, ?, ?, ?)");
+            ("insert into \"Admin\" (\"admin_id\", \"username\", \"password\", \"email\", \"first_name\", \"last_name\",\"IsSuperUser\") " +
+            "values (?, ?, ?, ?, ?, ?,?)");
             preparedStatement.setString(1, admin.getAdminID());
             preparedStatement.setString(2, admin.getUsername());
 
@@ -358,6 +356,7 @@ public class DatabaseManager {
             preparedStatement.setString(4, admin.getEmail());
             preparedStatement.setString(5, admin.getFirstName());
             preparedStatement.setString(6, admin.getSurname());
+            preparedStatement.setBoolean(7, admin.IsSuperUser());
 
             preparedStatement.execute();
             System.out.println("Successfully added admin to the database");
@@ -466,7 +465,28 @@ public class DatabaseManager {
         }
     }
 
-    public String generateRandomId()
+    /**
+     * Gets all admins from the database
+     * @return The admin object whose data will be added to doctors' list later
+     */
+    public ArrayList<Admin> getAdmins() {
+        ArrayList<Admin> admins = new ArrayList<>();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("select * from \"Admin\"");
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                admins.add(new Admin(resultSet));
+            }
+            return admins;
+        } catch (SQLException e) {
+            System.out.println("An error occured while connecting to the database");
+            return null;
+        }
+    }
+
+
+    public static String generateRandomId()
     {
         String letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         String numbers = "1234567890";

@@ -90,8 +90,10 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 							out.println("<div class=\"dropdown-divider\"></div>");
 							String whoLoggedIn = (String)request.getAttribute("whoLoggedIn");
 							if(whoLoggedIn.equals("admin"))
-								out.println("<a class=\"dropdown-item\" href=\"profile_admin.jsp\">Profile</a>");
-							else if(whoLoggedIn.equals("doctor"))
+								if(session.getAttribute("IsSuperUser").equals("true"))
+									out.println("<a class=\"dropdown-item\" href=\"profile_admin_superuser.jsp\">Profile</a>");
+								else
+									out.println("<a class=\"dropdown-item\" href=\"profile_admin.jsp\">Profile</a>");							else if(whoLoggedIn.equals("doctor"))
 								out.println("<a class=\"dropdown-item\" href=\"profile_doctor.jsp\">Profile</a>");
 							else
 								out.println("<a class=\"dropdown-item\" href=\"profile_patient.jsp\">Profile</a>");

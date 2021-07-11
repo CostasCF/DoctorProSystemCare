@@ -492,19 +492,20 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <!-- script for password match -->
 <script>
     window.onload = function () {
-        document.getElementById("password1").onchange = validatePassword;
-        document.getElementById("password2").onchange = validatePassword;
+        document.getElementById("passwordD").onchange = validatePassword;
+        document.getElementById("passwordConfirmD").onchange = validatePassword;
     }
 
     function validatePassword() {
-        var pass2 = document.getElementById("password2").value;
-        var pass1 = document.getElementById("password1").value;
+        var pass2 = document.getElementById("passwordConfirmD").value;
+        var pass1 = document.getElementById("passwordD").value;
         if (pass1 != pass2)
-            document.getElementById("password2").setCustomValidity("Passwords Don't Match");
+            document.getElementById("passwordD").setCustomValidity("Passwords Don't Match");
         else
-            document.getElementById("password2").setCustomValidity('');
+            document.getElementById("passwordConfirmD").setCustomValidity('');
         //empty string means no validation error
     }
+
 </script>
 <!-- script for password match -->
 <!-- start-smooth-scrolling -->

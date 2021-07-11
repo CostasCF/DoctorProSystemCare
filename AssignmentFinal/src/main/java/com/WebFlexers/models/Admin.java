@@ -2,11 +2,7 @@ package com.WebFlexers.models;
 
 import com.WebFlexers.DatabaseManager;
 
-import javax.servlet.http.HttpServletRequest;
-import java.security.spec.ECField;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Admin extends User {
 	
@@ -17,6 +13,10 @@ public class Admin extends User {
 	public String getAdminID() {
 		return adminID;
 	}
+
+
+
+	boolean IsSuperUser;
 
 	public void setAdminID(String adminID) {
 		this.adminID = adminID;
@@ -38,17 +38,23 @@ public class Admin extends User {
 			email = resultSet.getString(4);
 			firstName = resultSet.getString(5);
 			surname = resultSet.getString(6);
+			IsSuperUser = resultSet.getBoolean(7);
 		} catch (SQLException ex) {
 			System.out.println("An error occured while connecting to database");
 			System.out.println(ex.toString());
 		}
 	}
 
-	public Admin(String username, String password, String name, String surname, String email,String adminID) {
+	public Admin(String username, String password, String name, String surname, String email,String adminID,Boolean isSuperUser) {
 		super(username, password, name, surname);
 		this.email = email;
 		this.adminID = adminID;
+		this.IsSuperUser = isSuperUser;
     }
+
+	public boolean IsSuperUser() { return IsSuperUser; }
+
+	public void setSuperUser(boolean superUser) { IsSuperUser = superUser; }
 
 	public String getSuperuserPassword() {
 		return superuserPassword;

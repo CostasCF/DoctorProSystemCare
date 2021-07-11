@@ -10,6 +10,7 @@
 <%@ page import="com.WebFlexers.servlets.AdminServlet" %>
 <%@ page import="javax.xml.crypto.Data" %>
 <%@ page import="com.WebFlexers.DatabaseManager" %>
+<%@ page import="com.WebFlexers.models.Admin" %>
 <!--Template: W3layouts
 Template URL: http://w3layouts.com
 License: Creative Commons Attribution 3.0 Unported
@@ -51,9 +52,10 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
     DatabaseManager database = new DatabaseManager();
     AdminServlet.listDoctors(request,database);  // list doctors every time page refreshes
+    AdminServlet.listAdmins(request,database);  // list doctors every time page refreshes
     database.closeConnection();
 
-    if(session.getAttribute("username") == null)
+    if((session.getAttribute("username") == null) ||  session.getAttribute("IsSuperUser").equals("false"))
         response.sendRedirect("index.jsp");
 
 %>
@@ -98,7 +100,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
 
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="profile_admin.jsp">Profile</a>
+                        <a class="dropdown-item" href="profile_admin_superuser.jsp">Profile</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="logout-servlet">Logout</a>
                     </div>
@@ -138,14 +140,14 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
             </div>
             <br><br>
-<%--            <div style="text-align: center;">--%>
-<%--                <h3>--%>
-<%--                    <a href="/new">Add New Doctor</a>--%>
-<%--                    &nbsp;&nbsp;&nbsp;--%>
-<%--                    <a href="/list">List All Doctors</a>--%>
+            <%--            <div style="text-align: center;">--%>
+            <%--                <h3>--%>
+            <%--                    <a href="/new">Add New Doctor</a>--%>
+            <%--                    &nbsp;&nbsp;&nbsp;--%>
+            <%--                    <a href="/list">List All Doctors</a>--%>
 
-<%--                </h3>--%>
-<%--            </div>--%>
+            <%--                </h3>--%>
+            <%--            </div>--%>
             <h4>List of Doctors</h4><br>
             <div align="center">
                 <table border="1" cellpadding="5">
@@ -160,19 +162,19 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         <th>admin_id</th>
 
                     </tr>
-<%--                    "<td>" + doctor.getPassword() + "</td> " +--%>
+                    <%--                    "<td>" + doctor.getPassword() + "</td> " +--%>
                     <%
                         ArrayList<Doctor> doctorList = (ArrayList<Doctor>)request.getAttribute("listDoctors");
                         for (Doctor doctor: doctorList) {
                             out.println("<tr>");
                             out.println("<td>" + doctor.getAmka() + "</td> " +
-                                        "<td>" + doctor.getUsername() + "</td> " +
-                                        "<td>" + doctor.getFirstName() + "</td> " +
-                                        "<td>" + doctor.getSurname() + "</td> " +
-                                        "<td>" + doctor.getSpecialty() + "</td> " +
-                                        "<td>" + doctor.getEmail() + "</td> " +
-                                        "<td>" + doctor.getPhoneNum() + "</td> " +
-                                        "<td>" + doctor.getAdminID() + "</td> "
+                                    "<td>" + doctor.getUsername() + "</td> " +
+                                    "<td>" + doctor.getFirstName() + "</td> " +
+                                    "<td>" + doctor.getSurname() + "</td> " +
+                                    "<td>" + doctor.getSpecialty() + "</td> " +
+                                    "<td>" + doctor.getEmail() + "</td> " +
+                                    "<td>" + doctor.getPhoneNum() + "</td> " +
+                                    "<td>" + doctor.getAdminID() + "</td> "
                             );
                             out.println("</tr>");
                         }
@@ -180,7 +182,11 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 </table>
             </div>
             <br>
-<%--            Deletion form--%>
+            <%-- Add a doctor - button --%>
+            <a href="#" data-toggle="modal" data-target="#registerDoctorModal" class="text-dark font-weight-bold">
+                Add a doctor</a>
+<br>
+        <%--            Deletion form--%>
             <form action="admin-servlet" method="post">
                 <div class="form-group">
                     <label for="recipient-name" class="col-form-label">Enter Doctor's AMKA for deletion:</label>
@@ -192,10 +198,40 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             </form>
         </div>
 
-        <%-- Add a doctor - button --%>
-        <a href="#" data-toggle="modal" data-target="#registerDoctorModal" class="text-dark font-weight-bold">
-           Add a doctor</a>
 
+    <br>    <br>
+
+        <div>
+            <table border="1" cellpadding="5">
+                <tr>
+                    <th>Username</th>
+                    <th>First_name</th>
+                    <th>Last_name</th>
+                    <th>email</th>
+                    <th>admin_id</th>
+                    <th>IsSuperUser</th>
+                </tr>
+                <%--                    "<td>" + doctor.getPassword() + "</td> " +--%>
+                <%
+                    ArrayList<Admin> adminList = (ArrayList<Admin>)request.getAttribute("listAdmins");
+                    for (Admin admin: adminList) {
+                        out.println("<tr>");
+                        out.println("<td>" + admin.getUsername() + "</td> " +
+                                "<td>" + admin.getFirstName() + "</td> " +
+                                "<td>" + admin.getSurname() + "</td> " +
+                                "<td>" + admin.getEmail() + "</td> " +
+                                "<td>" + admin.getAdminID() + "</td> "+
+                                "<td>" + admin.IsSuperUser() + "</td> "
+                        );
+                        out.println("</tr>");
+                    }
+                %>
+            </table>
+        </div>
+        <br>
+    <%-- Add an admin - button --%>
+        <a href="#" data-toggle="modal" data-target="#registerAdminModal" class="text-dark font-weight-bold">
+            Add an admin</a>
 
         <%-- Add a doctor--%>
         <div class="modal fade" id="registerDoctorModal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -268,7 +304,83 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     </div>
                 </div>
             </div>
-    <!-- //typo container -->
+
+
+            </div>
+        </div>
+
+
+    <!--/Register Admin-->
+    <div class="modal fade" id="registerAdminModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="login px-4 mx-auto mw-100">
+                        <h5 class="modal-title text-center text-dark mb-4">Add an Admin</h5>
+                        <form action="register-admin-servlet" method="post">
+
+                            <div class="form-group">
+                                <label class="col-form-label">Username</label>
+                                <input type="text" class="form-control" name="usernameA" id="usernameAdmin" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="mb-2 col-form-label">Password</label>
+                                <input type="password" class="form-control" name="passwordA" id="passwordAdmin" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-form-label">Confirm Password</label>
+                                <input type="password" class="form-control" name="confirmPasswordA" id="passwordConfirmAdmin" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-form-label">First name</label>
+                                <input type="text" class="form-control" name="firstNameA" id="firstNameAdmin" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-form-label">Last name</label>
+                                <input type="text" class="form-control" name="lastNameA" id="lastNameAdmin" required>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label class="col-form-label">Email</label>
+                                <input type="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" class="form-control" name="emailA" id="emailAdmin" required>
+                            </div>
+
+
+
+                            <div class="form-group">
+                                <label class="col-form-label">Super User</label>
+                                <input type="checkbox" class="form-control" name="isSuperUserA" id="isSuperUserA" >
+                            </div>
+
+                            <%
+                                String register_msg = (String)request.getAttribute("registerError");
+                                if(register_msg!=null)
+                                    out.println("<font color=red size=4px>"+register_msg+"</font>");
+                            %>
+                            <div class="reg-w3l">
+                                <button type="submit" class="form-control submit mb-4">Add Admin</button>
+                            </div>
+
+                            <p class="text-center pb-4">
+                                <a href="#" class="text-secondary">By adding an admin into the database, I agree to your terms</a>
+                            </p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--//Register Admin-->
+
     </div>
 </section>
 <!-- //typography -->
@@ -492,11 +604,23 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <!-- script for password match -->
 <script>
     window.onload = function () {
+        document.getElementById("passwordA").onchange = validatePassword;
+        document.getElementById("confirmPasswordA").onchange = validatePassword;
         document.getElementById("passwordD").onchange = validatePassword;
         document.getElementById("passwordConfirmD").onchange = validatePassword;
     }
 
-    function validatePassword() {
+    function validateAdminPassword() {
+        var pass2 = document.getElementById("passwordA").value;
+        var pass1 = document.getElementById("confirmPasswordA").value;
+        if (pass1 != pass2)
+            document.getElementById("confirmPasswordA").setCustomValidity("Passwords Don't Match");
+        else
+            document.getElementById("confirmPasswordA").setCustomValidity('');
+        //empty string means no validation error
+    }
+
+    function validateDoctorPassword() {
         var pass2 = document.getElementById("passwordConfirmD").value;
         var pass1 = document.getElementById("passwordD").value;
         if (pass1 != pass2)

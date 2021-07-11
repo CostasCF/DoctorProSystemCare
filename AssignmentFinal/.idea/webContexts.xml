@@ -7,7 +7,11 @@
         <entry key="file://$PROJECT_DIR$/src/main/webapp/login.jsp" value="file://$PROJECT_DIR$/src/main/webapp" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/profile.jsp" value="file://$PROJECT_DIR$/src/main/webapp" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/profileAdmin.jsp" value="file://$PROJECT_DIR$/src/main/webapp" />
+<<<<<<< Updated upstream
         <entry key="file://$PROJECT_DIR$/src/main/webapp/profile_patient.jsp" value="file://$PROJECT_DIR$/src/main/webapp" />
+=======
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/profile_admin_superuser.jsp" value="file://$PROJECT_DIR$/src/main/webapp" />
+>>>>>>> Stashed changes
       </map>
     </option>
   </component>
