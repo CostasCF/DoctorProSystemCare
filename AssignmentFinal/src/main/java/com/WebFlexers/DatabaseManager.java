@@ -463,7 +463,7 @@ public class DatabaseManager {
         }
     }
 
-<<<<<<< Updated upstream
+
     /**
      * Gets all admins from the database
      * @return The admin object whose data will be added to doctors' list later
@@ -485,8 +485,6 @@ public class DatabaseManager {
     }
 
 
-=======
->>>>>>> Stashed changes
     public static String generateRandomId()
     {
         String letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
