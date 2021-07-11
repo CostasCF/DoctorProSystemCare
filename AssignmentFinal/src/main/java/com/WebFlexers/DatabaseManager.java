@@ -491,18 +491,15 @@ public class DatabaseManager {
 
     public ArrayList<Appointment> getScheduledAppointmentsByPatient(Patient patient)
     {
-           ArrayList<Appointment> appointments = new ArrayList<>();
+        ArrayList<Appointment> appointments = new ArrayList<>();
         try
         {
-            System.out.println("Before the query");
-
             PreparedStatement preparedStatement = connection.prepareStatement("select * from \"Scheduled_Appointment\" where \"patient_amka\"=?");
             preparedStatement.setString(1, patient.getAmka());
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
                 appointments.add(new Appointment(resultSet));
-                System.out.println("Appointment Added");
             }
 
             return appointments;
@@ -511,5 +508,25 @@ public class DatabaseManager {
             System.out.println("An error occured while fetching appointments from the database");
             return null;
         }
-   }
+    }
+
+    public ArrayList<Appointment> getAvailableAppointmentsByPatient(Patient patient)
+    {
+        ArrayList<Appointment> available_appointments = new ArrayList<>();
+        try
+        {
+            PreparedStatement preparedStatement = connection.prepareStatement("select * from \"Available_Appointment\"");
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                available_appointments.add(new Appointment(resultSet));
+            }
+
+            return available_appointments;
+        }
+        catch (SQLException e) {
+            System.out.println("An error occured while fetching appointments from the database");
+            return null;
+        }
+    }
 }

@@ -126,22 +126,21 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 <h4 class="mt-5 mb-3"></h4>
                 <div class="row">
                     <div class="col-md-6">
-                        <h5 class="pt-4 pb-3">Your appointments</h5>
+                        <h5 class="pt-4 pb-3">Scheduled Appointments</h5>
                         <table class="list-group">
                             <li class='list-group-item'><b>ID, Doctor's AMKA, Patient's AMKA, Date, Start, End</b></li>
                             <%
                                 ArrayList<Appointment> appointmentsList = (ArrayList<Appointment>)session.getAttribute("listAppointments");
                                 if(appointmentsList==null) return;
                                 for (Appointment appointment: appointmentsList) {
-                                    out.println("<tr>");
-                                    out.println("<td>" + appointment.getAppointment_id() + "</td> " +
-                                            "<td>" + appointment.getDoctor().getAmka() + "</td> " +
-                                            "<td>" + appointment.getPatient().getAmka() + "</td> " +
-                                            "<td>" + appointment.getDateTime() + "</td> " +
-                                            "<td>" + appointment.getStart_time() + "</td> " +
-                                            "<td>" + appointment.getEnd_time() + "</td> "
+                                    out.println("<li class='list-group-item'>" +
+                                            appointment.getAppointment_id() + ", " +
+                                            appointment.getDoctor().getAmka() + ", " +
+                                            appointment.getPatient().getAmka() + ", " +
+                                            appointment.getDateTime() + ", " +
+                                            appointment.getStart_time() + ", " +
+                                            appointment.getEnd_time() + "</li>"
                                     );
-                                    out.println("</tr>");
                                 }
                             %>
                         </table>
@@ -159,19 +158,11 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     <div class="stats">
                         <div class="stats_inner">
                             <form action="#" method="post">
-                                <input class="form-control mb-3" type="text" placeholder="Name" name="name" required="" disabled>
-                                <select class="form-control mb-3" disabled>
-                                    <option value="0">Gender</option>
-                                    <option value="1">Male</option>
-                                    <option value="2">Female</option>
-                                </select>
-                                <input class="form-control mb-3" type="text" placeholder="Phone" name="phone" required="" disabled>
-                                <input class="form-control mb-3" type="email" placeholder="E-mail" name="email" required="" disabled>
                                 <select name="selectDepartment" class="form-control mb-3">
                                     <option value="0">Select Department</option>
-                                    <option value="1">Pediatrics</option>
+                                    <option value="1">Pathology</option>
                                     <option value="2">Ophthalmology</option>
-                                    <option value="3">General Internal Medicine</option>
+                                    <option value="3">Orthopedics</option>
                                 </select>
                                 <input class="form-control date mb-3" id="datepicker" name="Text" placeholder="Select Date"  type="text" required="">
                                 <button name="buttonMakeAppointment" type="submit" class="btn btn-agile btn-block w-100" disabled>Make An Appointment</button>
