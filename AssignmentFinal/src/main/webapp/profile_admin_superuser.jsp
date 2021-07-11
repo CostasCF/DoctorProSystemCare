@@ -201,6 +201,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
     <br>    <br>
 
+        <h4>List of Admins</h4><br>
         <div>
             <table border="1" cellpadding="5">
                 <tr>
@@ -294,6 +295,11 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                     <input type="text" pattern="^(\d{10})$" class="form-control" name="phoneNumD" id="phoneNumDoctor" required>
                                 </div>
 
+                                <%
+                                    String registerDoctorError = (String)request.getAttribute("registerDoctorError");
+                                    if(registerDoctorError!=null)
+                                        out.println("<font color=red size=4px>"+registerDoctorError+"</font>");
+                                %>
                                 <div class="reg-w3l">
                                     <button type="submit" class="form-control submit mb-4">Add doctor</button>
                                 </div>
@@ -606,29 +612,29 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <!-- script for password match -->
 <script>
     window.onload = function () {
-        document.getElementById("passwordA").onchange = validatePassword;
-        document.getElementById("confirmPasswordA").onchange = validatePassword;
-        document.getElementById("passwordD").onchange = validatePassword;
-        document.getElementById("passwordConfirmD").onchange = validatePassword;
+        document.getElementById("passwordAdmin").onchange = validatePasswordAdmin;
+        document.getElementById("passwordConfirmAdmin").onchange = validatePasswordAdmin;
+        document.getElementById("passwordDoctor").onchange = validatePasswordDoctor;
+        document.getElementById("passwordConfirmDoctor").onchange = validatePasswordDoctor;
     }
 
-    function validateAdminPassword() {
-        var pass2 = document.getElementById("passwordA").value;
-        var pass1 = document.getElementById("confirmPasswordA").value;
-        if (pass1 != pass2)
-            document.getElementById("confirmPasswordA").setCustomValidity("Passwords Don't Match");
+    function validatePasswordAdmin() {
+        var passwordField = document.getElementById("passwordAdmin");
+        var passwordConfirmField = document.getElementById("passwordConfirmAdmin");
+        if (passwordField.value != passwordConfirmField.value)
+            passwordConfirmField.setCustomValidity("Passwords Don't Match");
         else
-            document.getElementById("confirmPasswordA").setCustomValidity('');
+            passwordConfirmField.setCustomValidity('');
         //empty string means no validation error
     }
 
-    function validateDoctorPassword() {
-        var pass2 = document.getElementById("passwordConfirmD").value;
-        var pass1 = document.getElementById("passwordD").value;
-        if (pass1 != pass2)
-            document.getElementById("passwordD").setCustomValidity("Passwords Don't Match");
+    function validatePasswordDoctor() {
+        var passwordField = document.getElementById("passwordDoctor");
+        var passwordConfirmField = document.getElementById("passwordConfirmDoctor");
+        if (passwordField.value != passwordConfirmField.value)
+            passwordConfirmField.setCustomValidity("Passwords Don't Match");
         else
-            document.getElementById("passwordConfirmD").setCustomValidity('');
+            passwordConfirmField.setCustomValidity('');
         //empty string means no validation error
     }
 

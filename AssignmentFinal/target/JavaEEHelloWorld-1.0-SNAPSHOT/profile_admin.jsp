@@ -256,6 +256,12 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                     <input type="text" pattern="^(\d{10})$" class="form-control" name="phoneNumD" id="phoneNumDoctor" required>
                                 </div>
 
+                                <%
+                                    String registerDoctorError = (String)request.getAttribute("registerDoctorError");
+                                    if(registerDoctorError!=null)
+                                        out.println("<font color=red size=4px>"+registerDoctorError+"</font>");
+                                %>
+
                                 <div class="reg-w3l">
                                     <button type="submit" class="form-control submit mb-4">Add doctor</button>
                                 </div>
@@ -492,17 +498,17 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <!-- script for password match -->
 <script>
     window.onload = function () {
-        document.getElementById("passwordD").onchange = validatePassword;
-        document.getElementById("passwordConfirmD").onchange = validatePassword;
+        document.getElementById("passwordDoctor").onchange = validatePasswordDoctor;
+        document.getElementById("passwordConfirmDoctor").onchange = validatePasswordDoctor;
     }
 
-    function validatePassword() {
-        var pass2 = document.getElementById("passwordConfirmD").value;
-        var pass1 = document.getElementById("passwordD").value;
+    function validatePasswordDoctor() {
+        var pass2 = document.getElementById("passwordConfirmDoctor").value;
+        var pass1 = document.getElementById("passwordDoctor").value;
         if (pass1 != pass2)
-            document.getElementById("passwordD").setCustomValidity("Passwords Don't Match");
+            document.getElementById("passwordDoctor").setCustomValidity("Passwords Don't Match");
         else
-            document.getElementById("passwordConfirmD").setCustomValidity('');
+            document.getElementById("passwordConfirmDoctor").setCustomValidity('');
         //empty string means no validation error
     }
 

@@ -7,6 +7,7 @@ import com.WebFlexers.models.Patient;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
+import javax.swing.*;
 import java.io.IOException;
 
 @WebServlet("/register-doctor-servlet")
@@ -34,19 +35,27 @@ public class RegisterDoctorServlet extends HttpServlet {
                 if (database.getDoctorByAmka(amkaD) == null)
                     database.registerDoctor(new Doctor(amkaD, usernameD, passwordD, firstNameD, lastNameD, specialtyD, phoneNumD, emailD, adminID));
                 else {
+                    request.setAttribute("registerDoctorError","A doctor with the same amka already exists");
                     System.out.println("A doctor with the same amka already exists");
                 }
             }
             else {
+                request.setAttribute("registerDoctorError","A patient with the same amka already exists");
                 System.out.println("A patient with the same amka already exists");
             }
         }
         else {
+            request.setAttribute("registerDoctorError","This username already exists");
             System.out.println("This username already exists");
         }
 
         AdminServlet.listDoctors(request,database);
         database.closeConnection();
-        getServletContext().getRequestDispatcher("/profile_admin.jsp").forward(request, response);
+        if(session.getAttribute("IsSuperUser").equals("true"))
+            getServletContext().getRequestDispatcher("/profile_admin_superuser.jsp").forward(request, response);
+        else
+            getServletContext().getRequestDispatcher("/profile_admin.jsp").forward(request, response);
+
+
     }
 }

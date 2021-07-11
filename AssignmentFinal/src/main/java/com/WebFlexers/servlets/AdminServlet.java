@@ -51,11 +51,15 @@ public class AdminServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try{
-           String AMKA = request.getParameter("AMKA");
+          HttpSession session = request.getSession();
+          String AMKA = request.getParameter("AMKA");
           DatabaseManager database = new DatabaseManager();
           Doctor doc  =  database.getDoctorByAmka(AMKA); //find the doctor to be deleted via it's amka
           Admin.DeleteDoctor(doc);
-          getServletContext().getRequestDispatcher("/profile_admin.jsp").forward(request, response);
+          if(session.getAttribute("IsSuperUser").equals("true"))
+                getServletContext().getRequestDispatcher("/profile_admin_superuser.jsp").forward(request, response);
+            else
+                getServletContext().getRequestDispatcher("/profile_admin.jsp").forward(request, response);
 
         }catch (Exception e){
             System.out.println(e.getMessage());
