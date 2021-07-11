@@ -124,27 +124,43 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     <div class="p-2 bg-flex mb-1 bg-flex-item">Phone Number: <% out.println("<font color=black size=4px>"+ session.getAttribute("phoneNumber")+"</font>"); %> </div>
                 </div>
                 <h4 class="mt-5 mb-3"></h4>
-                <div class="row">
-                    <div class="col-md-6">
-                        <h5 class="pt-4 pb-3">Scheduled Appointments</h5>
-                        <table class="list-group">
-                            <li class='list-group-item'><b>ID, Doctor's AMKA, Patient's AMKA, Date, Start, End</b></li>
-                            <%
-                                ArrayList<Appointment> appointmentsList = (ArrayList<Appointment>)session.getAttribute("listAppointments");
-                                if(appointmentsList==null) return;
-                                for (Appointment appointment: appointmentsList) {
-                                    out.println("<li class='list-group-item'>" +
-                                            appointment.getAppointment_id() + ", " +
-                                            appointment.getDoctor().getAmka() + ", " +
-                                            appointment.getPatient().getAmka() + ", " +
-                                            appointment.getDateTime() + ", " +
-                                            appointment.getStart_time() + ", " +
-                                            appointment.getEnd_time() + "</li>"
-                                    );
-                                }
-                            %>
-                        </table>
-                    </div>
+                <!---------------------Table of Scheduled Appointments--------------------->
+                <div align="center">
+                    <h5 class="pt-4 pb-3">Scheduled Appointments</h5>
+                    <table border="1" cellpadding="5">
+                        <tr>
+                            <th>ID</th>
+                            <th>Doctor Amka</th>
+                            <th>Patient Amka</th>
+                            <th>Date</th>
+                            <th>Start Time</th>
+                            <th>End Time</th>
+                        </tr>
+                        <%
+                            ArrayList<Appointment> appointmentsList = (ArrayList<Appointment>)session.getAttribute("listAppointments");
+                            if(appointmentsList==null) return;
+                            for (Appointment appointment: appointmentsList) {
+                                out.println("<tr>");
+                                out.println("<td>" + appointment.getAppointment_id() + "</td>" +
+                                        "<td>" + appointment.getDoctor().getAmka() +"</td>" +
+                                        "<td>" + appointment.getPatient().getAmka() + "</td>" +
+                                        "<td>" + appointment.getDateTime() + "</td>" +
+                                        "<td>" + appointment.getStart_time() + "</td>" +
+                                        "<td>" + appointment.getEnd_time() + "</td>"
+                                );
+                                out.println("</tr>");
+                            }
+                        %>
+                    </table><br>
+                    <form action="appointment-delete-servlet" method="post">
+                        <div class="form-group">
+                            <label for="recipient-name">Enter Appointment's ID for deletion:</label>
+                            <input type="text" placeholder="Appointment's ID.. " name="appointment_id" id="appointment-id" required="">
+                        </div>
+                        <div class="right-w3l">
+                            <input type="submit" value="Delete">
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
