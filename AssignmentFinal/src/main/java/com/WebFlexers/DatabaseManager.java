@@ -7,6 +7,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.Random;
 
 public class DatabaseManager {
     private Connection connection;
@@ -465,27 +466,50 @@ public class DatabaseManager {
         }
     }
 
-   public ArrayList<Appointment> getAppointmentsByPatient(Patient patient)
-   {
-       ArrayList<Appointment> appointments = new ArrayList<>();
-       try
-       {
-           System.out.println("Before the query");
+    public String generateRandomId()
+    {
+        String letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        String numbers = "1234567890";
 
-           PreparedStatement preparedStatement = connection.prepareStatement("select * from \"Scheduled_Appointment\" where \"patient_amka\"=?");
-           preparedStatement.setString(1, patient.getAmka());
-           ResultSet resultSet = preparedStatement.executeQuery();
+        StringBuilder part1 = new StringBuilder();
+        Random rnd = new Random();
+        while (part1.length() < 2) { // length of the random string.
+            int index = (int) (rnd.nextFloat() * letters.length());
+            part1.append(letters.charAt(index));
+        }
+        StringBuilder part2 = new StringBuilder();
+        while (part2.length() < 4) { // length of the random string.
+            int index = (int) (rnd.nextFloat() * numbers.length());
+            part2.append(numbers.charAt(index));
+        }
 
-           while (resultSet.next()) {
-               appointments.add(new Appointment(resultSet));
-               System.out.println("Appointment Added");
-           }
+        String part1Str = part1.toString();
+        String part2Str = part2.toString();
 
-           return appointments;
-       }
-       catch (SQLException e) {
-           System.out.println("An error occured while fetching appointments from the database");
-           return null;
-       }
+        return part1Str + part2Str;
+    }
+
+    public ArrayList<Appointment> getScheduledAppointmentsByPatient(Patient patient)
+    {
+           ArrayList<Appointment> appointments = new ArrayList<>();
+        try
+        {
+            System.out.println("Before the query");
+
+            PreparedStatement preparedStatement = connection.prepareStatement("select * from \"Scheduled_Appointment\" where \"patient_amka\"=?");
+            preparedStatement.setString(1, patient.getAmka());
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                appointments.add(new Appointment(resultSet));
+                System.out.println("Appointment Added");
+            }
+
+            return appointments;
+        }
+        catch (SQLException e) {
+            System.out.println("An error occured while fetching appointments from the database");
+            return null;
+        }
    }
 }
