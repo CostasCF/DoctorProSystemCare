@@ -44,14 +44,14 @@ public class RegisterAdminServlet extends HttpServlet {
             HttpSession session = request.getSession();
             Admin admin = new Admin(username, password, firstName, lastName, email,adminID);
             boolean isDone = database.registerAdmin(admin); //if register is successful, redirect to admin's profile page, else print out an error
-            if(isDone)
+            if (isDone)
             {
                 LoginServlet loginServlet = new LoginServlet();
                 loginServlet.prepareAdminSession(admin,session);
                 LoginServlet.setLoggedIn(true);
                 LoginServlet.setWhoLoggedIn("admin");
                 getServletContext().getRequestDispatcher("/profile_admin.jsp").forward(request, response);
-            }else{
+            } else {
                 request.setAttribute("registerError","Email already exists.");
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/index.jsp");
                 dispatcher.forward(request,response);

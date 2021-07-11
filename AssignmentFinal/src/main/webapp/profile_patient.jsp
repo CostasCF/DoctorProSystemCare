@@ -83,8 +83,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                             <span class="sr-only">(current)</span>
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="profile_patient.jsp">Profile</a>
+                            <a class="dropdown-item" href="profile_doctor.jsp">Profile</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="logout-servlet">Logout</a>
                         </div>
@@ -140,7 +141,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                             "<td>" + appointment.getStart_time() + "</td> " +
                                             "<td>" + appointment.getEnd_time() + "</td> "
                                     );
-                                    System.out.println("</tr>");
+                                    out.println("</tr>");
                                 }
                             %>
                         </table>
