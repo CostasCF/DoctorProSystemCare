@@ -415,7 +415,6 @@ public class DatabaseManager {
             System.out.println("DatabaseManager: An error occured while deleting a doctor from the database");
             System.out.println(e.getMessage());
         }
-
     }
 
     /**
@@ -442,7 +441,6 @@ public class DatabaseManager {
             System.out.println("DatabaseManager: An error occured while registering an deleting a doctor from the database");
             System.out.println(e.getMessage());
         }
-
     }
 
     /**
@@ -465,6 +463,7 @@ public class DatabaseManager {
         }
     }
 
+<<<<<<< Updated upstream
     /**
      * Gets all admins from the database
      * @return The admin object whose data will be added to doctors' list later
@@ -486,6 +485,8 @@ public class DatabaseManager {
     }
 
 
+=======
+>>>>>>> Stashed changes
     public static String generateRandomId()
     {
         String letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -530,7 +531,7 @@ public class DatabaseManager {
         }
     }
 
-    public ArrayList<Appointment> getAvailableAppointmentsByPatient(Patient patient)
+    public ArrayList<Appointment> getAvailableAppointmentsByDoctor(Doctor doctor)
     {
         ArrayList<Appointment> available_appointments = new ArrayList<>();
         try
