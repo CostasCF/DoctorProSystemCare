@@ -34,14 +34,13 @@ public class RegisterAdminServlet extends HttpServlet {
         System.out.println(IsSuperUser);
 
         DatabaseManager database = new DatabaseManager();
-        String adminID = database.generateRandomId();
+        String adminID = DatabaseManager.generateRandomId();
 
         if (database.getUserByUsername(username) == null) {
             Admin admin = new Admin(username, password, firstName, lastName, email,adminID,IsSuperUser);
             boolean isDone = database.registerAdmin(admin); //if register is successful, redirect to admin's profile page, else print out an error
             if (isDone)
             {
-                AdminServlet.listAdmins(request,database);
                 getServletContext().getRequestDispatcher("/profile_admin_superuser.jsp").forward(request, response);
             } else {
                 request.setAttribute("registerError","Email already exists.");

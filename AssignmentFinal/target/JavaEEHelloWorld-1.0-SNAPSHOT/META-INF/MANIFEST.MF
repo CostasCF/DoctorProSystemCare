@@ -1,10 +1,5 @@
 Manifest-Version: 1.0
 Created-By: IntelliJ IDEA
-<<<<<<< Updated upstream
-Built-By: magke
-Build-Jdk: version 16.0.1
-=======
 Built-By: COSTAS
 Build-Jdk: 16
->>>>>>> Stashed changes
 

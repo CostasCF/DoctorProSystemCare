@@ -210,7 +210,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 						<li class="mb-3">
 							Sunday ---------- 10:30-18:00
 						</li>
-						
+
 					</ul>
 				</div>
 				<!-- //footer grid2 -->

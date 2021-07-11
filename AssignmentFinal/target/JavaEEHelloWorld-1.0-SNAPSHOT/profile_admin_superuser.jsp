@@ -229,6 +229,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             </table>
         </div>
         <br>
+
+
     <%-- Add an admin - button --%>
         <a href="#" data-toggle="modal" data-target="#registerAdminModal" class="text-dark font-weight-bold">
             Add an admin</a>
