@@ -465,6 +465,27 @@ public class DatabaseManager {
         }
     }
 
+    public void addDoctorAvailability(String amka, String date, String startTime, String endTime) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement
+                    ("insert into \"Available_Appointment\" (\"doctor_amka\", \"date\", \"start_time\", \"end_time\") " +
+                            "values (?, ?, ?, ?)");
+
+            preparedStatement.setString(1, amka);
+            preparedStatement.setString(2, date);
+            preparedStatement.setString(3, startTime);
+            preparedStatement.setString(4, endTime);
+
+            preparedStatement.execute();
+            System.out.println("Successfully added available appointment to the database");
+
+        } catch (SQLException e) {
+            System.out.println("An error occured while connecting to the database");
+            System.out.println(e.getMessage());
+
+        }
+    }
+
    public ArrayList<Appointment> getAppointmentsByPatient(Patient patient)
    {
        ArrayList<Appointment> appointments = new ArrayList<>();

@@ -28,7 +28,6 @@ public class RegisterAdminServlet extends HttpServlet {
         }
         String saltStr = salt.toString();
         return saltStr;
-
     }
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String username = request.getParameter("username");
@@ -43,7 +42,7 @@ public class RegisterAdminServlet extends HttpServlet {
         if (database.getUserByUsername(username) == null) {
             HttpSession session = request.getSession();
             Admin admin = new Admin(username, password, firstName, lastName, email,adminID);
-            boolean isDone = database.registerAdmin(admin); //if register is successful, redirect to admin's profile page, else print out an error
+            boolean isDone = database.registerAdmin(admin); // if register is successful, redirect to admin's profile page, else print out an error
             if (isDone)
             {
                 LoginServlet loginServlet = new LoginServlet();

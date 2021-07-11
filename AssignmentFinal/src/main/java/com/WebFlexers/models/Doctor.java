@@ -1,13 +1,14 @@
 package com.WebFlexers.models;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Dictionary;
 import java.util.List;
 
 public class Doctor extends User {
 
-    private List<String> schedule;
-    private LocalDateTime dateTime;
+    private Dictionary<String, Appointment> scheduledAppointments;
     private String amka;
     private String email;
     private String phoneNum;
@@ -26,6 +27,7 @@ public class Doctor extends User {
     public void setEmail(String email) { this.email = email; }
     public void setPhoneNum(String phoneNum) { this.phoneNum = phoneNum; }
     public void setAdminID(String adminID) { this.adminID = adminID; }
+
     /**
      * A doctor that is instantiated with data from a database
      * @param resultSet : The data from the database
@@ -63,12 +65,11 @@ public class Doctor extends User {
 
 
     /**
-     * Doctor inserts the date he is available to check in patients
+     * Doctor inserts a date and time he is available to check in patients
      */
-    public void insertDateAvailability(String doctorAvailability)
+    public void insertAvailability(LocalDateTime dateAndStartTime, LocalDateTime dateAndEndTime)
     {
-        dateTime = LocalDateTime.now();
-        System.out.println("Available date added");
+
     }
 
     /**
