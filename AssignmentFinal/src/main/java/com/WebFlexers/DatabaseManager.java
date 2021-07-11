@@ -549,19 +549,29 @@ public class DatabaseManager {
         }
     }
 
-    public void CancelAppointment(String appointment_id)
+    public void CancelScheduledAppointment(String appointment_id)
     {
         try
         {
             PreparedStatement preparedStatement = connection.prepareStatement("delete from \"Scheduled_Appointment\" where \"appointment_id\"=?");
             preparedStatement.setString(1, appointment_id);
             ResultSet resultSet = preparedStatement.executeQuery();
-
-            return available_appointments;
         }
         catch (SQLException e) {
-            System.out.println("An error occured while fetching appointments from the database");
-            return null;
+            System.out.println("An error occured while deleting appointment from the database");
+        }
+    }
+
+    public void CancelAvailableAppointment(String appointment_id)
+    {
+        try
+        {
+            PreparedStatement preparedStatement = connection.prepareStatement("delete from \"Available_Appointment\" where \"appointment_id\"=?");
+            preparedStatement.setString(1, appointment_id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+        }
+        catch (SQLException e) {
+            System.out.println("An error occured while deleting appointment from the database");
         }
     }
 }
