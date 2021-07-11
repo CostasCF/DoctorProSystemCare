@@ -7,7 +7,8 @@ public class Patient extends User {
 
     private ArrayList<Appointment> scheduledAppointments = new ArrayList<>();
     private final String amka;
-    private String phoneNumber, email;
+    private String phoneNumber;
+    private String email;
 
     /**
      * A patient that is instantiated with data from a database
