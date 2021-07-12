@@ -176,17 +176,13 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
         <%--Search for available appointment--%>
         <div align="center" style="width: 50%; margin: auto;">
-            <form action="" method="post">
-                <div class="form-group">
-                    <label class="col-form-label">Select Department</label>
-                    <input type="text" pattern="^(\d{11})$" class="form-control" name="amkaD" id="amkaDoctor" required>
-                </div>
+            <form action="available-appointments-servlet" method="post">
                 <div class="form-group">
                     <select name="selectDepartment" class="form-control mb-3">
                         <option value="0">Select Department</option>
-                        <option value="1">Pediatrics</option>
+                        <option value="1">Pathology</option>
                         <option value="2">Ophthalmology</option>
-                        <option value="3">General Internal Medicine</option>
+                        <option value="3">Orthopedics</option>
                     </select>
                 </div>
                 <div class="reg-w3l">

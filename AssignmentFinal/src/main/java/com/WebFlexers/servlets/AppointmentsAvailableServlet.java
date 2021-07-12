@@ -17,6 +17,6 @@ public class AppointmentsAvailableServlet extends HttpServlet {
     {
         DatabaseManager databaseManager = new DatabaseManager();
         ArrayList<Appointment> available_apps = new ArrayList<>();
-        available_apps = databaseManager.getAvailableAppointmentsByDoctor();
+       // available_apps = databaseManager.getAvailableAppointmentsByDoctor();
     }
 }

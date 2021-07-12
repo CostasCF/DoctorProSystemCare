@@ -548,6 +548,34 @@ public class DatabaseManager {
             return null;
         }
     }
+
+
+    /**
+     * Gets the scheduled appointments of a doctor
+     * @param doctor a Doctor's object
+     * @return ArrayList<Appointment>
+     */
+    public ArrayList<Appointment> getScheduledAppointmentsByDoctor(Doctor doctor)
+    {
+        ArrayList<Appointment> appointments = new ArrayList<>();
+        try
+        {
+            PreparedStatement preparedStatement = connection.prepareStatement("select * from \"Scheduled_Appointment\" where \"doctor_amka\"=?");
+            preparedStatement.setString(1, doctor.getAmka());
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                appointments.add(new Appointment(resultSet));
+            }
+
+            return appointments;
+        }
+        catch (SQLException e) {
+            System.out.println("An error occured while fetching appointments from the database");
+            return null;
+        }
+    }
+
     public ArrayList<Appointment> getScheduledAppointmentsById(String appointment_id)
     {
         ArrayList<Appointment> appointments = new ArrayList<>();

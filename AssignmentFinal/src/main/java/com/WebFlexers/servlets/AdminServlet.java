@@ -54,6 +54,7 @@ public class AdminServlet extends HttpServlet {
           DatabaseManager database = new DatabaseManager();
           Doctor doc  =  database.getDoctorByAmka(AMKA); //find the doctor to be deleted via it's amka
           Admin.DeleteDoctor(doc);
+          database.closeConnection();
           if(session.getAttribute("IsSuperUser").equals("true"))
                 getServletContext().getRequestDispatcher("/profile_admin_superuser.jsp").forward(request, response);
             else

@@ -138,14 +138,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
             </div>
             <br><br>
-<%--            <div style="text-align: center;">--%>
-<%--                <h3>--%>
-<%--                    <a href="/new">Add New Doctor</a>--%>
-<%--                    &nbsp;&nbsp;&nbsp;--%>
-<%--                    <a href="/list">List All Doctors</a>--%>
-
-<%--                </h3>--%>
-<%--            </div>--%>
             <h4>List of Doctors</h4><br>
 
             <div>
@@ -161,7 +153,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         <th>admin_id</th>
 
                     </tr>
-<%--                    "<td>" + doctor.getPassword() + "</td> " +--%>
                     <%
                         ArrayList<Doctor> doctorList = (ArrayList<Doctor>)request.getAttribute("listDoctors");
                         for (Doctor doctor: doctorList) {

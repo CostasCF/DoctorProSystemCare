@@ -1,11 +1,19 @@
 package com.WebFlexers.models;
 
+import com.WebFlexers.DatabaseManager;
+
+import javax.print.Doc;
+import javax.servlet.http.HttpServletRequest;
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Doctor extends User {
 
+
+
+    public static ArrayList<Appointment> ScheduledAppointments;
     private List<String> schedule;
     private LocalDateTime dateTime;
     private String amka;
@@ -21,11 +29,14 @@ public class Doctor extends User {
     public String getEmail() { return email; }
     public String getPhoneNum() { return phoneNum; }
     public String getAdminID() { return adminID; }
+    public static ArrayList<Appointment> getScheduledAppointments() { return ScheduledAppointments; }
+
 
     // Setters
     public void setEmail(String email) { this.email = email; }
     public void setPhoneNum(String phoneNum) { this.phoneNum = phoneNum; }
     public void setAdminID(String adminID) { this.adminID = adminID; }
+    public void setScheduledAppointments(ArrayList<Appointment> getScheduledAppointments) { this.ScheduledAppointments = getScheduledAppointments; }
     /**
      * A doctor that is instantiated with data from a database
      * @param resultSet : The data from the database
@@ -61,6 +72,16 @@ public class Doctor extends User {
         this.email = email;
     }
 
+    public void viewScheduledAppointments(HttpServletRequest request, Doctor doctor, DatabaseManager database){
+        try{
+            ArrayList<Appointment> appointments;
+            appointments = database.getScheduledAppointmentsByDoctor(doctor);
+            request.setAttribute("listAppointments", appointments);
+            setScheduledAppointments(appointments);
+        }catch (Exception e){
+            System.out.println("Problem with fetching  doctors' appointments : " + e.getMessage());
+        }
+    }
 
     /**
      * Doctor inserts the date he is available to check in patients
