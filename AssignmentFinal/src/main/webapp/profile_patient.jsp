@@ -136,6 +136,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                             <th>Start Time</th>
                             <th>End Time</th>
                         </tr>
+                        </tr>
                         <%
                             ArrayList<Appointment> appointmentsList = (ArrayList<Appointment>)session.getAttribute("listAppointments");
                             if(appointmentsList==null) return;
