@@ -185,6 +185,15 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         <button href="#" data-toggle="modal" data-target="#addAvailabilityForAppointments" class="text-dark font-weight-bold">
             Add availability</button>
 
+        <%
+            String insertAvailabilityMsg = (String)request.getAttribute("insertAvailabilityMsg");
+            if(insertAvailabilityMsg != null)
+                if (insertAvailabilityMsg.equals("Success inserting available appointments."))
+                    out.println("<font color=green size=4px>"+ insertAvailabilityMsg +"</font>");
+                else {
+                    out.println("<font color=red size=4px>"+ insertAvailabilityMsg +"</font>");
+                }
+        %>
 
         <!--/Register Availability for appointments Modal-->
         <div class="modal fade" id="addAvailabilityForAppointments" tabindex="-1" role="dialog" aria-hidden="true">
@@ -212,15 +221,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
                                 <div class="form-group">
                                     <label class="col-form-label">End Time</label>
-                                    <input type="date" class="form-control" name="endTimeInsert" id="endTimeInsert" required>
+                                    <input type="time" class="form-control" name="endTimeInsert" id="endTimeInsert" required>
                                 </div>
 
-
-                                <%
-                                    String insertAvailabilityMsg = (String)request.getAttribute("insertAvailabilityMsg");
-                                    if(insertAvailabilityMsg !=null)
-                                        out.println("<font color=red size=4px>"+ insertAvailabilityMsg +"</font>");
-                                %>
                                 <div class="reg-w3l">
                                     <button type="submit" class="form-control submit mb-4">Add availability for appointments</button>
                                 </div>

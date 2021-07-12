@@ -151,9 +151,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                 out.println("<td>" + appointment.getAppointment_id() + "</td>" +
                                         "<td>" + appointment.getDoctor().getAmka() +"</td>" +
                                         "<td>" + appointment.getPatient().getAmka() + "</td>" +
-                                        "<td>" + appointment.getDateTime() + "</td>" +
-                                        "<td>" + appointment.getStart_time() + "</td>" +
-                                        "<td>" + appointment.getEnd_time() + "</td>"
+                                        "<td>" + appointment.getDate() + "</td>" +
+                                        "<td>" + appointment.getStart_time().toString() + "</td>" +
+                                        "<td>" + appointment.getEnd_time().toString() + "</td>"
                                 );
                                 out.println("</tr>");
                             }

@@ -23,10 +23,10 @@ public class DatabaseManager {
 
     public void createConnection() {
         try {
-            String url = "jdbc:postgresql://ec2-54-73-68-39.eu-west-1.compute.amazonaws.com:5432/d8kt47qh55c24g";
+            String url = "jdbc:postgresql://ec2-63-33-239-176.eu-west-1.compute.amazonaws.com:5432/da2pcm0gjc5hrv";
             Properties props = new Properties();
-            props.setProperty("user","snzbrrltdfagct");
-            props.setProperty("password","618b0e656d64c06ca167eca5179abd8bd4b7f8e3295784547642c1a5a465464a");
+            props.setProperty("user","egclbbfjnxflqx");
+            props.setProperty("password","1595f9de3818f63fd7a8373098250bc31ff7803dd70dbfe9ba868a1e001655e6");
 
             connection = DriverManager.getConnection(url, props);
             System.out.println("Connected Successfully to the database");
@@ -563,31 +563,21 @@ public class DatabaseManager {
      * Adds available appointments for Doctor
      * @param appointment appointment object
      * @param doctorAMKA doctor's AMKA
-     * @return true if insertion was successful, false otherwise
      */
-    public boolean addAvailableAppointment(Appointment appointment,String doctorAMKA)
+    public void addAvailableAppointment(Appointment appointment,String doctorAMKA) throws  SQLException
     {
-        try
-        {
-            PreparedStatement preparedStatement = connection.prepareStatement
-                    ("insert into \"Available_Appoinment\" (\"appointment_id\", \"doctor_amka\", \"date\", \"start_time\", \"end_time\") " +
-                            "values (?, ?, ?, ?, ?)");
-            preparedStatement.setString(1, appointment.getAppointment_id());
-            preparedStatement.setString(2, doctorAMKA);
-            preparedStatement.setString(3, appointment.getDate().toString());
-            preparedStatement.setString(4, appointment.getStart_time().toString());
-            preparedStatement.setString(5, appointment.getEnd_time().toString());
+        PreparedStatement preparedStatement = connection.prepareStatement
+                ("insert into \"Available_Appointment\" (\"appointment_id\", \"doctor_amka\", \"date\", \"start_time\", \"end_time\") " +
+                        "values (?, ?, ?, ?, ?)");
+        preparedStatement.setString(1, appointment.getAppointment_id());
+        preparedStatement.setString(2, doctorAMKA);
+        preparedStatement.setDate(3, Date.valueOf(appointment.getDate()));
+        preparedStatement.setTime(4, Time.valueOf(appointment.getStart_time()));
+        preparedStatement.setTime(5, Time.valueOf(appointment.getEnd_time()));
 
-
-            preparedStatement.execute();
-            preparedStatement.close();
-            System.out.println("Successfully added available appointment");
-            return true;
-        }
-        catch (SQLException e) {
-            System.out.println("An error occured while fetching appointments from the database");
-            return false;
-        }
+        preparedStatement.execute();
+        preparedStatement.close();
+        System.out.println("Successfully added available appointment");
     }
 
     /**

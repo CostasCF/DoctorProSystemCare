@@ -1,7 +1,7 @@
-Host: ec2-54-73-68-39.eu-west-1.compute.amazonaws.com
-Database: d8kt47qh55c24g
-User: snzbrrltdfagct
+Host: ec2-63-33-239-176.eu-west-1.compute.amazonaws.com
+Database: da2pcm0gjc5hrv
+User: egclbbfjnxflqx
 Port: 5432
-Password: 618b0e656d64c06ca167eca5179abd8bd4b7f8e3295784547642c1a5a465464a
-URI: postgres://snzbrrltdfagct:618b0e656d64c06ca167eca5179abd8bd4b7f8e3295784547642c1a5a465464a@ec2-54-73-68-39.eu-west-1.compute.amazonaws.com:5432/d8kt47qh55c24g
-URL: jdbc:postgresql://ec2-54-73-68-39.eu-west-1.compute.amazonaws.com:5432/d8kt47qh55c24g
+Password: 1595f9de3818f63fd7a8373098250bc31ff7803dd70dbfe9ba868a1e001655e6
+URI: postgres://egclbbfjnxflqx:1595f9de3818f63fd7a8373098250bc31ff7803dd70dbfe9ba868a1e001655e6@ec2-63-33-239-176.eu-west-1.compute.amazonaws.com:5432/da2pcm0gjc5hrv
+URL: jdbc:postgresql://ec2-63-33-239-176.eu-west-1.compute.amazonaws.com:5432/da2pcm0gjc5hrv

@@ -149,9 +149,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         out.println("<td>" + appointment.getAppointment_id() + "</td>" +
                                 "<td>" + appointment.getDoctor().getAmka() +"</td>" +
                                 "<td>" + appointment.getPatient().getAmka() + "</td>" +
-                                "<td>" + appointment.getDateTime() + "</td>" +
-                                "<td>" + appointment.getStart_time() + "</td>" +
-                                "<td>" + appointment.getEnd_time() + "</td>"
+                                "<td>" + appointment.getDate() + "</td>" +
+                                "<td>" + appointment.getStart_time().toString() + "</td>" +
+                                "<td>" + appointment.getEnd_time().toString() + "</td>"
                         );
                         out.println("</tr>");
                     }
@@ -159,7 +159,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             </table><br><br>
 
             <%--Deletion Appointment form--%>
-            <form action="doctor-servlet" method="post">
+            <form action="DeleteAppointmentServlet" method="post">
                 <div class="form-group">
                     <label for="recipient-name">Enter appointment's id for deletion:</label>
                     <input type="text" placeholder="Appointment's ID.. " name="ApptID" id="appt-id" required="">
@@ -170,12 +170,73 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             </form>
             <br>
 
-
+            <%
+                String cancelAppointmentError= (String)request.getAttribute("cancelAppointmentError");
+                if(cancelAppointmentError != null)
+                    out.println("<font color=red size=4px>" + cancelAppointmentError + "</font>");
+            %>
 
         <!-- //typo container -->
           </div>
         </div>
+        <br>
+
+        <%-- Add availability for appointments - button --%>
+        <button href="#" data-toggle="modal" data-target="#addAvailabilityForAppointments" class="text-dark font-weight-bold">
+            Add availability</button>
+
+        <%
+            String insertAvailabilityMsg = (String)request.getAttribute("insertAvailabilityMsg");
+            if(insertAvailabilityMsg != null)
+                if (insertAvailabilityMsg.equals("Success inserting available appointments."))
+                    out.println("<font color=green size=4px>"+ insertAvailabilityMsg +"</font>");
+                else {
+                    out.println("<font color=red size=4px>"+ insertAvailabilityMsg +"</font>");
+                }
+        %>
+
+        <!--/Register Availability for appointments Modal-->
+        <div class="modal fade" id="addAvailabilityForAppointments" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header text-center">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="login px-4 mx-auto mw-100">
+                            <h5 class="modal-title text-center text-dark mb-4">Add availability for appointments</h5>
+                            <form action="InsertAvailableAppointmentServlet" method="post">
+
+                                <div class="form-group">
+                                    <label class="col-form-label">Date</label>
+                                    <input type="date" class="form-control" name="dateInsert" id="dateInsert" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-form-label">Start Time</label>
+                                    <input type="time" class="form-control" name="startTimeInsert" id="startTimeInsert" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-form-label">End Time</label>
+                                    <input type="time" class="form-control" name="endTimeInsert" id="endTimeInsert" required>
+                                </div>
+
+                                <div class="reg-w3l">
+                                    <button type="submit" class="form-control submit mb-4">Add availability for appointments</button>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--//Register Admin-->
+        </div>
     </div>
+
 </section>
     <!-- //typography -->
 

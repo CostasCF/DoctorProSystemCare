@@ -50,12 +50,18 @@ public class Appointment {
         this.date = date;
     }
 
+    /**
+     * Creates an open appointment (without a specified doctor and patient)
+     * @param appointment_id : The appointment id
+     * @param date : The date of the appointment
+     * @param startTime : The start time of the appointment
+     * @param endTime : The end time of the appointment
+     */
     public Appointment(String appointment_id, String date, String startTime, String endTime ) {
         this.appointment_id = appointment_id;
         this.start_time =  LocalTime.parse(startTime);
         this.end_time = LocalTime.parse(endTime);
         this.date= LocalDate.parse(date);
-
     }
 
 
