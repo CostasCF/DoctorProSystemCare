@@ -2,7 +2,6 @@ package com.WebFlexers.models;
 
 import com.WebFlexers.DatabaseManager;
 
-import javax.print.Doc;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -36,7 +35,7 @@ public class Doctor extends User {
     public void setEmail(String email) { this.email = email; }
     public void setPhoneNum(String phoneNum) { this.phoneNum = phoneNum; }
     public void setAdminID(String adminID) { this.adminID = adminID; }
-    public void setScheduledAppointments(ArrayList<Appointment> getScheduledAppointments) { this.ScheduledAppointments = getScheduledAppointments; }
+    public static void setScheduledAppointments(ArrayList<Appointment> getScheduledAppointments) { ScheduledAppointments = getScheduledAppointments; }
     /**
      * A doctor that is instantiated with data from a database
      * @param resultSet : The data from the database
@@ -72,10 +71,10 @@ public class Doctor extends User {
         this.email = email;
     }
 
-    public void viewScheduledAppointments(HttpServletRequest request, Doctor doctor, DatabaseManager database){
+    public static void viewScheduledAppointments(HttpServletRequest request, String doctor_amka, DatabaseManager database){
         try{
             ArrayList<Appointment> appointments;
-            appointments = database.getScheduledAppointmentsByDoctor(doctor);
+            appointments = database.getScheduledAppointmentsByDoctorAMKA(doctor_amka);
             request.setAttribute("listAppointments", appointments);
             setScheduledAppointments(appointments);
         }catch (Exception e){

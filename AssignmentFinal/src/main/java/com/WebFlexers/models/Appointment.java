@@ -50,6 +50,14 @@ public class Appointment {
         this.date = date;
     }
 
+    public Appointment(String appointment_id, String date, String startTime, String endTime ) {
+        this.appointment_id = appointment_id;
+        this.start_time =  LocalTime.parse(startTime);
+        this.end_time = LocalTime.parse(endTime);
+        this.date= LocalDate.parse(date);
+
+    }
+
 
     public String getAppointment_id() { return appointment_id; }
 

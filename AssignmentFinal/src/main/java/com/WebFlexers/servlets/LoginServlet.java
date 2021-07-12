@@ -90,7 +90,7 @@ public class LoginServlet extends HttpServlet {
             System.out.println("The guy is a doctor");
             Doctor doctor = (Doctor)user;
             prepareDoctorSession(doctor,session);
-            doctor.viewScheduledAppointments(request,doctor,database);
+            Doctor.viewScheduledAppointments(request,doctor.getAmka(),database);
             setLoggedIn(true);
             setWhoLoggedIn("doctor");
             address = "/profile_doctor.jsp";

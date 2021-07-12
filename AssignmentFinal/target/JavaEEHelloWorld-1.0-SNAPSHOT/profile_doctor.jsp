@@ -162,7 +162,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             <form action="doctor-servlet" method="post">
                 <div class="form-group">
                     <label for="recipient-name">Enter appointment's id for deletion:</label>
-                    <input type="text" placeholder="Appointment's ID.. " name="AMKA" id="appt-id" required="">
+                    <input type="text" placeholder="Appointment's ID.. " name="ApptID" id="appt-id" required="">
                 </div>
                 <div class="right-w3l">
                     <input type="submit" value="Delete">

@@ -2,6 +2,7 @@ package com.WebFlexers.servlets;
 
 import com.WebFlexers.DatabaseManager;
 import com.WebFlexers.models.Appointment;
+import com.WebFlexers.models.Doctor;
 
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
@@ -13,7 +14,7 @@ import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.time.LocalDateTime;
 
-@WebServlet(name = "doctor-servlet", value = "/doctor-servlet")
+@WebServlet(name = "DeleteAppointmentServlet", value = "/DeleteAppointmentServlet")
 public class DeleteAppointmentServlet extends HttpServlet {
 
     /**
@@ -28,6 +29,7 @@ public class DeleteAppointmentServlet extends HttpServlet {
         String apptID = request.getParameter("ApptID");
         DatabaseManager databaseManager = new DatabaseManager();
         Appointment appointment = databaseManager.getAppointmentById(apptID);
+        HttpSession session = request.getSession();
 
         // Get the date and start time of the appointment and combine them
         LocalDate appointmentDate = appointment.getDate();
@@ -37,6 +39,8 @@ public class DeleteAppointmentServlet extends HttpServlet {
         // Cancel the appointment if it is scheduled in less than 3 days from now
         if (Duration.between(appointmentDateTime, LocalDateTime.now()).toDays() > 3) {
             databaseManager.CancelScheduledAppointment(apptID);
+            String doctorAmka = (String) session.getAttribute("amka");
+            Doctor.viewScheduledAppointments(request,doctorAmka,databaseManager);
         }
         else {
             request.setAttribute("cancelAppointmentError", "Can't delete appointment, because it is scheduled in less than 3 days from now");

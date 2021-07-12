@@ -484,7 +484,10 @@ public class DatabaseManager {
         }
     }
 
-
+    /**
+     * Generates random string with pattern "LLNNNN" L = Letter, N = Number
+     * @return the produced string
+     */
     public static String generateRandomId()
     {
         String letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -529,6 +532,11 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     * Gets scheduled appointments for a patient
+     * @param patient Patient's class object
+     * @return ArrayList<Appoinment> that contains all the scheduled appointments for the specified patient
+     */
     public ArrayList<Appointment> getScheduledAppointmentsByPatient(Patient patient)
     {
         ArrayList<Appointment> appointments = new ArrayList<>();
@@ -552,17 +560,48 @@ public class DatabaseManager {
 
 
     /**
+     * Adds available appointments for Doctor
+     * @param appointment appointment object
+     * @param doctorAMKA doctor's AMKA
+     * @return true if insertion was successful, false otherwise
+     */
+    public boolean addAvailableAppointment(Appointment appointment,String doctorAMKA)
+    {
+        try
+        {
+            PreparedStatement preparedStatement = connection.prepareStatement
+                    ("insert into \"Available_Appoinment\" (\"appointment_id\", \"doctor_amka\", \"date\", \"start_time\", \"end_time\") " +
+                            "values (?, ?, ?, ?, ?)");
+            preparedStatement.setString(1, appointment.getAppointment_id());
+            preparedStatement.setString(2, doctorAMKA);
+            preparedStatement.setString(3, appointment.getDate().toString());
+            preparedStatement.setString(4, appointment.getStart_time().toString());
+            preparedStatement.setString(5, appointment.getEnd_time().toString());
+
+
+            preparedStatement.execute();
+            preparedStatement.close();
+            System.out.println("Successfully added available appointment");
+            return true;
+        }
+        catch (SQLException e) {
+            System.out.println("An error occured while fetching appointments from the database");
+            return false;
+        }
+    }
+
+    /**
      * Gets the scheduled appointments of a doctor
-     * @param doctor a Doctor's object
+     * @param doctor_amka AMKA type string
      * @return ArrayList<Appointment>
      */
-    public ArrayList<Appointment> getScheduledAppointmentsByDoctor(Doctor doctor)
+    public ArrayList<Appointment> getScheduledAppointmentsByDoctorAMKA(String doctor_amka)
     {
         ArrayList<Appointment> appointments = new ArrayList<>();
         try
         {
             PreparedStatement preparedStatement = connection.prepareStatement("select * from \"Scheduled_Appointment\" where \"doctor_amka\"=?");
-            preparedStatement.setString(1, doctor.getAmka());
+            preparedStatement.setString(1, doctor_amka);
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
@@ -638,6 +677,10 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     * Cancels a scheduled appointment based on appointments unique ID
+     * @param appointment_id appointment_id
+     */
     public void CancelScheduledAppointment(String appointment_id)
     {
         try

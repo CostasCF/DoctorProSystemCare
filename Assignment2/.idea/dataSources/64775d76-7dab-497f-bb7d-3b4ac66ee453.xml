@@ -21776,6 +21776,7 @@ UC/148165279
     </table>
     <table id="4566" parent="4550" name="patient">
       <ObjectId>213156873</ObjectId>
+      <Outdated>1</Outdated>
       <Owner>dmupmilluzwkvw</Owner>
       <StateNumber>37416626</StateNumber>
     </table>
