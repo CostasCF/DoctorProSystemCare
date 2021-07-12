@@ -558,7 +558,6 @@ public class DatabaseManager {
         }
     }
 
-
     /**
      * Adds available appointments for Doctor
      * @param appointment appointment object
