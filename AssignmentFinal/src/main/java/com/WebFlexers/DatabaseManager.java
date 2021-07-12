@@ -496,6 +496,7 @@ public class DatabaseManager {
             int index = (int) (rnd.nextFloat() * letters.length());
             part1.append(letters.charAt(index));
         }
+
         StringBuilder part2 = new StringBuilder();
         while (part2.length() < 4) { // length of the random string.
             int index = (int) (rnd.nextFloat() * numbers.length());
