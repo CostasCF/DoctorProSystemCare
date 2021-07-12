@@ -1,9 +1,11 @@
 package com.WebFlexers.models;
 
+import com.WebFlexers.Query;
+
 import java.sql.*;
 import java.util.ArrayList;
 
-public class Patient extends User {
+public class Patient extends User implements IDatabaseSupport {
 
     private ArrayList<Appointment> scheduledAppointments = new ArrayList<>();
     private final String amka;
@@ -105,14 +107,36 @@ public class Patient extends User {
         return availableAppointments;
     }
 
+    @Override
+    public void addToDatabase(Query query) {
+
+    }
+
+    @Override
+    public void removeFromDatabase(Query query) {
+
+    }
+
     /**
-     * Prints out the scheduled appointments
+     * Search for a patient in the database
+     * @param query : The query that determines by which field the patient will be selected
+     * @return A patient created from the data provided by the database, or null if he doesn't exist
      */
-  /*  public void viewScheduledAppointments() {
-        for (var appointment : scheduledAppointments) {
-            System.out.println(appointment);
+    public static Patient getFromDatabase(Query query) {
+        try {
+            ResultSet resultSet = query.getStatement().executeQuery();
+
+            if (resultSet.next()) {
+                return new Patient(resultSet);
+            }
+            else {
+                return null;
+            }
+        } catch (SQLException e) {
+            System.out.println("An error occurred while getting an admin from the database");
+            System.out.println(e.getMessage());
+            return null;
         }
     }
-*/
 
 }

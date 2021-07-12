@@ -1,6 +1,8 @@
 package com.WebFlexers.models;
 
 import com.WebFlexers.DatabaseManager;
+import com.WebFlexers.PasswordAuthentication;
+import com.WebFlexers.Query;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.*;
@@ -8,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Doctor extends User {
+public class Doctor extends User implements IDatabaseSupport {
 
 
 
@@ -107,4 +109,97 @@ public class Doctor extends User {
         System.out.println("Appointment Cancelled");
     }
 
+    // Database related methods
+
+    /**
+     * Adds this doctor to the database
+     * @param query The query that will be used to add the doctor to the database
+     */
+    @Override
+    public void addToDatabase(Query query) {
+        try {
+            query.getStatement().setString(1, amka);
+            query.getStatement().setString(2, username);
+
+            PasswordAuthentication cryptography = new PasswordAuthentication();
+            String hashedPassword = cryptography.hash(password.toCharArray());
+            query.getStatement().setString(3, hashedPassword);
+
+            query.getStatement().setString(4, firstName);
+            query.getStatement().setString(5, surname);
+            query.getStatement().setString(6, specialty);
+            query.getStatement().setString(7, email);
+            query.getStatement().setString(8, phoneNum);
+            query.getStatement().setString(9, adminID);
+
+            query.getStatement().execute();
+
+            query.getStatement().close();
+        } catch (SQLException e) {
+            System.out.println("An error occured while trying to add a doctor to the database");
+            System.out.println(e.getMessage());
+        }
+    }
+
+    /**
+     * Removes this doctor from the database
+     * @param query The query to remove the doctor from the database
+     */
+    @Override
+    public void removeFromDatabase(Query query) {
+        try {
+            query.getStatement().setString(1, amka);
+            query.getStatement().execute();
+            System.out.println("Successfully deleted doctor with amka " + amka + " from the database");
+
+            query.getStatement().close();
+        } catch (SQLException e) {
+            System.out.println("An error occurred while deleting a doctor from the database");
+            System.out.println(e.getMessage());
+        }
+    }
+
+    /**
+     * Search for a doctor in the database
+     * @param query : The query that determines by which field the doctor will be selected
+     * @return A doctor created from the data provided by the database, or null if he doesn't exist
+     */
+    public static Doctor getFromDatabase(Query query) {
+        try {
+            ResultSet resultSet = query.getStatement().executeQuery();
+
+            if (resultSet.next()) {
+                return new Doctor(resultSet);
+            }
+            else {
+                return null;
+            }
+        } catch (SQLException e) {
+            System.out.println("An error occurred while getting an admin from the database");
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * Returns a doctor from the database
+     * @param query : The query that returns all the doctors from the database
+     * @return A doctor created from the data provided by the database
+     */
+    public ArrayList<Doctor> getAllFromDatabase(Query query) {
+
+        try {
+            ResultSet resultSet = query.getStatement().executeQuery();
+            ArrayList<Doctor> doctors = new ArrayList<>();
+
+            while (resultSet.next()) {
+                doctors.add(new Doctor(resultSet));
+            }
+
+            return doctors;
+        } catch (SQLException e) {
+            System.out.println("An error occured while getting all doctors from the database");
+            return null;
+        }
+    }
 }

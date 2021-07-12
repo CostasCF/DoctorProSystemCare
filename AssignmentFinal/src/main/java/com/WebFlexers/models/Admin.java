@@ -1,10 +1,13 @@
 package com.WebFlexers.models;
 
 import com.WebFlexers.DatabaseManager;
+import com.WebFlexers.PasswordAuthentication;
+import com.WebFlexers.Query;
 
 import java.sql.*;
+import java.util.ArrayList;
 
-public class Admin extends User {
+public class Admin extends User implements IDatabaseSupport {
 	
 	protected String superuserPassword;
 	private String email;
@@ -14,9 +17,7 @@ public class Admin extends User {
 		return adminID;
 	}
 
-
-
-	boolean IsSuperUser;
+	boolean isSuperUser;
 
 	public void setAdminID(String adminID) {
 		this.adminID = adminID;
@@ -38,7 +39,7 @@ public class Admin extends User {
 			email = resultSet.getString(4);
 			firstName = resultSet.getString(5);
 			surname = resultSet.getString(6);
-			IsSuperUser = resultSet.getBoolean(7);
+			isSuperUser = resultSet.getBoolean(7);
 		} catch (SQLException ex) {
 			System.out.println("An error occured while connecting to database");
 			System.out.println(ex.toString());
@@ -49,12 +50,12 @@ public class Admin extends User {
 		super(username, password, name, surname);
 		this.email = email;
 		this.adminID = adminID;
-		this.IsSuperUser = isSuperUser;
+		this.isSuperUser = isSuperUser;
     }
 
-	public boolean IsSuperUser() { return IsSuperUser; }
+	public boolean IsSuperUser() { return isSuperUser; }
 
-	public void setSuperUser(boolean superUser) { IsSuperUser = superUser; }
+	public void setSuperUser(boolean superUser) { isSuperUser = superUser; }
 
 	public String getSuperuserPassword() {
 		return superuserPassword;
@@ -83,6 +84,97 @@ public class Admin extends User {
 		}
 		catch (Exception e){
 			System.out.println(e.getMessage());
+		}
+	}
+
+	// Database related methods
+
+	/**
+	 * Adds this admin to the database
+	 * @param query Determines by which attribute the admin will be searched
+	 */
+	@Override
+	public void addToDatabase(Query query) {
+		try {
+			query.getStatement().setString(1, adminID);
+			query.getStatement().setString(2, username);
+
+			PasswordAuthentication cryptography = new PasswordAuthentication();
+			String hashedPassword = cryptography.hash(password.toCharArray());
+			query.getStatement().setString(3, hashedPassword);
+
+			query.getStatement().setString(4, email);
+			query.getStatement().setString(5, firstName);
+			query.getStatement().setString(6, surname);
+			query.getStatement().setBoolean(7, isSuperUser);
+
+			query.getStatement().execute();
+
+			query.getStatement().close();
+		} catch (SQLException e) {
+			System.out.println("An error occured while trying to add an admin to the database");
+			System.out.println(e.getMessage());
+		}
+	}
+
+	/**
+	 * Removes this admin from the database
+	 */
+	@Override
+	public void removeFromDatabase(Query query) {
+		try {
+			query.getStatement().setString(1, adminID);
+			query.getStatement().execute();
+			System.out.println("Successfully deleted admin with id: " + adminID +" from the database");
+
+			query.getStatement().close();
+		} catch (SQLException e) {
+			System.out.println("DatabaseManager: An error occured while deleting a doctor from the database");
+			System.out.println(e.getMessage());
+		}
+	}
+
+	/**
+	 * Search for an admin in the database
+	 * @param query : The query that determines by which field the admin will be selected
+	 * @return An admin created from the data provided by the database, or null if he doesn't exist
+	 */
+	public static Admin getFromDatabase(Query query) {
+		try {
+			ResultSet resultSet = query.getStatement().executeQuery();
+
+			if (resultSet.next()) {
+				return new Admin(resultSet);
+			}
+			else {
+				return null;
+			}
+		} catch (SQLException e) {
+			System.out.println("An error occurred while getting an admin from the database");
+			System.out.println(e.getMessage());
+			return null;
+		}
+	}
+
+	/**
+	 * Returns an admin from the database
+	 * @param query : The query that returns all the admins from the database
+	 * @return An admin created from the data provided by the database
+	 */
+	public static ArrayList<Admin> getAllFromDatabase(Query query) {
+		try {
+			ResultSet resultSet = query.getStatement().executeQuery();
+			ArrayList<Admin> admins = new ArrayList<>();
+
+			while (resultSet.next()) {
+				admins.add(new Admin(resultSet));
+			}
+
+			return admins;
+		} catch (SQLException e) {
+			System.out.println("An error occurred while getting all admins from the database");
+			System.out.println(e.getMessage());
+			return null;
 		}
 	}
 }
