@@ -28,7 +28,6 @@ public class AdminServlet extends HttpServlet {
         }catch (Exception e){
             System.out.println("Problem with listing doctors on admin's page : " + e.getMessage());
         }
-
     }
 
     /**
@@ -46,7 +45,6 @@ public class AdminServlet extends HttpServlet {
         }
 
     }
-
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

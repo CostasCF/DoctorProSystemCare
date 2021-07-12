@@ -35,7 +35,9 @@ public class PatientServlet extends HttpServlet
         session.setAttribute("surname", patient.getSurname());
         session.setAttribute("email", patient.getEmail());
         session.setAttribute("phoneNumber", patient.getPhoneNumber());
-        session.setAttribute("listAppointments", patient.getScheduledAppointments());
-        session.setAttribute("availableAppointments", patient.getScheduledAppointments());
+        session.setAttribute("listAppointments", databaseManager.getScheduledAppointmentsByPatient(patient));
+        //session.setAttribute("availableAppointments", databaseManager.getScheduledAppointmentsByPatient(patient));
+
+        databaseManager.closeConnection();
     }
 }

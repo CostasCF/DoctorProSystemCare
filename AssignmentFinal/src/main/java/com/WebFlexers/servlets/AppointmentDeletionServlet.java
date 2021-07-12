@@ -1,6 +1,8 @@
 package com.WebFlexers.servlets;
 
 import com.WebFlexers.DatabaseManager;
+import com.WebFlexers.models.Appointment;
+import com.WebFlexers.models.Doctor;
 import com.WebFlexers.models.Patient;
 import com.WebFlexers.models.User;
 
@@ -8,24 +10,29 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
+import java.util.ArrayList;
 
 @WebServlet("/appointment-delete-servlet")
 public class AppointmentDeletionServlet extends HttpServlet {
 
+    public static void listAppointments(HttpServletRequest request, String amka, DatabaseManager database){
+        try{
+            HttpSession session = request.getSession();
+            ArrayList<Appointment> appointments;
+            appointments = database.getScheduledAppointmentsByPatient(database.getPatientByAmka(amka));
+            session.setAttribute("listAppointments", appointments);
+        }catch (Exception e){
+            System.out.println("Problem with listing doctors on admin's page : " + e.getMessage());
+        }
+    }
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
-        HttpSession session = request.getSession();
         String appointment_id = request.getParameter("appointment_id");
-        String amka = request.getParameter("amka");
-
-        DatabaseManager database = new DatabaseManager();
-        Patient patient = database.getPatientByAmka(amka);
-        //patient.cancelAppointment();
-        database.CancelScheduledAppointment(appointment_id);
-
-        response.setContentType("text/html;charset=UTF-8");
-
+        DatabaseManager databaseManager = new DatabaseManager();
+        databaseManager.CancelScheduledAppointment(appointment_id);
+        databaseManager.closeConnection();
         getServletContext().getRequestDispatcher("/profile_patient.jsp").forward(request, response);
     }
 }

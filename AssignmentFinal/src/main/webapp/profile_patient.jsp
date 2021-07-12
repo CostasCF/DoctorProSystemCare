@@ -1,6 +1,8 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.Iterator" %>
 <%@ page import="com.WebFlexers.models.Appointment" %>
+<%@ page import="com.WebFlexers.DatabaseManager" %>
+<%@ page import="com.WebFlexers.servlets.AppointmentDeletionServlet" %>
 <!--Template: W3layouts
 Template URL: http://w3layouts.com
 License: Creative Commons Attribution 3.0 Unported
@@ -39,6 +41,10 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
     response.setHeader("Pragma", "no-cache"); // HTTP 1
     response.setHeader("Expires", "0");
+
+    DatabaseManager database = new DatabaseManager();
+    AppointmentDeletionServlet.listAppointments(request, (String)session.getAttribute("amka"), database);  // list doctors every time page refreshes
+    database.closeConnection();
 
     if(session.getAttribute("username") == null)
         response.sendRedirect("index.jsp");
@@ -153,42 +159,36 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                             }
                         %>
                     </table><br>
-                    <form action="appointment-delete-servlet" method="post">
-                        <div class="form-group">
-                            <label for="recipient-name">Enter Appointment's ID for deletion:</label>
-                            <input type="text" placeholder="Appointment's ID.. " name="appointment_id" id="appointmentId" required="">
-                        </div>
-                        <div class="right-w3l">
-                            <input type="submit" value="Delete">
-                        </div>
-                    </form>
+                    <div align="center" style="width: 50%; margin: auto;">
+                        <form action="appointment-delete-servlet" method="post">
+                            <div class="form-group">
+                                <label class="col-form-label">Enter Appointment's ID for cancelation</label>
+                                <input type="text" class="form-control" name="appointment_id" id="appointmentID" required>
+                            </div>
+                            <div class="reg-w3l">
+                                <button type="submit" class="form-control submit mb-4">Delete Appointment</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!--Make an Appointment Form-->
-        </div>
-        <div class="container">
-            <div class="about-main">
-                <div class="about-right">
-                    <h3 class="subheading-w3-agile">Make an Appointment</h3>
-                    <div class="stats">
-                        <div class="stats_inner">
-                            <form action="#" method="post">
-                                <select name="selectDepartment" class="form-control mb-3">
-                                    <option value="0">Select Department</option>
-                                    <option value="1">Pathology</option>
-                                    <option value="2">Ophthalmology</option>
-                                    <option value="3">Orthopedics</option>
-                                </select>
-                                <input class="form-control date mb-3" id="datepicker" name="Text" placeholder="Select Date"  type="text" required="">
-                                <button name="buttonMakeAppointment" type="submit" class="btn btn-agile btn-block w-100" disabled>Make An Appointment</button>
-                            </form>
-                        </div>
-                    </div>
-                    <!-- //stats -->
+        <%--Search for available appointment--%>
+        <div align="center" style="width: 50%; margin: auto;">
+            <form action="available-appointments-servlet" method="post">
+                <div class="form-group">
+                    <select name="selectDepartment" class="form-control mb-3">
+                        <option value="0">Select Department</option>
+                        <option value="1">Pathology</option>
+                        <option value="2">Ophthalmology</option>
+                        <option value="3">Orthopedics</option>
+                    </select>
                 </div>
-            </div>
+                <div class="reg-w3l">
+                    <button type="submit" class="form-control submit mb-4">Search for available appointments</button>
+                </div>
+            </form>
         </div>
     </section>
     <!-- //typography -->
