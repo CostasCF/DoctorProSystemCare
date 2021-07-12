@@ -189,7 +189,34 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     <button type="submit" class="form-control submit mb-4">Search for available appointments</button>
                 </div>
             </form>
-        </div>
+        </div><br>
+        <%
+            ArrayList<Appointment> availableAppointmentsList = (ArrayList<Appointment>)session.getAttribute("listAvailableAppointments");
+            if(appointmentsList==null) return;
+            out.println("<div align=\"center\">\n" +
+                    "                    <h5 class=\"pt-4 pb-3\">Scheduled Appointments</h5>\n" +
+                    "                    <table border=\"1\" cellpadding=\"5\">\n" +
+                    "                        <tr>\n" +
+                    "                            <th>ID</th>\n" +
+                    "                            <th>Doctor Amka</th>\n" +
+                    "                            <th>Patient Amka</th>\n" +
+                    "                            <th>Date</th>\n" +
+                    "                            <th>Start Time</th>\n" +
+                    "                            <th>End Time</th>\n" +
+                    "                        </tr>\n" +
+                    "                        </tr>");
+            for (Appointment appointment: availableAppointmentsList) {
+                out.println("<tr>");
+                out.println("<td>" + appointment.getAppointment_id() + "</td>" +
+                        "<td>" + appointment.getDoctor().getAmka() +"</td>" +
+                        "<td>" + appointment.getDateTime() + "</td>" +
+                        "<td>" + appointment.getStart_time() + "</td>" +
+                        "<td>" + appointment.getEnd_time() + "</td>"
+                );
+                out.println("</tr>");
+            }
+            out.println("</table><br>");
+        %>
     </section>
     <!-- //typography -->
 <!-- footer -->
