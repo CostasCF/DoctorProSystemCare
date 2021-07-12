@@ -651,7 +651,7 @@ public class DatabaseManager {
         ArrayList<Appointment> available_appointments = new ArrayList<>();
         try
         {
-            PreparedStatement preparedStatement = connection.prepareStatement("select * from \"Available_Appointment\"");
+            PreparedStatement preparedStatement = connection.prepareStatement("select * from \"Available_Appointment\" where ");
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
