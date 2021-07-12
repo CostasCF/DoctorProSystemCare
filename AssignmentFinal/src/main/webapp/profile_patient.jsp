@@ -3,6 +3,7 @@
 <%@ page import="com.WebFlexers.models.Appointment" %>
 <%@ page import="com.WebFlexers.DatabaseManager" %>
 <%@ page import="com.WebFlexers.servlets.AppointmentDeletionServlet" %>
+<%@ page import="com.WebFlexers.servlets.AppointmentScheduleServlet" %>
 <!--Template: W3layouts
 Template URL: http://w3layouts.com
 License: Creative Commons Attribution 3.0 Unported
@@ -44,6 +45,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
     DatabaseManager database = new DatabaseManager();
     AppointmentDeletionServlet.listAppointments(request, (String)session.getAttribute("amka"), database);  // list doctors every time page refreshes
+    AppointmentScheduleServlet.listAppointmentsHistory(request, (String)session.getAttribute("amka"), database);
     database.closeConnection();
 
     if(session.getAttribute("username") == null)
@@ -130,6 +132,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     <div class="p-2 bg-flex mb-1 bg-flex-item">Phone Number: <% out.println("<font color=black size=4px>"+ session.getAttribute("phoneNumber")+"</font>"); %> </div>
                 </div>
                 <h4 class="mt-5 mb-3"></h4>
+<<<<<<< Updated upstream
                 <!---------------------Table of Scheduled Appointments--------------------->
                 <div align="center">
                     <h5 class="pt-4 pb-3">Scheduled Appointments</h5>
@@ -171,23 +174,51 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         </form>
                     </div>
                 </div>
+=======
+>>>>>>> Stashed changes
             </div>
-        </div>
 
-        <%--Search for available appointment--%>
-        <div align="center" style="width: 50%; margin: auto;">
-            <form action="available-appointments-servlet" method="post">
-                <div class="form-group">
-                    <select name="selectDepartment" class="form-control mb-3">
-                        <option value="0">Select Department</option>
-                        <option value="1">Pathology</option>
-                        <option value="2">Ophthalmology</option>
-                        <option value="3">Orthopedics</option>
-                    </select>
+            <!---------------------Table of Scheduled Appointments--------------------->
+            <div align="center">
+                <h5 class="pt-4 pb-3">Scheduled Appointments</h5>
+                <table border="1" cellpadding="5">
+                    <tr>
+                        <th>ID</th>
+                        <th>Doctor's Amka</th>
+                        <th>Patient's Amka</th>
+                        <th>Date</th>
+                        <th>Start Time</th>
+                        <th>End Time</th>
+                    </tr>
+                    </tr>
+                    <%
+                        ArrayList<Appointment> appointmentsList = (ArrayList<Appointment>)session.getAttribute("listAppointments");
+                        if(appointmentsList==null) return;
+                        for (Appointment appointment: appointmentsList) {
+                            out.println("<tr>");
+                            out.println("<td>" + appointment.getAppointment_id() + "</td>" +
+                                    "<td>" + appointment.getDoctor().getAmka() +"</td>" +
+                                    "<td>" + appointment.getPatient().getAmka() + "</td>" +
+                                    "<td>" + appointment.getDate() + "</td>" +
+                                    "<td>" + appointment.getStart_time().toString() + "</td>" +
+                                    "<td>" + appointment.getEnd_time().toString() + "</td>"
+                            );
+                            out.println("</tr>");
+                        }
+                    %>
+                </table><br>
+                <div align="center" style="width: 50%; margin: auto;">
+                    <form action="appointment-delete-servlet" method="post">
+                        <div class="form-group">
+                            <label class="col-form-label">Enter Appointment's ID for cancelation</label>
+                            <input type="text" class="form-control" name="appointment_id" id="appointmentID" required>
+                        </div>
+                        <div class="reg-w3l">
+                            <button type="submit" class="form-control submit mb-4">Delete Appointment</button>
+                        </div>
+                    </form>
                 </div>
-                <div class="reg-w3l">
-                    <button type="submit" class="form-control submit mb-4">Search for available appointments</button>
-                </div>
+<<<<<<< Updated upstream
             </form>
         </div><br>
         <%
@@ -217,6 +248,95 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             }
             out.println("</table><br>");
         %>
+=======
+            </div><br><br><br>
+
+            <!---------------------Table of Appointments History--------------------->
+            <div align="center">
+                <h5 class="pt-4 pb-3">Appointments History</h5>
+                <table border="1" cellpadding="5">
+                    <tr>
+                        <th>ID</th>
+                        <th>Doctor's Amka</th>
+                        <th>Patient's Amka</th>
+                        <th>Date</th>
+                        <th>Start Time</th>
+                        <th>End Time</th>
+                    </tr>
+                    </tr>
+                    <%
+                        ArrayList<Appointment> appointmentsHistoryList = (ArrayList<Appointment>)session.getAttribute("listAppointmentsHistory");
+                        if(appointmentsList==null) return;
+                        for (Appointment appointment: appointmentsHistoryList) {
+                            out.println("<tr>");
+                            out.println("<td>" + appointment.getAppointment_id() + "</td>" +
+                                    "<td>" + appointment.getDoctor().getAmka() +"</td>" +
+                                    "<td>" + appointment.getPatient().getAmka() + "</td>" +
+                                    "<td>" + appointment.getDate() + "</td>" +
+                                    "<td>" + appointment.getStart_time().toString() + "</td>" +
+                                    "<td>" + appointment.getEnd_time().toString() + "</td>"
+                            );
+                            out.println("</tr>");
+                        }
+                    %>
+                </table>
+            </div><br><br><br><br><br>
+
+            <%--Search for available appointment--%>
+            <div align="center" style="width: 50%; margin: auto;">
+                <form action="available-appointments-servlet" method="post">
+                    <div class="form-group">
+                        <select name="selectDepartment" class="form-control mb-3">
+                            <option value="0">Select Department</option>
+                            <option value="Pathology">Pathology</option>
+                            <option value="Ophthalmology">Ophthalmology</option>
+                            <option value="Orthopedics">Orthopedics</option>
+                        </select>
+                    </div>
+                    <div class="reg-w3l">
+                        <button type="submit" class="form-control submit mb-4">Search for available appointments</button>
+                    </div>
+                </form>
+            </div><br>
+            <%
+                ArrayList<Appointment> availableAppointmentsList = (ArrayList<Appointment>)session.getAttribute("listAvailableAppointments");
+                if(availableAppointmentsList==null) return;
+                out.println("<div align=\"center\" style=\"width: 50%; margin: auto;\">\n" +
+                        "                    <h5 class=\"pt-4 pb-3\">Available Appointments</h5>\n" +
+                        "                    <table border=\"1\" cellpadding=\"5\">\n" +
+                        "                        <tr>\n" +
+                        "                            <th>ID</th>\n" +
+                        "                            <th>Doctor's Amka</th>\n" +
+                        "                            <th>Date</th>\n" +
+                        "                            <th>Start Time</th>\n" +
+                        "                            <th>End Time</th>\n" +
+                        "                        </tr>\n" +
+                        "                        </tr>");
+                for (Appointment appointment: availableAppointmentsList) {
+                    out.println("<tr>");
+                    out.println("<td>" + appointment.getAppointment_id() + "</td>" +
+                            "<td>" + appointment.getDoctor().getAmka() +"</td>" +
+                            "<td>" + appointment.getDate() + "</td>" +
+                            "<td>" + appointment.getStart_time() + "</td>" +
+                            "<td>" + appointment.getEnd_time() + "</td>"
+                    );
+                    out.println("</tr>");
+                }
+                out.println("</table><br>");
+                out.println("<div align=\"center\" style=\"width: 50%; margin: auto;\">\n" +
+                        "            <form action=\"schedule-appointment-servlet\" method=\"post\">\n" +
+                        "                <div class=\"form-group\">\n" +
+                        "                    <label class=\"col-form-label\">Enter Appointment's ID for scheduling</label>\n" +
+                        "                    <input type=\"text\" class=\"form-control\" name=\"scheduled_appointment_id\" id=\"scheduledAppointmentId\" required>\n" +
+                        "                </div>\n" +
+                        "                <div class=\"reg-w3l\">\n" +
+                        "                    <button type=\"submit\" class=\"form-control submit mb-4\">Schedule Appointment</button>\n" +
+                        "                </div>\n" +
+                        "            </form>\n" +
+                        "        </div>");
+            %>
+        </div>
+>>>>>>> Stashed changes
     </section>
     <!-- //typography -->
 <!-- footer -->

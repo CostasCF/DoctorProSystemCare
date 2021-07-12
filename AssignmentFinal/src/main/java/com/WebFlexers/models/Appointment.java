@@ -36,6 +36,35 @@ public class Appointment {
 
             start_time = LocalTime.parse(resultSet.getString(5));
             end_time = LocalTime.parse(resultSet.getString(6));
+
+            databaseManager.closeConnection();
+        }
+        catch (SQLException ex)
+        {
+            System.out.println("An error occured while connecting to database");
+            System.out.println(ex.toString());
+        }
+    }
+
+    public Appointment(ResultSet resultSet, String patient_amka)
+    {
+        try
+        {
+            DatabaseManager databaseManager = new DatabaseManager();
+
+            appointment_id = resultSet.getString(1);
+            doctor = databaseManager.getDoctorByAmka(resultSet.getString(2));
+            patient = databaseManager.getPatientByAmka(patient_amka);
+
+            //Converting string to Local Date Time
+            String tempDate = resultSet.getString(3);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            date = LocalDate.parse(tempDate, formatter);
+
+            start_time = LocalTime.parse(resultSet.getString(4));
+            end_time = LocalTime.parse(resultSet.getString(5));
+
+            databaseManager.closeConnection();
         }
         catch (SQLException ex)
         {

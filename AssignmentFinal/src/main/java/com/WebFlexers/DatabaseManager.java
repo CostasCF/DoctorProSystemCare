@@ -3,6 +3,9 @@ package com.WebFlexers;
 import com.WebFlexers.models.*;
 
 import java.sql.*;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.Random;
@@ -542,7 +545,7 @@ public class DatabaseManager {
         ArrayList<Appointment> appointments = new ArrayList<>();
         try
         {
-            PreparedStatement preparedStatement = connection.prepareStatement("select * from \"Scheduled_Appointment\" where \"patient_amka\"=?");
+            PreparedStatement preparedStatement = connection.prepareStatement("select * from \"Scheduled_Appointment\" where \"date\">CURRENT_DATE and \"patient_amka\"=?");
             preparedStatement.setString(1, patient.getAmka());
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -589,7 +592,7 @@ public class DatabaseManager {
         ArrayList<Appointment> appointments = new ArrayList<>();
         try
         {
-            PreparedStatement preparedStatement = connection.prepareStatement("select * from \"Scheduled_Appointment\" where \"doctor_amka\"=?");
+            PreparedStatement preparedStatement = connection.prepareStatement("select * from \"Scheduled_Appointment\" where \"date\">CURRENT_DATE and \"doctor_amka\"=?");
             preparedStatement.setString(1, doctor_amka);
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -610,7 +613,7 @@ public class DatabaseManager {
         ArrayList<Appointment> appointments = new ArrayList<>();
         try
         {
-            PreparedStatement preparedStatement = connection.prepareStatement("select * from \"Scheduled_Appointment\" where \"appointment_id\"=?");
+            PreparedStatement preparedStatement = connection.prepareStatement("select * from \"Scheduled_Appointment\" where \"date\">CURRENT_DATE and \"appointment_id\"=?");
             preparedStatement.setString(1,  appointment_id);
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -646,16 +649,26 @@ public class DatabaseManager {
         }
     }
 
-    public ArrayList<Appointment> getAvailableAppointmentsBySpecialty(String specialty)
+    public ArrayList<Appointment> getAvailableAppointmentsBySpecialty(String specialty, String patient_amka)
     {
         ArrayList<Appointment> available_appointments = new ArrayList<>();
         try
         {
+<<<<<<< Updated upstream
             PreparedStatement preparedStatement = connection.prepareStatement("select * from \"Available_Appointment\" where ");
+=======
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                        "SELECT \"appointment_id\", \"doctor_amka\", \"date\", \"start_time\", \"end_time\" " +
+                            "FROM \"Available_Appointment\" " +
+                            "INNER JOIN \"Doctor\" " +
+                            "ON \"amka\"=\"doctor_amka\" " +
+                            "WHERE \"speciality\"=?;");
+            preparedStatement.setString(1, specialty);
+>>>>>>> Stashed changes
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                available_appointments.add(new Appointment(resultSet));
+                available_appointments.add(new Appointment(resultSet, patient_amka));
             }
 
             return available_appointments;
@@ -693,6 +706,67 @@ public class DatabaseManager {
         }
         catch (SQLException e) {
             System.out.println("An error occured while deleting available appointment from the database");
+        }
+    }
+
+    public void ScheduleAppointment(String appointment_id, String patient_amka)
+    {
+        try
+        {
+            PreparedStatement preparedStatement = connection.prepareStatement("select * from \"Available_Appointment\" where \"appointment_id\"=?");
+            preparedStatement.setString(1, appointment_id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            Appointment new_appointment = null;
+            while(resultSet.next())
+            {
+                new_appointment = new Appointment(resultSet, patient_amka);
+            }
+
+            if(new_appointment == null) return;
+
+            preparedStatement = connection.prepareStatement("delete from \"Available_Appointment\" where \"appointment_id\"=?");
+            preparedStatement.setString(1, appointment_id);
+            preparedStatement.execute();
+
+            Date tempDate = Date.valueOf(new_appointment.getDate());
+            Time tempStartTime = Time.valueOf(new_appointment.getStart_time());
+            Time tempEndTime = Time.valueOf(new_appointment.getEnd_time());
+
+            preparedStatement = connection.prepareStatement("INSERT INTO \"Scheduled_Appointment\" VALUES (?, ?, ?, ?, ?, ?);");
+            preparedStatement.setString(1, new_appointment.getAppointment_id());
+            preparedStatement.setString(2, new_appointment.getDoctor().getAmka());
+            preparedStatement.setString(3, patient_amka);
+            preparedStatement.setDate(4, tempDate);
+            preparedStatement.setTime(5, tempStartTime);
+            preparedStatement.setTime(6, tempEndTime);
+            preparedStatement.execute();
+
+            closeConnection();
+        }
+        catch (SQLException e) {
+            System.out.println("An error occured while scheduling available appointment from the database");
+            System.out.println(e.toString());
+        }
+    }
+
+    public ArrayList<Appointment> getAppointmentsHistoryByPatient(Patient patient)
+    {
+        ArrayList<Appointment> appointments = new ArrayList<>();
+        try
+        {
+            PreparedStatement preparedStatement = connection.prepareStatement("select * from \"Scheduled_Appointment\" where \"date\" < CURRENT_DATE and \"patient_amka\"=?");
+            preparedStatement.setString(1, patient.getAmka());
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                appointments.add(new Appointment(resultSet));
+            }
+
+            return appointments;
+        }
+        catch (SQLException e) {
+            System.out.println("An error occured while fetching appointments history from the database");
+            return null;
         }
     }
 }
