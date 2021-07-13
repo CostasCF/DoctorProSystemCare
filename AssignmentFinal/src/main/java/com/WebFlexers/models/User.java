@@ -6,6 +6,7 @@ import com.WebFlexers.Query;
 
 import javax.print.Doc;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class User {
@@ -114,4 +115,30 @@ public class User {
         }
     }
 
+    /**
+     * Searches the database for a user with the given username
+     * @param connection The connection to the database
+     * @param username The username of the wanted user
+     * @return A User object that is an instance of Patient, Doctor or Admin
+     */
+    public static User getFromDatabase(Connection connection, String username) {
+        try {
+            // Check all kinds of users
+            Patient patient = Patient.getFromDatabase(Query.getPatientByUsername(connection, username));
+            if (patient != null) {
+                return patient;
+            }
+
+            Doctor doctor = Doctor.getFromDatabase(Query.getDoctorByUsername(connection, username));
+            if (doctor != null) {
+                return doctor;
+            }
+
+            return Admin.getFromDatabase(Query.getAdminByUsername(connection, username));
+        } catch (SQLException e) {
+            System.out.println("An error occurred while searching for a user");
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
 }

@@ -45,8 +45,8 @@ public class Doctor extends User implements IDatabaseSupport {
         specialty = specialtyTemp;
     }
 
-    public Doctor(String amka, String username, String password, String name, String surname, String specialty,String phoneNum,String email, String adminID) {
-        super(username, password, name, surname);
+    public Doctor(String amka, String username, String password, String firstname, String surname, String specialty,String phoneNum,String email, String adminID) {
+        super(username, password, firstname, surname);
         this.amka = amka;
         this.specialty = specialty;
         this.phoneNum = phoneNum;

@@ -52,6 +52,18 @@ public class Query {
         return new Query(statement);
     }
 
+    public static Query getAdminByEmail(Connection connection, String email) throws SQLException {
+        PreparedStatement statement = connection.prepareStatement("select * from \"Admin\" where \"email\"=?");
+        statement.setString(1, email);
+        return new Query(statement);
+    }
+
+    public static Query getUserByUsername(Connection connection, String username) throws  SQLException {
+        PreparedStatement statement = connection.prepareStatement("select * from \"Admin\" where \"username\"=?");
+        statement.setString(1, username);
+        return new Query(statement);
+    }
+
     public static Query getAvailableAppointmentByID(Connection connection, String id) throws  SQLException {
         PreparedStatement statement = connection.prepareStatement("select * from \"Available_Appointment\" " +
                 "where \"appointment_id\"=?");

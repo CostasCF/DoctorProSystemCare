@@ -1,8 +1,10 @@
 package com.WebFlexers.servlets;
 
 import com.WebFlexers.DatabaseManager;
+import com.WebFlexers.Query;
 import com.WebFlexers.StringUtility;
 import com.WebFlexers.models.Admin;
+import com.WebFlexers.models.User;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -12,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Random;
 
 import static com.WebFlexers.servlets.AdminServlet.listDoctors;
@@ -20,44 +23,49 @@ import static com.WebFlexers.servlets.AdminServlet.listDoctors;
 public class RegisterAdminServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Boolean IsSuperUser;
+        // Get the attributes from the register admin panel
+        boolean IsSuperUser;
         String checkbox = request.getParameter("isSuperUserA");
         String username = request.getParameter("usernameA");
         String password = request.getParameter("passwordA");
         String email = request.getParameter("emailA");
         String firstName = request.getParameter("firstNameA");
         String lastName = request.getParameter("lastNameA");
-        if(checkbox != null)
-            IsSuperUser = true;
-        else
-            IsSuperUser = false;
-        System.out.println("Request get parameter ISsuperUser?" + IsSuperUser);
-        System.out.println(IsSuperUser);
+
+        // Check if the admin is super user
+        IsSuperUser = checkbox != null;
+
+        System.out.println("Admin is super user: " + IsSuperUser);
 
         DatabaseManager database = new DatabaseManager();
         String adminID = StringUtility.generateRandomId();
 
-        if (database.getUserByUsername(username) == null) {
-            Admin admin = new Admin(username, password, firstName, lastName, email,adminID,IsSuperUser);
-            boolean isDone = database.registerAdmin(admin); //if register is successful, redirect to admin's profile page, else print out an error
-            if (isDone)
-            {
-                getServletContext().getRequestDispatcher("/profile_admin_superuser.jsp").forward(request, response);
-            } else {
-                request.setAttribute("registerError","Email already exists.");
+        try {
+            // Check if a user with the same username already exists
+            if (User.getFromDatabase(database.getConnection(), username) == null) {
+                // Check if an admin with the same email already exists
+                if (Admin.getFromDatabase(Query.getAdminByEmail(database.getConnection(), email)) == null) {
+                    Admin admin = new Admin(username, password, firstName, lastName, email, adminID, IsSuperUser);
+                    admin.addToDatabase(database.getConnection());
+                    getServletContext().getRequestDispatcher("/profile_admin_superuser.jsp").forward(request, response);
+                }
+                else {
+                    request.setAttribute("registerError","Email already exists.");
+                    RequestDispatcher dispatcher = request.getRequestDispatcher("/profile_admin_superuser.jsp");
+                    dispatcher.forward(request,response);
+                }
+            }
+            else {
+                System.out.println("Username already exists");
+                request.setAttribute("registerError","Username already exists.");
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/profile_admin_superuser.jsp");
                 dispatcher.forward(request,response);
             }
-
-        }
-        else {
-            System.out.println("User already exists");
-            request.setAttribute("registerError","User already exists.");
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/profile_admin_superuser.jsp");
-            dispatcher.forward(request,response);
+        } catch (SQLException e) {
+            System.out.println("An error occurred while registering an admin to the database");
+            System.out.println(e.getMessage());
         }
 
         database.closeConnection();
-
     }
 }

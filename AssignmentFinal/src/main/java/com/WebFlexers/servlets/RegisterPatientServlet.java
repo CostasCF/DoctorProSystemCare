@@ -1,6 +1,8 @@
 package com.WebFlexers.servlets;
 
 import com.WebFlexers.DatabaseManager;
+import com.WebFlexers.PasswordAuthentication;
+import com.WebFlexers.Query;
 import com.WebFlexers.models.*;
 
 import javax.servlet.RequestDispatcher;
@@ -11,14 +13,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.sql.SQLException;
 
 @WebServlet("/register-patient-servlet")
 public class RegisterPatientServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        PasswordAuthentication crypto = new PasswordAuthentication();
+
         String amka = request.getParameter("amka");
         String username = request.getParameter("username");
-        String password = request.getParameter("password");
+        String password = crypto.hash((request.getParameter("password")).toCharArray());
         String email = request.getParameter("email");
         String firstName = request.getParameter("firstName");
         String lastName = request.getParameter("lastName");
@@ -27,40 +32,40 @@ public class RegisterPatientServlet extends HttpServlet {
         DatabaseManager database = new DatabaseManager();
 
         // Check if the username already exists and if a patient or a doctor with the same amka already exists
-        if (database.getUserByUsername(username) == null) {
-            if (database.getPatientByAmka(amka) == null) {
-                if (database.getDoctorByAmka(amka) == null){
-                    HttpSession session = request.getSession();
+        User user = User.getFromDatabase(database.getConnection(), username);
+
+        try {
+            if (user == null) {
+                // If no patient or doctor with the same amka exists in the database create a patient and add him to the database
+                if (Patient.getFromDatabase(Query.getPatientByAmka(database.getConnection(), amka)) == null ||
+                    Doctor.getFromDatabase(Query.getDoctorByAmka(database.getConnection(), amka)) == null) {
+
                     Patient patient = new Patient(amka, username, password, firstName, lastName, email, phoneNum);
-                    boolean isDone = database.registerPatient(patient); //if register is successful, redirect to admin's profile page, else print out an error
-                    if(isDone)
-                    {
-                        LoginServlet loginServlet = new LoginServlet();
-                        SessionManager.preparePatientSession(patient,session);
-                        LoginServlet.setLoggedIn(true);
-                        LoginServlet.setWhoLoggedIn("patient");
-                        getServletContext().getRequestDispatcher("/profile_patient.jsp").forward(request, response);
-                    }
+                    patient.addToDatabase(database.getConnection());
+
+                    // Get the session and login the newly created patient
+                    HttpSession session = request.getSession();
+                    SessionManager.preparePatientSession(patient,session);
+                    LoginServlet.setLoggedIn(true);
+                    LoginServlet.setWhoLoggedIn("patient");
+                    getServletContext().getRequestDispatcher("/profile_patient.jsp").forward(request, response);
                 }
                 else {
-                    request.setAttribute("registerError","A doctor with the same amka already exists");
-                    System.out.println("A doctor with the same amka already exists");
+                    request.setAttribute("registerError","A user with the same amka already exists");
+                    System.out.println("A user with the same amka already exists");
                     RequestDispatcher dispatcher = request.getRequestDispatcher("/index.jsp");
                     dispatcher.forward(request,response);
                 }
             }
             else {
-                request.setAttribute("registerError","A patient with the same amka already exists");
-                System.out.println("A patient with the same amka already exists");
+                request.setAttribute("registerError","A user with the same amka already exists");
+                System.out.println("A user with the same username already exists");
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/index.jsp");
                 dispatcher.forward(request,response);
             }
-        }
-        else {
-            request.setAttribute("registerError","This username already exists");
-            System.out.println("This username already exists");
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/index.jsp");
-            dispatcher.forward(request,response);
+        } catch (SQLException e) {
+            System.out.println("An error occurred while registering patient");
+            System.out.println(e.getMessage());
         }
 
         database.closeConnection();

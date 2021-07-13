@@ -1,14 +1,17 @@
 package com.WebFlexers.servlets;
 
 import com.WebFlexers.DatabaseManager;
+import com.WebFlexers.Query;
 import com.WebFlexers.models.Doctor;
 import com.WebFlexers.models.Patient;
+import com.WebFlexers.models.User;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import javax.swing.*;
 import java.io.IOException;
+import java.sql.SQLException;
 
 @WebServlet("/register-doctor-servlet")
 public class RegisterDoctorServlet extends HttpServlet {
@@ -26,27 +29,44 @@ public class RegisterDoctorServlet extends HttpServlet {
         String lastNameD = request.getParameter("lastNameD");
         String phoneNumD = request.getParameter("phoneNumD");
         String adminID = (String) session.getAttribute("adminID");
-        System.out.println("Admin id posting in RegisterDoctorServlet: " +adminID);
+
         DatabaseManager database = new DatabaseManager();
 
         // Check if the username already exists and if a patient or a doctor with the same amka already exists
-        if (database.getUserByUsername(usernameD) == null) {
-            if (database.getPatientByAmka(amkaD) == null) {
-                if (database.getDoctorByAmka(amkaD) == null)
-                    database.registerDoctor(new Doctor(amkaD, usernameD, passwordD, firstNameD, lastNameD, specialtyD, phoneNumD, emailD, adminID));
+        User user = User.getFromDatabase(database.getConnection(), usernameD);
+
+        try {
+            if (user == null) {
+                // If no patient or doctor with the same amka exists in the database create a patient and add him to the database
+                if (Patient.getFromDatabase(Query.getPatientByAmka(database.getConnection(), amkaD)) == null ||
+                        Doctor.getFromDatabase(Query.getDoctorByAmka(database.getConnection(), amkaD)) == null) {
+
+                    Doctor doctor = new Doctor(amkaD, usernameD, passwordD, firstNameD, lastNameD, specialtyD, phoneNumD,
+                            emailD, adminID);
+                    doctor.addToDatabase(database.getConnection());
+
+                    // Get the session and login the newly created patient
+                    SessionManager.prepareDoctorSession(doctor,session);
+                    LoginServlet.setLoggedIn(true);
+                    LoginServlet.setWhoLoggedIn("doctor");
+                    getServletContext().getRequestDispatcher("/profile_doctor.jsp").forward(request, response);
+                }
                 else {
-                    request.setAttribute("registerDoctorError","A doctor with the same amka already exists");
-                    System.out.println("A doctor with the same amka already exists");
+                    request.setAttribute("registerDoctorError","A user with the same amka already exists");
+                    System.out.println("A user with the same amka already exists");
+                    RequestDispatcher dispatcher = request.getRequestDispatcher("/index.jsp");
+                    dispatcher.forward(request,response);
                 }
             }
             else {
-                request.setAttribute("registerDoctorError","A patient with the same amka already exists");
-                System.out.println("A patient with the same amka already exists");
+                request.setAttribute("registerDoctorError","This username already exists");
+                System.out.println("This username already exists");
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/index.jsp");
+                dispatcher.forward(request,response);
             }
-        }
-        else {
-            request.setAttribute("registerDoctorError","This username already exists");
-            System.out.println("This username already exists");
+        } catch (SQLException e) {
+            System.out.println("An error occurred while registering patient");
+            System.out.println(e.getMessage());
         }
 
         AdminServlet.listDoctors(request,database);
@@ -55,7 +75,6 @@ public class RegisterDoctorServlet extends HttpServlet {
             getServletContext().getRequestDispatcher("/profile_admin_superuser.jsp").forward(request, response);
         else
             getServletContext().getRequestDispatcher("/profile_admin.jsp").forward(request, response);
-
 
     }
 }

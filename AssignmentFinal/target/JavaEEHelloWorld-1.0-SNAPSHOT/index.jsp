@@ -33,10 +33,11 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <link href="//fonts.googleapis.com/css?family=Montserrat:200,300,400,500,600,700,800,900" rel="stylesheet"><!-- //online-fonts -->
 </head>
 <body>
-<%         if (LoginServlet.getLoggedIn() == null)
-				LoginServlet.setLoggedIn(false);
-			if(LoginServlet.getLoggedIn())
-				request.setAttribute("whoLoggedIn",LoginServlet.getWhoLoggedIn());
+<%
+	if (LoginServlet.getLoggedIn() == null)
+		LoginServlet.setLoggedIn(false);
+	if (LoginServlet.getLoggedIn())
+		request.setAttribute("whoLoggedIn",LoginServlet.getWhoLoggedIn());
 	request.setAttribute("isLoggedin",LoginServlet.getLoggedIn()); //this commands runs on index.jsp loading and checks if a user is logged in
 %>
         <!-- header -->
@@ -71,6 +72,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 						<li class="nav-item">
 							<a class="nav-link" href="about.jsp">About</a>
 						</li>
+						//
 						<%
 							boolean isLoggedin = (boolean)request.getAttribute("isLoggedin");
 							if(!isLoggedin){
@@ -79,7 +81,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 								out.println("Login");
 								out.println("</button>");
 								out.println("</li>");}
-							else{
+							else {
 								out.println("<li class=\"nav-item dropdown mr-3 mt-lg-0 mt-3\">");
 								out.println("<a class=\"nav-link dropdown-toggle\" href=\"#\" id=\"navbarDropdown\" role=\"button\" data-toggle=\"dropdown\" aria-haspopup=\"true\"\n" +
 										"\t\t\t\t\t\t\t   aria-expanded=\"false\">");
@@ -107,13 +109,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
 						%>
 
-<%--                        <li>--%>
-<%--							<!-- data-toggle="modal" aria-pressed="false" data-target="#exampleModal" -->--%>
-<%--								<button type="submit" name="loginButton"  data-toggle="modal" value="logout"  data-target="#loginModal"class="btn  ml-lg-2 w3ls-btn">--%>
-<%--									Login--%>
-<%--								</button>--%>
-
-<%--                        </li>--%>
                     </ul>
                 </div>
             </nav>
@@ -656,8 +651,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 	</div>
 	<!--//Register page-->
 
-
-
 	<!--/Register Patient-->
 	<div class="modal fade" id="registerPatientModal" tabindex="-1" role="dialog" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered" role="document">
@@ -708,7 +701,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
 							<div class="form-group">
 								<label class="col-form-label">Phone number</label>
-								<input type="text" pattern="^(\d{10})$" class="form-control" name="phoneNum" id="phoneNumPatient" required>
+								<input type="text" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" class="form-control" name="phoneNum" id="phoneNumPatient" required>
 							</div>
 
 							<div class="reg-w3l">

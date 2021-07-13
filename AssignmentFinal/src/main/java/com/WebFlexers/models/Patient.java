@@ -100,24 +100,30 @@ public class Patient extends User implements IDatabaseSupport {
         ArrayList<ScheduledAppointment> scheduledAppointments = new ArrayList<>();
         try {
             // First get all the appointments of this patient
-            ArrayList<ScheduledAppointment> allAppointments = ScheduledAppointment.getMultipleFromDatabase(
+            ArrayList<ScheduledAppointment> allAppointments = ScheduledAppointment.getMultipleFromDatabase (
                     Query.getScheduledAppointmentsByPatientAmka(connection, amka));
 
-            // Add to the list of old appointments every one of them whose date is less than today's
-            for (var appointment : allAppointments) {
-                LocalDateTime appointmentDateTime = LocalDateTime.of(appointment.getDate(), appointment.getStartTime());
-                if (appointmentDateTime.compareTo(LocalDateTime.now()) > 0) {
-                    scheduledAppointments.add(appointment);
+            if (allAppointments != null) {
+                // Add to the list of old appointments every one of them whose date is less than today's
+                for (var appointment : allAppointments) {
+                    LocalDateTime appointmentDateTime = LocalDateTime.of(appointment.getDate(), appointment.getStartTime());
+                    if (appointmentDateTime.compareTo(LocalDateTime.now()) > 0) {
+                        scheduledAppointments.add(appointment);
+                    }
                 }
-            }
 
-            // Return null if no scheduled appointments exist
-            if (scheduledAppointments.isEmpty()) {
+                // Return null if no scheduled appointments exist
+                if (scheduledAppointments.isEmpty()) {
+                    return null;
+                }
+
+                // Return the list of scheduled appointments if any are found
+                return scheduledAppointments;
+            }
+            else {
                 return null;
             }
 
-            // Return the list of scheduled appointments if any are found
-            return scheduledAppointments;
         } catch (SQLException e) {
             System.out.println("An error occurred while trying to get scheduled appointments from the database");
             System.out.println(e.getMessage());

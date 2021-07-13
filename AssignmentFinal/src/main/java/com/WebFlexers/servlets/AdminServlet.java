@@ -21,11 +21,11 @@ public class AdminServlet extends HttpServlet {
      * @param database DatabaseManager database
      */
     public static void listDoctors(HttpServletRequest request, DatabaseManager database){
-        try{
+        try {
             ArrayList<Doctor> doctors;
             doctors = database.getDoctors();
             request.setAttribute("listDoctors", doctors);
-        }catch (Exception e){
+        } catch (Exception e){
             System.out.println("Problem with listing doctors on admin's page : " + e.getMessage());
         }
     }
