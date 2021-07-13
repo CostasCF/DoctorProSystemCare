@@ -44,10 +44,10 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     response.setHeader("Expires", "0");
 
     Patient patient = null;
-    if (session.getAttribute("patient") == null)
+    if (session.getAttribute("user") == null)
         response.sendRedirect("index.jsp");
     else {
-        patient = (Patient)session.getAttribute("patient");
+        patient = (Patient)session.getAttribute("user");
     }
 %>
     <!-- header -->
@@ -179,9 +179,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             </div>
 
             <%
-                String deleteAppointmentError = (String)session.getAttribute("AppointmentDeletionMessage");
-                if(deleteAppointmentError!=null)
-                    out.println("<font color=blue  align=center size=4px>"+deleteAppointmentError+"</font>");
+                String deleteAppointmentOutcomeMessage = (String)session.getAttribute("AppointmentDeletionMessage");
+                if (deleteAppointmentOutcomeMessage != null)
+                    out.println("<font color=blue  align=center size=4px>" + deleteAppointmentOutcomeMessage + "</font>");
             %>
 
             <!--------------------- Table of available appointments --------------------->

@@ -14,7 +14,6 @@ public class Patient extends User implements IDatabaseSupport {
     private String phoneNumber;
     private String email;
 
-    public static String message;
     /**
      * A patient that is instantiated with data from a database
      * @param resultSet : The data from the database
@@ -54,10 +53,6 @@ public class Patient extends User implements IDatabaseSupport {
     public void setEmail(String email) { this.email = email; }
 
     public String getAmka() { return amka; }
-
-    public static void setMessage(String message) { Patient.message = message; }
-
-    public static String getMessage() { return message; }
 
     /**
      * Creates a list of all the previous appointments of this patient
@@ -134,28 +129,6 @@ public class Patient extends User implements IDatabaseSupport {
             System.out.println(e.getMessage());
         }
         return  scheduledAppointments;
-    }
-
-    /**
-     * Cancels this appointment if it is more than 3 days away and deletes it from the database
-     * @param connection A connection to the database
-     * @return True if the appointment got cancelled, false otherwise
-     */
-    public void cancelAppointment(Connection connection, ScheduledAppointment appointment) {
-        // Get the date and time of the appointment and compare them with now
-        LocalDateTime appointmentDateTime = LocalDateTime.of(appointment.getDate(), appointment.getStartTime());
-        System.out.println("Number of days: " + DAYS.between(LocalDateTime.now(), appointmentDateTime));
-        if (DAYS.between(LocalDateTime.now(), appointmentDateTime) > 3) {
-            appointment.removeFromDatabase(connection);
-            message = "Successfully deleted appointment with ID " + appointment.getAppointmentID();
-            System.out.println("Successfully deleted appointment with ID " + appointment.getAppointmentID());
-        }
-        else {
-            message = "Couldn't delete appointment with ID " + appointment.getAppointmentID() + ", because " +
-                     "it is scheduled for less than 3 days from now";
-            System.out.println("Couldn't delete appointment with ID " + appointment.getAppointmentID() + ", because " +
-                    "it is scheduled for less than 3 days from now");
-        }
     }
 
     /**

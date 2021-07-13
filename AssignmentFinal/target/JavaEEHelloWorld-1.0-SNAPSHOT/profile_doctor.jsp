@@ -41,10 +41,10 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     response.setHeader("Expires", "0");
 
     Doctor doctor = null;
-    if (session.getAttribute("doctor") == null)
+    if (session.getAttribute("user") == null)
         response.sendRedirect("index.jsp");
     else {
-        doctor = (Doctor)session.getAttribute("doctor");
+        doctor = (Doctor)session.getAttribute("user");
     }
 %>
     <!-- header -->
@@ -143,7 +143,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 </tr>
                 </tr>
                 <%
-                    ArrayList<ScheduledAppointment> appointmentsList = (ArrayList<ScheduledAppointment>)request.getAttribute("appointmentsList");
+                    ArrayList<ScheduledAppointment> appointmentsList =
+                            (ArrayList<ScheduledAppointment>)session.getAttribute("appointmentsList");
                     if(appointmentsList != null) {
                         for (ScheduledAppointment appointment: appointmentsList) {
                             out.println("<tr>");
@@ -161,10 +162,10 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             </table><br><br>
 
             <%--Deletion Appointment form--%>
-            <form action="DeleteAppointmentServlet" method="post">
+            <form action="/delete-scheduled-appointment-servlet" method="post">
                 <div class="form-group">
                     <label for="recipient-name">Enter appointment's id for deletion:</label>
-                    <input type="text" placeholder="Appointment's ID.. " name="ApptID" id="appt-id" required="">
+                    <input type="text" placeholder="Appointment's ID.. " name="appointment_id" id="appt-id" required>
                 </div>
                 <div class="right-w3l">
                     <input type="submit" value="Delete">
@@ -173,9 +174,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             <br>
 
             <%
-                /*String cancelAppointmentError = (String)request.getAttribute("cancelAppointmentError");
-                if (cancelAppointmentError != null)
-                    out.println("<font color=red size=4px>" + cancelAppointmentError + "</font>");*/
+                String deleteAppointmentOutcomeMessage = (String)session.getAttribute("AppointmentDeletionMessage");
+                if (deleteAppointmentOutcomeMessage != null)
+                    out.println("<font color=blue  align=center size=4px>" + deleteAppointmentOutcomeMessage + "</font>");
             %>
 
         <!-- //typo container -->

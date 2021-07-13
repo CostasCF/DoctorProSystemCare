@@ -200,6 +200,7 @@ public class Doctor extends User implements IDatabaseSupport {
                 return scheduledAppointments;
             }
             else {
+                System.out.println("No scheduled appointments found for this doctor");
                 return null;
             }
 

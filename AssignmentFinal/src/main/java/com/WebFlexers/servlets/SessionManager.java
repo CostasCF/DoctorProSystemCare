@@ -14,7 +14,7 @@ public class SessionManager {
 
     public static void preparePatientSession(Patient patient, HttpSession session) {
         // Store the patient to a session
-        session.setAttribute("patient", patient);
+        session.setAttribute("user", patient);
 
         // Get the scheduled and available appointments from the database
         DatabaseManager dbManager = new DatabaseManager();
@@ -25,7 +25,7 @@ public class SessionManager {
     }
 
     public static void prepareDoctorSession(Doctor doctor, HttpSession session) {
-        session.setAttribute("doctor", doctor);
+        session.setAttribute("user", doctor);
 
         // Get the scheduled and available appointments from the database
         DatabaseManager dbManager = new DatabaseManager();
