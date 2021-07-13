@@ -1,7 +1,7 @@
 package com.WebFlexers.servlets;
 
 import com.WebFlexers.DatabaseManager;
-import com.WebFlexers.models.Appointment;
+import com.WebFlexers.models.ScheduledAppointment;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -17,7 +17,7 @@ public class AppointmentsAvailableServlet extends HttpServlet {
     {
         String specialty = request.getParameter("selectDepartment");
         DatabaseManager databaseManager = new DatabaseManager();
-        ArrayList<Appointment> available_apps = new ArrayList<>();
+        ArrayList<ScheduledAppointment> available_apps = new ArrayList<>();
         available_apps = databaseManager.getAvailableAppointmentsBySpecialty(specialty);
     }
 }

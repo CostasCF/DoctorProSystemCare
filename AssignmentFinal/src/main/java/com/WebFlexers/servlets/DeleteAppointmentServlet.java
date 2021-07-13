@@ -1,11 +1,10 @@
 package com.WebFlexers.servlets;
 
 import com.WebFlexers.DatabaseManager;
-import com.WebFlexers.models.Appointment;
+import com.WebFlexers.models.ScheduledAppointment;
 import com.WebFlexers.models.Doctor;
 
 import java.time.Duration;
-import java.time.temporal.ChronoUnit;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import javax.servlet.*;
@@ -28,12 +27,12 @@ public class DeleteAppointmentServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String apptID = request.getParameter("ApptID");
         DatabaseManager databaseManager = new DatabaseManager();
-        Appointment appointment = databaseManager.getAppointmentById(apptID);
+        ScheduledAppointment appointment = databaseManager.getAppointmentById(apptID);
         HttpSession session = request.getSession();
 
         // Get the date and start time of the appointment and combine them
         LocalDate appointmentDate = appointment.getDate();
-        LocalTime appointmentStartTime = appointment.getStart_time();
+        LocalTime appointmentStartTime = appointment.getStartTime();
         LocalDateTime appointmentDateTime = LocalDateTime.of(appointmentDate, appointmentStartTime);
 
         // Cancel the appointment if it is scheduled in less than 3 days from now

@@ -1,8 +1,7 @@
 package com.WebFlexers.servlets;
 
 import com.WebFlexers.DatabaseManager;
-import com.WebFlexers.models.Admin;
-import com.WebFlexers.models.Appointment;
+import com.WebFlexers.models.ScheduledAppointment;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -31,7 +30,7 @@ public class InsertAvailableAppointmentServlet extends HttpServlet {
         String endTimeInsert = request.getParameter("endTimeInsert");
 
         try {
-            database.addAvailableAppointment(new Appointment(appointmentID,dateInsert,startTimeInsert,endTimeInsert), doctorAMKA);
+            database.addAvailableAppointment(new ScheduledAppointment(appointmentID,dateInsert,startTimeInsert,endTimeInsert), doctorAMKA);
             request.setAttribute("insertAvailabilityMsg","Success inserting available appointments.");
 
         } catch (Exception e) {

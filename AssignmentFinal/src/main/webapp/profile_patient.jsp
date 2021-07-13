@@ -1,6 +1,6 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.Iterator" %>
-<%@ page import="com.WebFlexers.models.Appointment" %>
+<%@ page import="com.WebFlexers.models.ScheduledAppointment" %>
 <%@ page import="com.WebFlexers.DatabaseManager" %>
 <%@ page import="com.WebFlexers.servlets.AppointmentDeletionServlet" %>
 <!--Template: W3layouts
@@ -144,16 +144,16 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         </tr>
                         </tr>
                         <%
-                            ArrayList<Appointment> appointmentsList = (ArrayList<Appointment>)session.getAttribute("listAppointments");
+                            ArrayList<ScheduledAppointment> appointmentsList = (ArrayList<ScheduledAppointment>)session.getAttribute("listAppointments");
                             if(appointmentsList==null) return;
-                            for (Appointment appointment: appointmentsList) {
+                            for (ScheduledAppointment appointment: appointmentsList) {
                                 out.println("<tr>");
                                 out.println("<td>" + appointment.getAppointment_id() + "</td>" +
                                         "<td>" + appointment.getDoctor().getAmka() +"</td>" +
                                         "<td>" + appointment.getPatient().getAmka() + "</td>" +
                                         "<td>" + appointment.getDate().toString() + "</td>" +
-                                        "<td>" + appointment.getStart_time().toString() + "</td>" +
-                                        "<td>" + appointment.getEnd_time().toString() + "</td>"
+                                        "<td>" + appointment.getStartTime().toString() + "</td>" +
+                                        "<td>" + appointment.getEndTime().toString() + "</td>"
                                 );
                                 out.println("</tr>");
                             }
@@ -191,7 +191,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             </form>
         </div><br>
         <%
-            ArrayList<Appointment> availableAppointmentsList = (ArrayList<Appointment>)session.getAttribute("listAvailableAppointments");
+            ArrayList<ScheduledAppointment> availableAppointmentsList = (ArrayList<ScheduledAppointment>)session.getAttribute("listAvailableAppointments");
             if(appointmentsList==null) return;
             out.println("<div align=\"center\">\n" +
                     "                    <h5 class=\"pt-4 pb-3\">Scheduled Appointments</h5>\n" +
@@ -205,13 +205,13 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     "                            <th>End Time</th>\n" +
                     "                        </tr>\n" +
                     "                        </tr>");
-            for (Appointment appointment: availableAppointmentsList) {
+            for (ScheduledAppointment appointment: availableAppointmentsList) {
                 out.println("<tr>");
                 out.println("<td>" + appointment.getAppointment_id() + "</td>" +
                         "<td>" + appointment.getDoctor().getAmka() +"</td>" +
                         "<td>" + appointment.getDate().toString() + "</td>" +
-                        "<td>" + appointment.getStart_time().toString() + "</td>" +
-                        "<td>" + appointment.getEnd_time().toString() + "</td>"
+                        "<td>" + appointment.getStartTime().toString() + "</td>" +
+                        "<td>" + appointment.getEndTime().toString() + "</td>"
                 );
                 out.println("</tr>");
             }

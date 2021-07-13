@@ -4,6 +4,7 @@ import com.WebFlexers.DatabaseManager;
 import com.WebFlexers.PasswordAuthentication;
 import com.WebFlexers.Query;
 
+import javax.print.Doc;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -12,32 +13,35 @@ import java.util.List;
 
 public class Doctor extends User implements IDatabaseSupport {
 
-
-
-    public static ArrayList<Appointment> ScheduledAppointments;
-    private List<String> schedule;
-    private LocalDateTime dateTime;
+    // Attributes
     private String amka;
     private String email;
     private String phoneNum;
-
     private String adminID;
     private final String specialty;
+    private static ArrayList<ScheduledAppointment> scheduledAppointments;
 
-    // Getters
-    public String getSpecialty() { return specialty; }
+    // Getters and Setters
     public String getAmka() { return amka; }
+
+    public void setAmka(String amka) { this.amka = amka; }
+
     public String getEmail() { return email; }
-    public String getPhoneNum() { return phoneNum; }
-    public String getAdminID() { return adminID; }
-    public static ArrayList<Appointment> getScheduledAppointments() { return ScheduledAppointments; }
 
-
-    // Setters
     public void setEmail(String email) { this.email = email; }
+
+    public String getPhoneNum() { return phoneNum; }
+
     public void setPhoneNum(String phoneNum) { this.phoneNum = phoneNum; }
-    public void setAdminID(String adminID) { this.adminID = adminID; }
-    public static void setScheduledAppointments(ArrayList<Appointment> getScheduledAppointments) { ScheduledAppointments = getScheduledAppointments; }
+
+    public String getAdminID() { return adminID; }
+
+    public String getSpecialty() { return specialty; }
+
+    public static ArrayList<ScheduledAppointment> getScheduledAppointments() { return scheduledAppointments; }
+
+    public static void setScheduledAppointments(ArrayList<ScheduledAppointment> scheduledAppointments) { Doctor.scheduledAppointments = scheduledAppointments; }
+
     /**
      * A doctor that is instantiated with data from a database
      * @param resultSet : The data from the database
@@ -47,17 +51,17 @@ public class Doctor extends User implements IDatabaseSupport {
 
         try {
             amka = resultSet.getString(1);
-            setUsername(resultSet.getString(2));
-            setPassword(resultSet.getString(3));
-            setFirstName(resultSet.getString(4));
-            setSurname(resultSet.getString(5));
-            specialtyTemp = (resultSet.getString(6));
-            setEmail(resultSet.getString(7));
-            setPhoneNum(resultSet.getString(8));
-            setAdminID(resultSet.getString(9));
+            username = resultSet.getString(2);
+            password = resultSet.getString(3);
+            firstName = resultSet.getString(4);
+            surname = resultSet.getString(5);
+            specialtyTemp = resultSet.getString(6);
+            email = resultSet.getString(7);
+            phoneNum = resultSet.getString(8);
+            adminID = resultSet.getString(9);
 
         } catch (SQLException ex) {
-            System.out.println("An error occured while connecting to database");
+            System.out.println("An error occurred while creating a doctor from ResultSet");
             System.out.println(ex.toString());
         }
 
@@ -75,7 +79,7 @@ public class Doctor extends User implements IDatabaseSupport {
 
     public static void viewScheduledAppointments(HttpServletRequest request, String doctor_amka, DatabaseManager database){
         try{
-            ArrayList<Appointment> appointments;
+            ArrayList<ScheduledAppointment> appointments;
             appointments = database.getScheduledAppointmentsByDoctorAMKA(doctor_amka);
             request.setAttribute("listAppointments", appointments);
             setScheduledAppointments(appointments);
@@ -89,7 +93,6 @@ public class Doctor extends User implements IDatabaseSupport {
      */
     public void insertDateAvailability(String doctorAvailability)
     {
-        dateTime = LocalDateTime.now();
         System.out.println("Available date added");
     }
 
@@ -104,13 +107,12 @@ public class Doctor extends User implements IDatabaseSupport {
     /**
      * Cancel patient's appointment only if it's scheduled at least 3 days later compared to the current date.
      */
-    public void cancelAppointment(Appointment appointmentToBeCancelled)
+    public void cancelAppointment(ScheduledAppointment appointmentToBeCancelled)
     {
         System.out.println("Appointment Cancelled");
     }
 
     // Database related methods
-
     /**
      * Adds this doctor to the database
      * @param query The query that will be used to add the doctor to the database
@@ -136,7 +138,7 @@ public class Doctor extends User implements IDatabaseSupport {
 
             query.getStatement().close();
         } catch (SQLException e) {
-            System.out.println("An error occured while trying to add a doctor to the database");
+            System.out.println("An error occurred while trying to add a doctor to the database");
             System.out.println(e.getMessage());
         }
     }
@@ -168,23 +170,24 @@ public class Doctor extends User implements IDatabaseSupport {
         try {
             ResultSet resultSet = query.getStatement().executeQuery();
 
+            Doctor doctor = null;
             if (resultSet.next()) {
-                return new Doctor(resultSet);
+                doctor = new Doctor(resultSet);
             }
-            else {
-                return null;
-            }
+
+            query.getStatement().close();
+            return doctor;
         } catch (SQLException e) {
-            System.out.println("An error occurred while getting an admin from the database");
+            System.out.println("An error occurred while getting a doctor from the database");
             System.out.println(e.getMessage());
             return null;
         }
     }
 
     /**
-     * Returns a doctor from the database
+     * Gets all the doctors from the database
      * @param query : The query that returns all the doctors from the database
-     * @return A doctor created from the data provided by the database
+     * @return An ArrayList of type doctor or null if no doctors are found
      */
     public ArrayList<Doctor> getAllFromDatabase(Query query) {
 
@@ -192,13 +195,21 @@ public class Doctor extends User implements IDatabaseSupport {
             ResultSet resultSet = query.getStatement().executeQuery();
             ArrayList<Doctor> doctors = new ArrayList<>();
 
+            // Add all the doctors to an ArrayList
             while (resultSet.next()) {
                 doctors.add(new Doctor(resultSet));
             }
 
-            return doctors;
+            // Close the connection
+            query.getStatement().close();
+
+            // Return the ArrayList of doctors or null if no doctors are found
+            if (doctors.isEmpty())
+                return null;
+            else
+                return doctors;
         } catch (SQLException e) {
-            System.out.println("An error occured while getting all doctors from the database");
+            System.out.println("An error occurred while getting all doctors from the database");
             return null;
         }
     }

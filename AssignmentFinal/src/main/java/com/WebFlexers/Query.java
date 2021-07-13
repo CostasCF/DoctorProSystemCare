@@ -5,7 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 /**
- * A class that contains all the queries
+ * A class that contains all the queries.
  * Every method returns a prepared statement based on the query
  */
 public class Query {
@@ -15,8 +15,13 @@ public class Query {
     private final PreparedStatement statement;
     public PreparedStatement getStatement() { return statement; }
 
-    // Queries for getting data from the database
-    // These queries return a prepared statement ready to be executed
+    /*
+     ******************************************************************************************************************
+     *                                 Queries for getting data from the database                                     *
+     *                        These queries return a prepared statement ready for execution                           *
+     ******************************************************************************************************************
+     */
+
     public static Query getPatientByAmka(Connection connection, String amka) throws SQLException {
         PreparedStatement statement = connection.prepareStatement("select * from \"Patient\" where \"amka\"=?");
         statement.setString(1, amka);
@@ -47,17 +52,48 @@ public class Query {
         return new Query(statement);
     }
 
-    // Queries for getting all rows of a table
-    public static Query getAllAdmins(Connection connection, String username) throws SQLException {
+    public static Query getAvailableAppointmentByAmka(Connection connection, String doctorAmka) throws SQLException {
+        PreparedStatement statement = connection.prepareStatement("select * from \"Available_Appointment\" where \"doctor_amka\"=?");
+        statement.setString(1, doctorAmka);
+        return new Query(statement);
+    }
+
+    public static Query getScheduledAppointmentByAmka(Connection connection, String doctorAmka) throws SQLException {
+        PreparedStatement statement = connection.prepareStatement("select * from \"Scheduled_Appointment\" where \"doctor_amka\"=?");
+        statement.setString(1, doctorAmka);
+        return new Query(statement);
+    }
+
+    /*
+     ******************************************************************************************************************
+     *                                 Queries for getting all rows of a table                                        *
+     *                        These queries return a prepared statement ready to be executed                          *
+     ******************************************************************************************************************
+     */
+
+    public static Query getAllAdmins(Connection connection) throws SQLException {
         return new Query(connection.prepareStatement("select * from \"Admin\""));
     }
 
-    public static Query getAllDoctors(Connection connection, String username) throws SQLException {
+    public static Query getAllDoctors(Connection connection) throws SQLException {
         return new Query(connection.prepareStatement("select * from \"Doctor\""));
     }
 
-    // Queries for adding data to the database
-    // These queries return a prepared statement whose values haven't been set
+    public static Query getAllAvailableAppointments(Connection connection) throws SQLException {
+        return new Query(connection.prepareStatement("select * from \"Available_Appointment\""));
+    }
+
+    public static Query getAllScheduledAppointments(Connection connection) throws SQLException {
+        return new Query(connection.prepareStatement("select * from \"Scheduled_Appointment\""));
+    }
+
+    /*
+     ******************************************************************************************************************
+     *                                 Queries for adding data to the database                                        *
+     *                   These queries return a prepared statement whose values haven't been set                      *
+     ******************************************************************************************************************
+     */
+
     public static Query addPatient(Connection connection) throws SQLException {
         return new Query(connection.prepareStatement("insert into \"Patient\" (\"amka\", \"username\", \"password\", \"first_name\", \"last_name\", " +
                 "\"email\", \"phone_num\") values (?, ?, ?, ?, ?, ?, ?)"));
@@ -73,12 +109,36 @@ public class Query {
                 "values (?, ?, ?, ?, ?, ?, ?)"));
     }
 
-    // Queries for removing data from the database
-    public static Query removeDoctor(Connection connection) throws SQLException {
+    public static Query addAvailableAppointment(Connection connection) throws SQLException {
+        return new Query(connection.prepareStatement("insert into \"Available_Appointment\" (\"appointment_id\", \"doctor_amka\", \"date\", \"start_time\", \"end_time\") " +
+                "values (?, ?, ?, ?, ?)"));
+    }
+
+    public static Query addScheduledAppointment(Connection connection) throws SQLException {
+        return new Query(connection.prepareStatement("insert into \"Scheduled_Appointment\" (\"appointment_id\", \"doctor_amka\", \"patient_amka\", \"date\", \"start_time\", \"end_time\") " +
+                "values (?, ?, ?, ?, ?, ?)"));
+    }
+
+    /*
+     ******************************************************************************************************************
+     *                                 Queries for removing data from the database                                    *
+     *                        These queries return a prepared statement ready for execution                           *
+     ******************************************************************************************************************
+     */
+
+    public static Query removeDoctor(Connection connection, String doctorAmka) throws SQLException {
         return new Query(connection.prepareStatement("DELETE FROM \"Doctor\" where \"amka\" = ?"));
     }
 
     public static Query removeAdmin(Connection connection) throws SQLException {
         return new Query(connection.prepareStatement("DELETE FROM \"Admin\" where \"admin_id\" = ?"));
+    }
+
+    public static Query removeAvailableAppointment(Connection connection) throws SQLException {
+        return new Query(connection.prepareStatement("DELETE FROM \"Available_Appointment\" where \"appointment_id\" = ?"));
+    }
+
+    public static Query removeScheduledAppointment(Connection connection) throws SQLException {
+        return new Query(connection.prepareStatement("DELETE FROM \"Scheduled_Appointment\" where \"appointment_id\" = ?"));
     }
 }

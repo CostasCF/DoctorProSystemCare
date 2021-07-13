@@ -1,11 +1,7 @@
 package com.WebFlexers.servlets;
 
 import com.WebFlexers.DatabaseManager;
-import com.WebFlexers.models.Admin;
-import com.WebFlexers.models.Appointment;
-import com.WebFlexers.models.Doctor;
 import com.WebFlexers.models.Patient;
-import jdk.jshell.spi.ExecutionControl;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.ArrayList;
 
 @WebServlet("/patient-servlet")
 public class PatientServlet extends HttpServlet

@@ -1,5 +1,6 @@
 package com.WebFlexers.models;
 
+import com.WebFlexers.PasswordAuthentication;
 import com.WebFlexers.Query;
 
 import java.sql.*;
@@ -7,7 +8,7 @@ import java.util.ArrayList;
 
 public class Patient extends User implements IDatabaseSupport {
 
-    private ArrayList<Appointment> scheduledAppointments = new ArrayList<>();
+    private ArrayList<ScheduledAppointment> scheduledAppointments = new ArrayList<>();
     private final String amka;
     private String phoneNumber;
     private String email;
@@ -52,26 +53,26 @@ public class Patient extends User implements IDatabaseSupport {
 
     public String getAmka() { return amka; }
 
-    public ArrayList<Appointment> getScheduledAppointments() { return scheduledAppointments; }
+    public ArrayList<ScheduledAppointment> getScheduledAppointments() { return scheduledAppointments; }
 
-    public void setScheduledAppointments(ArrayList<Appointment> scheduledAppointments) { this.scheduledAppointments = scheduledAppointments; }
+    public void setScheduledAppointments(ArrayList<ScheduledAppointment> scheduledAppointments) { this.scheduledAppointments = scheduledAppointments; }
 
     /**
      * Adds an appointment to the schedule
      * @param appointment: The scheduled appointment between the doctor and the patient
      */
-    public void addAppointment(Appointment appointment) { scheduledAppointments.add(appointment); }
+    public void addAppointment(ScheduledAppointment appointment) { scheduledAppointments.add(appointment); }
 
     /**
      * Removes appointment from the list of scheduled appointments
      * @param appointment: The scheduled appointment between the doctor and the patient
      */
-    public void cancelAppointment(Appointment appointment) { scheduledAppointments.remove(appointment); }
+    public void cancelAppointment(ScheduledAppointment appointment) { scheduledAppointments.remove(appointment); }
 
     /**
      * Replaces the old appointment with the new one in the scheduled appointments list
      */
-    public void replaceAppointment(Appointment oldAppointment, Appointment newAppointment) {
+    public void replaceAppointment(ScheduledAppointment oldAppointment, ScheduledAppointment newAppointment) {
         if (scheduledAppointments.contains(oldAppointment)) {
             scheduledAppointments.set(scheduledAppointments.indexOf(oldAppointment), newAppointment);
         }
@@ -88,8 +89,8 @@ public class Patient extends User implements IDatabaseSupport {
      * Finds the available appointments of the given doctor
      * @return ArrayList of type Appointment
      */
-    public ArrayList<Appointment> getAvailableAppointments(Doctor doctor) {
-        ArrayList<Appointment> availableAppointments = new ArrayList<Appointment>();
+    public ArrayList<ScheduledAppointment> getAvailableAppointments(Doctor doctor) {
+        ArrayList<ScheduledAppointment> availableAppointments = new ArrayList<ScheduledAppointment>();
 
         System.out.println("Found appointments");
         return availableAppointments;
@@ -100,21 +101,57 @@ public class Patient extends User implements IDatabaseSupport {
      * of the given specialty
      * @return ArrayList of type Appointment
      */
-    public ArrayList<Appointment> getAvailableAppointments(String specialty) {
-        ArrayList<Appointment> availableAppointments = new ArrayList<>();
+    public ArrayList<ScheduledAppointment> getAvailableAppointments(String specialty) {
+        ArrayList<ScheduledAppointment> availableAppointments = new ArrayList<>();
 
         System.out.println("Found appointments");
         return availableAppointments;
     }
 
+    /**
+     * Adds this doctor to the database
+     * @param query The query that will be used to add the doctor to the database
+     */
     @Override
     public void addToDatabase(Query query) {
+        try {
+            query.getStatement().setString(1, amka);
+            query.getStatement().setString(2, username);
 
+            PasswordAuthentication cryptography = new PasswordAuthentication();
+            String hashedPassword = cryptography.hash(password.toCharArray());
+            query.getStatement().setString(3, hashedPassword);
+
+            query.getStatement().setString(4, firstName);
+            query.getStatement().setString(5, surname);
+            query.getStatement().setString(6, email);
+            query.getStatement().setString(7, phoneNumber);
+
+            query.getStatement().execute();
+
+            query.getStatement().close();
+        } catch (SQLException e) {
+            System.out.println("An error occurred while trying to add a patient to the database");
+            System.out.println(e.getMessage());
+        }
     }
 
+    /**
+     * Removes this patient from the database
+     * @param query The query to remove the doctor from the database
+     */
     @Override
     public void removeFromDatabase(Query query) {
+        try {
+            query.getStatement().setString(1, amka);
+            query.getStatement().execute();
+            System.out.println("Successfully deleted patient with amka " + amka + " from the database");
 
+            query.getStatement().close();
+        } catch (SQLException e) {
+            System.out.println("An error occurred while deleting a patient from the database");
+            System.out.println(e.getMessage());
+        }
     }
 
     /**
@@ -126,14 +163,15 @@ public class Patient extends User implements IDatabaseSupport {
         try {
             ResultSet resultSet = query.getStatement().executeQuery();
 
+            Patient patient = null;
             if (resultSet.next()) {
-                return new Patient(resultSet);
+                patient = new Patient(resultSet);
             }
-            else {
-                return null;
-            }
+
+            query.getStatement().close();
+            return patient;
         } catch (SQLException e) {
-            System.out.println("An error occurred while getting an admin from the database");
+            System.out.println("An error occurred while getting a patient from the database");
             System.out.println(e.getMessage());
             return null;
         }

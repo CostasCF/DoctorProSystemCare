@@ -46,7 +46,6 @@ public class DatabaseManager {
         } catch (SQLException e) {
             System.out.println("An error occured while trying to terminate the connection to the database");
         }
-
     }
 
     //-----------------PATIENT-----------------
@@ -65,7 +64,7 @@ public class DatabaseManager {
             // Check if the given password corresponds to the stored hash
             PasswordAuthentication crypto = new PasswordAuthentication();
             if (resultSet.next() && crypto.authenticate(password.toCharArray(), resultSet.getString(3))) {
-                System.out.println("password match");
+                System.out.println("Password match");
                 return new Patient(resultSet);
             }
             else {
@@ -512,7 +511,7 @@ public class DatabaseManager {
         return part1Str + part2Str;
     }
 
-    public Appointment getAppointmentById(String appointment_id)
+    public ScheduledAppointment getAppointmentById(String appointment_id)
     {
         try
         {
@@ -521,13 +520,13 @@ public class DatabaseManager {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()){
-                return new Appointment(resultSet);
+                return new ScheduledAppointment(resultSet);
             }
 
             return null;
         }
         catch (SQLException e) {
-            System.out.println("An error occured while fetching appointments from the database");
+            System.out.println("An error occurred while fetching appointments from the database");
             return null;
         }
     }
@@ -537,9 +536,9 @@ public class DatabaseManager {
      * @param patient Patient's class object
      * @return ArrayList<Appoinment> that contains all the scheduled appointments for the specified patient
      */
-    public ArrayList<Appointment> getScheduledAppointmentsByPatient(Patient patient)
+    public ArrayList<ScheduledAppointment> getScheduledAppointmentsByPatient(Patient patient)
     {
-        ArrayList<Appointment> appointments = new ArrayList<>();
+        ArrayList<ScheduledAppointment> appointments = new ArrayList<>();
         try
         {
             PreparedStatement preparedStatement = connection.prepareStatement("select * from \"Scheduled_Appointment\" where \"patient_amka\"=?");
@@ -547,7 +546,7 @@ public class DatabaseManager {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                appointments.add(new Appointment(resultSet));
+                appointments.add(new ScheduledAppointment(resultSet));
             }
 
             return appointments;
@@ -563,7 +562,7 @@ public class DatabaseManager {
      * @param appointment appointment object
      * @param doctorAMKA doctor's AMKA
      */
-    public void addAvailableAppointment(Appointment appointment,String doctorAMKA) throws  SQLException
+    public void addAvailableAppointment(ScheduledAppointment appointment, String doctorAMKA) throws  SQLException
     {
         PreparedStatement preparedStatement = connection.prepareStatement
                 ("insert into \"Available_Appointment\" (\"appointment_id\", \"doctor_amka\", \"date\", \"start_time\", \"end_time\") " +
@@ -571,8 +570,8 @@ public class DatabaseManager {
         preparedStatement.setString(1, appointment.getAppointment_id());
         preparedStatement.setString(2, doctorAMKA);
         preparedStatement.setDate(3, Date.valueOf(appointment.getDate()));
-        preparedStatement.setTime(4, Time.valueOf(appointment.getStart_time()));
-        preparedStatement.setTime(5, Time.valueOf(appointment.getEnd_time()));
+        preparedStatement.setTime(4, Time.valueOf(appointment.getStartTime()));
+        preparedStatement.setTime(5, Time.valueOf(appointment.getEndTime()));
 
         preparedStatement.execute();
         preparedStatement.close();
@@ -584,9 +583,9 @@ public class DatabaseManager {
      * @param doctor_amka AMKA type string
      * @return ArrayList<Appointment>
      */
-    public ArrayList<Appointment> getScheduledAppointmentsByDoctorAMKA(String doctor_amka)
+    public ArrayList<ScheduledAppointment> getScheduledAppointmentsByDoctorAMKA(String doctor_amka)
     {
-        ArrayList<Appointment> appointments = new ArrayList<>();
+        ArrayList<ScheduledAppointment> appointments = new ArrayList<>();
         try
         {
             PreparedStatement preparedStatement = connection.prepareStatement("select * from \"Scheduled_Appointment\" where \"doctor_amka\"=?");
@@ -594,7 +593,7 @@ public class DatabaseManager {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                appointments.add(new Appointment(resultSet));
+                appointments.add(new ScheduledAppointment(resultSet));
             }
 
             return appointments;
@@ -605,9 +604,9 @@ public class DatabaseManager {
         }
     }
 
-    public ArrayList<Appointment> getScheduledAppointmentsById(String appointment_id)
+    public ArrayList<ScheduledAppointment> getScheduledAppointmentsById(String appointment_id)
     {
-        ArrayList<Appointment> appointments = new ArrayList<>();
+        ArrayList<ScheduledAppointment> appointments = new ArrayList<>();
         try
         {
             PreparedStatement preparedStatement = connection.prepareStatement("select * from \"Scheduled_Appointment\" where \"appointment_id\"=?");
@@ -615,7 +614,7 @@ public class DatabaseManager {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                appointments.add(new Appointment(resultSet));
+                appointments.add(new ScheduledAppointment(resultSet));
             }
 
             return appointments;
@@ -626,16 +625,16 @@ public class DatabaseManager {
         }
     }
 
-    public ArrayList<Appointment> getAvailableAppointmentsByDoctor(Doctor doctor)
+    public ArrayList<ScheduledAppointment> getAvailableAppointmentsByDoctor(Doctor doctor)
     {
-        ArrayList<Appointment> available_appointments = new ArrayList<>();
+        ArrayList<ScheduledAppointment> available_appointments = new ArrayList<>();
         try
         {
             PreparedStatement preparedStatement = connection.prepareStatement("select * from \"Available_Appointment\"");
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                available_appointments.add(new Appointment(resultSet));
+                available_appointments.add(new ScheduledAppointment(resultSet));
             }
 
             return available_appointments;
@@ -646,16 +645,16 @@ public class DatabaseManager {
         }
     }
 
-    public ArrayList<Appointment> getAvailableAppointmentsBySpecialty(String specialty)
+    public ArrayList<ScheduledAppointment> getAvailableAppointmentsBySpecialty(String specialty)
     {
-        ArrayList<Appointment> available_appointments = new ArrayList<>();
+        ArrayList<ScheduledAppointment> available_appointments = new ArrayList<>();
         try
         {
             PreparedStatement preparedStatement = connection.prepareStatement("select * from \"Available_Appointment\" where ");
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                available_appointments.add(new Appointment(resultSet));
+                available_appointments.add(new ScheduledAppointment(resultSet));
             }
 
             return available_appointments;

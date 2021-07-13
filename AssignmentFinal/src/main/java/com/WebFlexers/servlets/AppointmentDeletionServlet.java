@@ -1,10 +1,7 @@
 package com.WebFlexers.servlets;
 
 import com.WebFlexers.DatabaseManager;
-import com.WebFlexers.models.Appointment;
-import com.WebFlexers.models.Doctor;
-import com.WebFlexers.models.Patient;
-import com.WebFlexers.models.User;
+import com.WebFlexers.models.ScheduledAppointment;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -18,7 +15,7 @@ public class AppointmentDeletionServlet extends HttpServlet {
     public static void listAppointments(HttpServletRequest request, String amka, DatabaseManager database){
         try{
             HttpSession session = request.getSession();
-            ArrayList<Appointment> appointments;
+            ArrayList<ScheduledAppointment> appointments;
             appointments = database.getScheduledAppointmentsByPatient(database.getPatientByAmka(amka));
             session.setAttribute("listAppointments", appointments);
         }catch (Exception e){

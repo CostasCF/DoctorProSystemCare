@@ -6,7 +6,6 @@ public class User {
     protected String password;
     protected String firstName;
     protected String surname;
-    private static int usersCounter = 0;
 
     public User() {}
 
@@ -16,8 +15,6 @@ public class User {
         this.password = password;
         this.firstName = firstname;
         this.surname = surname;
-
-        usersCounter += 1;
     }
 
     // Getters and Setters
@@ -53,12 +50,12 @@ public class User {
         this.surname = surname;
     }
 
-    public static int getUsersCounter() {
-        return usersCounter;
+    /**
+     * User login
+     */
+    public void login() {
+
     }
-
-    // Functionality methods
-
 
     /**
      * User logout

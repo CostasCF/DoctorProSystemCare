@@ -1,6 +1,6 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.Iterator" %>
-<%@ page import="com.WebFlexers.models.Appointment" %>
+<%@ page import="com.WebFlexers.models.ScheduledAppointment" %>
 <%@ page import="com.WebFlexers.models.Doctor" %>
 <!--Template: W3layouts
 Template URL: http://w3layouts.com
@@ -142,16 +142,16 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 </tr>
                 </tr>
                 <%
-                    ArrayList<Appointment> appointmentsList = (ArrayList<Appointment>)request.getAttribute("listAppointments");
+                    ArrayList<ScheduledAppointment> appointmentsList = (ArrayList<ScheduledAppointment>)request.getAttribute("listAppointments");
                     if(appointmentsList==null) return;
-                    for (Appointment appointment: appointmentsList) {
+                    for (ScheduledAppointment appointment: appointmentsList) {
                         out.println("<tr>");
                         out.println("<td>" + appointment.getAppointment_id() + "</td>" +
                                 "<td>" + appointment.getDoctor().getAmka() +"</td>" +
                                 "<td>" + appointment.getPatient().getAmka() + "</td>" +
                                 "<td>" + appointment.getDate() + "</td>" +
-                                "<td>" + appointment.getStart_time().toString() + "</td>" +
-                                "<td>" + appointment.getEnd_time().toString() + "</td>"
+                                "<td>" + appointment.getStartTime().toString() + "</td>" +
+                                "<td>" + appointment.getEndTime().toString() + "</td>"
                         );
                         out.println("</tr>");
                     }

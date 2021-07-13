@@ -112,7 +112,7 @@ public class Admin extends User implements IDatabaseSupport {
 
 			query.getStatement().close();
 		} catch (SQLException e) {
-			System.out.println("An error occured while trying to add an admin to the database");
+			System.out.println("An error occurred while trying to add an admin to the database");
 			System.out.println(e.getMessage());
 		}
 	}
@@ -129,7 +129,7 @@ public class Admin extends User implements IDatabaseSupport {
 
 			query.getStatement().close();
 		} catch (SQLException e) {
-			System.out.println("DatabaseManager: An error occured while deleting a doctor from the database");
+			System.out.println("DatabaseManager: An error occured while deleting an admin from the database");
 			System.out.println(e.getMessage());
 		}
 	}
@@ -143,12 +143,13 @@ public class Admin extends User implements IDatabaseSupport {
 		try {
 			ResultSet resultSet = query.getStatement().executeQuery();
 
+			Admin admin = null;
 			if (resultSet.next()) {
-				return new Admin(resultSet);
+				admin = new Admin(resultSet);
 			}
-			else {
-				return null;
-			}
+
+			query.getStatement().close();
+			return admin;
 		} catch (SQLException e) {
 			System.out.println("An error occurred while getting an admin from the database");
 			System.out.println(e.getMessage());
@@ -157,20 +158,28 @@ public class Admin extends User implements IDatabaseSupport {
 	}
 
 	/**
-	 * Returns an admin from the database
-	 * @param query : The query that returns all the admins from the database
-	 * @return An admin created from the data provided by the database
+	 * Gets all the admins from the database
+	 * @param query : The query that gets all the admins from the database
+	 * @return An ArrayList of type Admin or null if no admins are found
 	 */
 	public static ArrayList<Admin> getAllFromDatabase(Query query) {
 		try {
 			ResultSet resultSet = query.getStatement().executeQuery();
 			ArrayList<Admin> admins = new ArrayList<>();
 
+			// Add all the admins to an ArrayList
 			while (resultSet.next()) {
 				admins.add(new Admin(resultSet));
 			}
 
-			return admins;
+			// Close the connection
+			query.getStatement().close();
+
+			// Return the ArrayList of admins or null if no admins are found
+			if (admins.isEmpty())
+				return null;
+			else
+				return admins;
 		} catch (SQLException e) {
 			System.out.println("An error occurred while getting all admins from the database");
 			System.out.println(e.getMessage());
