@@ -32,19 +32,20 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <!-- //Custom Theme files -->
 	 <!-- online-fonts -->
 	<link href="//fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet">
-    <link href="//fonts.googleapis.com/css?family=Montserrat:200,300,400,500,600,700,800,900" rel="stylesheet"><!-- //online-fonts -->
+    <link href="//fonts.googleapis.com/css?family=Montserrat:200,300,400,500,600,700,800,900" rel="stylesheet"> <!-- //online-fonts -->
 </head>
 <body>
 <%
-
     response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
     response.setHeader("Pragma", "no-cache"); // HTTP 1
     response.setHeader("Expires", "0");
 
-    request.setAttribute("listAppointments", Doctor.getScheduledAppointments());
-    if(session.getAttribute("username") == null)
+    Doctor doctor = null;
+    if (session.getAttribute("doctor") == null)
         response.sendRedirect("index.jsp");
-
+    else {
+        doctor = (Doctor)session.getAttribute("doctor");
+    }
 %>
     <!-- header -->
     <header>
@@ -113,18 +114,18 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <div class="container py-sm-5 py-3">
             <!-- section title -->
 
-            <h2 class="heading-agileinfo"> Welcome Doctor, <% out.println("<font color=black size=6px>"+ session.getAttribute("username")+"</font>"); %></h2>
+            <h2 class="heading-agileinfo"> Welcome Doctor, <% out.println("<font color=black size=6px>"+ doctor.getUsername() +"</font>"); %></h2>
             <!-- //section title -->
             <div class="pb-5 mt-md-5 typo-wthree">
                 <h4 class="pt-4 pb-3">Profile</h4>
                 <div class="d-flex flex-column bg-flex">
-                    <div class="p-2 bg-flex mb-1 bg-flex-item">AMKA: <% out.println("<font color=black size=4px>"+ session.getAttribute("amka")+"</font>"); %></div>
-                    <div class="p-2 bg-flex mb-1 bg-flex-item">Specialty: <% out.println("<font color=black size=4px>"+ session.getAttribute("specialty")+"</font>"); %> </div>
-                    <div class="p-2 bg-flex mb-1 bg-flex-item">Firstname:  <% out.println("<font color=black size=4px>"+ session.getAttribute("firstname")+"</font>"); %></div>
-                    <div class="p-2 bg-flex mb-1 bg-flex-item">Surname:  <% out.println("<font color=black size=4px>"+ session.getAttribute("surname")+"</font>"); %> </div>
-                    <div class="p-2 bg-flex mb-1 bg-flex-item">Username: <% out.println("<font color=black size=4px>"+ session.getAttribute("username")+"</font>"); %></div>
-                    <div class="p-2 bg-flex mb-1 bg-flex-item">Email: <% out.println("<font color=black size=4px>"+ session.getAttribute("email")+"</font>"); %> </div>
-                    <div class="p-2 bg-flex mb-1 bg-flex-item">Phone Number: <% out.println("<font color=black size=4px>"+ session.getAttribute("phoneNumber")+"</font>"); %> </div>
+                    <div class="p-2 bg-flex mb-1 bg-flex-item">AMKA: <% out.println("<font color=black size=4px>"+ doctor.getAmka() +"</font>"); %></div>
+                    <div class="p-2 bg-flex mb-1 bg-flex-item">Specialty: <% out.println("<font color=black size=4px>"+ doctor.getSpecialty() +"</font>"); %> </div>
+                    <div class="p-2 bg-flex mb-1 bg-flex-item">Firstname:  <% out.println("<font color=black size=4px>"+ doctor.getFirstName() +"</font>"); %></div>
+                    <div class="p-2 bg-flex mb-1 bg-flex-item">Surname:  <% out.println("<font color=black size=4px>"+ doctor.getSurname() +"</font>"); %> </div>
+                    <div class="p-2 bg-flex mb-1 bg-flex-item">Username: <% out.println("<font color=black size=4px>"+ doctor.getUsername() +"</font>"); %></div>
+                    <div class="p-2 bg-flex mb-1 bg-flex-item">Email: <% out.println("<font color=black size=4px>"+ doctor.getEmail() +"</font>"); %> </div>
+                    <div class="p-2 bg-flex mb-1 bg-flex-item">Phone Number: <% out.println("<font color=black size=4px>"+ doctor.getPhoneNum() +"</font>"); %> </div>
                 </div>
                 <h4 class="mt-5 mb-3"></h4>
 
@@ -142,18 +143,19 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 </tr>
                 </tr>
                 <%
-                    ArrayList<ScheduledAppointment> appointmentsList = (ArrayList<ScheduledAppointment>)request.getAttribute("listAppointments");
-                    if(appointmentsList==null) return;
-                    for (ScheduledAppointment appointment: appointmentsList) {
-                        out.println("<tr>");
-                        out.println("<td>" + appointment.getAppointmentID() + "</td>" +
-                                "<td>" + appointment.getDoctorAmka().getAmka() +"</td>" +
-                                "<td>" + appointment.getPatientAmka().getAmka() + "</td>" +
-                                "<td>" + appointment.getDate() + "</td>" +
-                                "<td>" + appointment.getStartTime().toString() + "</td>" +
-                                "<td>" + appointment.getEndTime().toString() + "</td>"
-                        );
-                        out.println("</tr>");
+                    ArrayList<ScheduledAppointment> appointmentsList = (ArrayList<ScheduledAppointment>)request.getAttribute("appointmentsList");
+                    if(appointmentsList != null) {
+                        for (ScheduledAppointment appointment: appointmentsList) {
+                            out.println("<tr>");
+                            out.println("<td>" + appointment.getAppointmentID() + "</td>" +
+                                    "<td>" + appointment.getDoctorAmka() +"</td>" +
+                                    "<td>" + appointment.getPatientAmka() + "</td>" +
+                                    "<td>" + appointment.getDate() + "</td>" +
+                                    "<td>" + appointment.getStartTime().toString() + "</td>" +
+                                    "<td>" + appointment.getEndTime().toString() + "</td>"
+                            );
+                            out.println("</tr>");
+                        }
                     }
                 %>
             </table><br><br>
@@ -171,9 +173,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             <br>
 
             <%
-                String cancelAppointmentError= (String)request.getAttribute("cancelAppointmentError");
-                if(cancelAppointmentError != null)
-                    out.println("<font color=red size=4px>" + cancelAppointmentError + "</font>");
+                /*String cancelAppointmentError = (String)request.getAttribute("cancelAppointmentError");
+                if (cancelAppointmentError != null)
+                    out.println("<font color=red size=4px>" + cancelAppointmentError + "</font>");*/
             %>
 
         <!-- //typo container -->
@@ -186,13 +188,13 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             Add availability</button>
 
         <%
-            String insertAvailabilityMsg = (String)request.getAttribute("insertAvailabilityMsg");
-            if(insertAvailabilityMsg != null)
+            /*String insertAvailabilityMsg = (String)request.getAttribute("insertAvailabilityMsg");
+            if (insertAvailabilityMsg != null)
                 if (insertAvailabilityMsg.equals("Success inserting available appointments."))
                     out.println("<font color=green size=4px>"+ insertAvailabilityMsg +"</font>");
                 else {
                     out.println("<font color=red size=4px>"+ insertAvailabilityMsg +"</font>");
-                }
+                }*/
         %>
 
         <!--/Register Availability for appointments Modal-->

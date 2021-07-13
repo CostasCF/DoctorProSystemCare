@@ -26,6 +26,12 @@ public class SessionManager {
 
     public static void prepareDoctorSession(Doctor doctor, HttpSession session) {
         session.setAttribute("doctor", doctor);
+
+        // Get the scheduled and available appointments from the database
+        DatabaseManager dbManager = new DatabaseManager();
+        session.setAttribute("appointmentsList", doctor.getScheduledAppointments(dbManager.getConnection()));
+
+        dbManager.closeConnection();
     }
 
     public static void prepareAppointmentDeletionMessage(String message, HttpSession session) {

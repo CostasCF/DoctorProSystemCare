@@ -48,6 +48,7 @@ public class LoginServlet extends HttpServlet {
 
         if (user instanceof Patient)
         {
+            System.out.println("The user is a patient");
             Patient patient = (Patient)user;
             SessionManager.preparePatientSession(patient, session);
             isLoggedIn = true;
@@ -55,18 +56,18 @@ public class LoginServlet extends HttpServlet {
             address= "/profile_patient.jsp";
         }
         else if (user instanceof Doctor) {
-            System.out.println("The guy is a doctor");
+            System.out.println("The user is a doctor");
             Doctor doctor = (Doctor)user;
             SessionManager.prepareDoctorSession(doctor,session);
-            Doctor.viewScheduledAppointments(request,doctor.getAmka(),database);
+            // Doctor.viewScheduledAppointments(request,doctor.getAmka(),database);
             setLoggedIn(true);
             setWhoLoggedIn("doctor");
             address = "/profile_doctor.jsp";
         }
         else if (user instanceof Admin) {
-            System.out.println("The guy is an admin");
+            System.out.println("The user is an admin");
             Admin admin = (Admin) user;
-            SessionManager.prepareAdminSession(admin,session); //preparing admin's session
+            SessionManager.prepareAdminSession(admin,session); // preparing admin's session
 
             System.out.println("Is this admin a super user? "+session.getAttribute("IsSuperUser"));
             if(admin.IsSuperUser())

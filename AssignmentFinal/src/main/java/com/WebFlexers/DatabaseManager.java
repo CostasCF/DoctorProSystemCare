@@ -108,7 +108,7 @@ public class DatabaseManager {
             }
             return doctors;
         } catch (SQLException e) {
-            System.out.println("An error occured while connecting to the database");
+            System.out.println("An error occurred while connecting to the database");
             return null;
         }
     }

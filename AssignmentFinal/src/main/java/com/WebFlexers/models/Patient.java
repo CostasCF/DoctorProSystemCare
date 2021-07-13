@@ -109,7 +109,7 @@ public class Patient extends User implements IDatabaseSupport {
                     Query.getScheduledAppointmentsByPatientAmka(connection, amka));
 
             if (allAppointments != null) {
-                // Add to the list of old appointments every one of them whose date is less than today's
+                // Add to the list of appointments every one of them whose date is later than today's
                 for (var appointment : allAppointments) {
                     LocalDateTime appointmentDateTime = LocalDateTime.of(appointment.getDate(), appointment.getStartTime());
                     if (appointmentDateTime.compareTo(LocalDateTime.now()) > 0) {
