@@ -146,9 +146,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     if(appointmentsList==null) return;
                     for (ScheduledAppointment appointment: appointmentsList) {
                         out.println("<tr>");
-                        out.println("<td>" + appointment.getAppointment_id() + "</td>" +
-                                "<td>" + appointment.getDoctor().getAmka() +"</td>" +
-                                "<td>" + appointment.getPatient().getAmka() + "</td>" +
+                        out.println("<td>" + appointment.getAppointmentID() + "</td>" +
+                                "<td>" + appointment.getDoctorAmka().getAmka() +"</td>" +
+                                "<td>" + appointment.getPatientAmka().getAmka() + "</td>" +
                                 "<td>" + appointment.getDate() + "</td>" +
                                 "<td>" + appointment.getStartTime().toString() + "</td>" +
                                 "<td>" + appointment.getEndTime().toString() + "</td>"

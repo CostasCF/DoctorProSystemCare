@@ -8,19 +8,23 @@ import java.util.Properties;
 import java.util.Random;
 
 public class DatabaseManager {
+    // An attribute that keeps track of open connections
+    private static int countOpenConnections = 0;
     private Connection connection;
-
-    public Connection getConnection() {
-        return connection;
-    }
 
     /**
      * Creates a new instance of DatabaseManager and connects to the database
      */
     public DatabaseManager() {
         createConnection();
+        countOpenConnections++;
     }
 
+    // Getters
+    public Connection getConnection() { return connection; }
+    public static int getOpenConnectionsCount() { return countOpenConnections; }
+
+    // Methods
     public void createConnection() {
         try {
             String url = "jdbc:postgresql://ec2-63-33-239-176.eu-west-1.compute.amazonaws.com:5432/da2pcm0gjc5hrv";
@@ -29,8 +33,6 @@ public class DatabaseManager {
             props.setProperty("password","1595f9de3818f63fd7a8373098250bc31ff7803dd70dbfe9ba868a1e001655e6");
 
             connection = DriverManager.getConnection(url, props);
-            System.out.println("Connected Successfully to the database");
-
         } catch (SQLException e) {
             System.out.println("An error occurred while connecting to the database");
             System.out.println(e.getMessage());
@@ -43,6 +45,7 @@ public class DatabaseManager {
     public void closeConnection() {
         try {
             connection.close();
+            countOpenConnections--;
         } catch (SQLException e) {
             System.out.println("An error occurred while trying to terminate the connection to the database");
         }
@@ -94,33 +97,6 @@ public class DatabaseManager {
         } catch (SQLException e) {
             System.out.println("DatabaseManager: An error occured while searching a patient by username on the database");
             System.out.println(e.getMessage());
-            return null;
-        }
-    }
-
-    /**
-     * Searches the database for a user with the given credential that is a doctor
-     * @param username : The username of the user
-     * @param password : The password of the user
-     * @return The corresponding doctor if they exist and null otherwise
-     */
-    public Doctor validateDoctor(String username, String password) {
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement("select * from \"Doctor\" where \"username\"=?");
-            preparedStatement.setString(1, username);
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            // Check if the given password corresponds to the stored hash
-            PasswordAuthentication crypto = new PasswordAuthentication();
-            if (resultSet.next() && crypto.authenticate(password.toCharArray(), resultSet.getString(3))) {
-                return new Doctor(resultSet);
-            }
-            else {
-                return null;
-            }
-
-        } catch (SQLException e) {
-            System.out.println("An error occured while connecting to the database");
             return null;
         }
     }
@@ -195,65 +171,6 @@ public class DatabaseManager {
         } catch (SQLException e) {
             System.out.println("DatabaseManager: An error occured while searching an admin by username on the database");
             System.out.println(e.getMessage());
-            return null;
-        }
-    }
-
-    /**
-     * Searches the database for a user that is an admin
-     * @param username : The username of the user
-     * @param password : The password of the user
-     * @return The corresponding admin if they exist and null otherwise
-     */
-    public Admin validateAdmin(String username, String password) {
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement("select * from \"Admin\" where \"username\"=?");
-            preparedStatement.setString(1, username);
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            // Check if the given password corresponds to the stored hash
-            PasswordAuthentication crypto = new PasswordAuthentication();
-            if (resultSet.next() && crypto.authenticate(password.toCharArray(), resultSet.getString(3))) {
-                return new Admin(resultSet);
-            }
-            else {
-                return null;
-            }
-
-        } catch (SQLException e) {
-            System.out.println("An error occured while connecting to the database");
-            return null;
-        }
-    }
-
-    /**
-     * Checks if a user with the given username and password exists in the database
-     * @param username : The user's username
-     * @param password : The user's password
-     * @return True if a user with the given credentials matches one in the database and false otherwise
-     */
-    public User validateUser(String username, String password) {
-        if (connection != null) {
-            // Check if a patient with the given cedentials exists
-            Patient patient = validatePatient(username, password);
-
-            if (patient != null) {
-                return patient;
-            }
-
-            // Check if a doctor with the given credentials exists
-            Doctor doctor = validateDoctor(username, password);
-
-            if (doctor != null) {
-                return doctor;
-            }
-
-            // Check if an admin with the given credentials exists
-            Admin admin = validateAdmin(username, password);
-            return admin;
-        }
-        // If the user is not found return null
-        else {
             return null;
         }
     }
@@ -450,37 +367,9 @@ public class DatabaseManager {
             }
             return admins;
         } catch (SQLException e) {
-            System.out.println("An error occured while connecting to the database");
+            System.out.println("An error occurred while connecting to the database");
             return null;
         }
-    }
-
-    /**
-     * Generates random string with pattern "LLNNNN" L = Letter, N = Number
-     * @return the produced string
-     */
-    public static String generateRandomId()
-    {
-        String letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        String numbers = "1234567890";
-
-        StringBuilder part1 = new StringBuilder();
-        Random rnd = new Random();
-        while (part1.length() < 2) { // length of the random string.
-            int index = (int) (rnd.nextFloat() * letters.length());
-            part1.append(letters.charAt(index));
-        }
-
-        StringBuilder part2 = new StringBuilder();
-        while (part2.length() < 4) { // length of the random string.
-            int index = (int) (rnd.nextFloat() * numbers.length());
-            part2.append(numbers.charAt(index));
-        }
-
-        String part1Str = part1.toString();
-        String part2Str = part2.toString();
-
-        return part1Str + part2Str;
     }
 
     public ScheduledAppointment getAppointmentById(String appointment_id)
@@ -539,7 +428,7 @@ public class DatabaseManager {
         PreparedStatement preparedStatement = connection.prepareStatement
                 ("insert into \"Available_Appointment\" (\"appointment_id\", \"doctor_amka\", \"date\", \"start_time\", \"end_time\") " +
                         "values (?, ?, ?, ?, ?)");
-        preparedStatement.setString(1, appointment.getAppointment_id());
+        preparedStatement.setString(1, appointment.getAppointmentID());
         preparedStatement.setString(2, doctorAMKA);
         preparedStatement.setDate(3, Date.valueOf(appointment.getDate()));
         preparedStatement.setTime(4, Time.valueOf(appointment.getStartTime()));
@@ -622,7 +511,7 @@ public class DatabaseManager {
         ArrayList<ScheduledAppointment> available_appointments = new ArrayList<>();
         try
         {
-            PreparedStatement preparedStatement = connection.prepareStatement("select * from \"Available_Appointment\" where ");
+            PreparedStatement preparedStatement = connection.prepareStatement("select * from \"Available_Appointment\"");
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {

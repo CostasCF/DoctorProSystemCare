@@ -19,16 +19,16 @@ public class AvailableAppointment implements IDatabaseSupport {
 
     /**
      * Creates an available appointment from a database result set
-     * @param resultSet
+     * @param resultSet The resultSet produced by the corresponding query
      */
     public AvailableAppointment(ResultSet resultSet) {
         String tempID = null;
         try {
-            tempID = resultSet.getString(1);
-            doctorAmka = resultSet.getString(2);
-            date = resultSet.getDate(3).toLocalDate();
-            startTime = resultSet.getTime(4).toLocalTime();
-            endTime = resultSet.getTime(5).toLocalTime();
+            tempID = resultSet.getString("appointment_id");
+            doctorAmka = resultSet.getString("doctor_amka");
+            date = resultSet.getDate("date").toLocalDate();
+            startTime = resultSet.getTime("start_time").toLocalTime();
+            endTime = resultSet.getTime("end_time").toLocalTime();
         } catch (SQLException e) {
             System.out.println("An error occurred while creating available appointment from result set");
             System.out.println(e.getMessage());
@@ -133,7 +133,7 @@ public class AvailableAppointment implements IDatabaseSupport {
      * @param query : The query that returns all the available appointments from the database
      * @return An ArrayList of type AvailableAppointment or null if no Available Appointments are found
      */
-    public ArrayList<AvailableAppointment> getAllFromDatabase(Query query) {
+    public static ArrayList<AvailableAppointment> getMultipleFromDatabase(Query query) {
 
         try {
             ResultSet resultSet = query.getStatement().executeQuery();
@@ -156,5 +156,15 @@ public class AvailableAppointment implements IDatabaseSupport {
             System.out.println("An error occurred while getting all available appointments from the database");
             return null;
         }
+    }
+
+    /**
+     *
+     * @param connection Connection to the database
+     */
+    public void scheduleThisAppointment(Connection connection, String patientAmka) {
+        ScheduledAppointment newAppointment = new ScheduledAppointment(appointmentID, patientAmka, doctorAmka, date, startTime, endTime);
+        newAppointment.addToDatabase(connection);
+        this.removeFromDatabase(connection);
     }
 }

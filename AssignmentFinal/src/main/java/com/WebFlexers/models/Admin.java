@@ -24,15 +24,15 @@ public class Admin extends User implements IDatabaseSupport {
 	 */
 	public Admin(ResultSet resultSet) {
 		try {
-			adminID = resultSet.getString(1);
-			username = resultSet.getString(2);
-			hashedPassword = resultSet.getString(3);
-			email = resultSet.getString(4);
-			firstName = resultSet.getString(5);
-			surname = resultSet.getString(6);
-			isSuperUser = resultSet.getBoolean(7);
+			adminID = resultSet.getString("admin_id");
+			username = resultSet.getString("username");
+			hashedPassword = resultSet.getString("password");
+			email = resultSet.getString("email");
+			firstName = resultSet.getString("first_name");
+			surname = resultSet.getString("last_name");
+			isSuperUser = resultSet.getBoolean("IsSuperUser");
 		} catch (SQLException ex) {
-			System.out.println("An error occured while connecting to database");
+			System.out.println("An error occurred while creating an admin from result set");
 			System.out.println(ex.toString());
 		}
 	}
@@ -62,13 +62,6 @@ public class Admin extends User implements IDatabaseSupport {
 
 	public void setSuperuserPassword(String superuserPassword) {
 		this.superuserPassword = superuserPassword;
-	}
-
-	/**
-     * Inserts Doctor to database
-     */
-	public void InsertDoctor(Doctor doctor)	{		
-		System.out.println(doctor.getFirstName() + " " + doctor.getSurname() + " inserted to database");
 	}
 	
 	/**
@@ -162,7 +155,7 @@ public class Admin extends User implements IDatabaseSupport {
 	 * @param query : The query that gets all the admins from the database
 	 * @return An ArrayList of type Admin or null if no admins are found
 	 */
-	public static ArrayList<Admin> getAllFromDatabase(Query query) {
+	public static ArrayList<Admin> getMultipleFromDatabase(Query query) {
 		try {
 			ResultSet resultSet = query.getStatement().executeQuery();
 			ArrayList<Admin> admins = new ArrayList<>();

@@ -52,27 +52,23 @@ public class Query {
         return new Query(statement);
     }
 
-    public static Query getAvailableAppointmentsByDoctorAmka(Connection connection, String doctorAmka) throws SQLException {
-        PreparedStatement statement = connection.prepareStatement("select * from \"Available_Appointment\" where \"doctor_amka\"=?");
-        statement.setString(1, doctorAmka);
+    public static Query getAvailableAppointmentByID(Connection connection, String id) throws  SQLException {
+        PreparedStatement statement = connection.prepareStatement("select * from \"Available_Appointment\" " +
+                "where \"appointment_id\"=?");
+        statement.setString(1, id);
         return new Query(statement);
     }
 
-    public static Query getScheduledAppointmentsByDoctorAmka(Connection connection, String doctorAmka) throws SQLException {
-        PreparedStatement statement = connection.prepareStatement("select * from \"Scheduled_Appointment\" where \"doctor_amka\"=?");
-        statement.setString(1, doctorAmka);
-        return new Query(statement);
-    }
-
-    public static Query getScheduledAppointmentsByPatientAmka(Connection connection, String patientAmka) throws SQLException {
-        PreparedStatement statement = connection.prepareStatement("select * from \"Scheduled_Appointment\" where \"patient_amka\"=?");
-        statement.setString(1, patientAmka);
+    public static Query getScheduledAppointmentByID(Connection connection, String id) throws  SQLException {
+        PreparedStatement statement = connection.prepareStatement("select * from \"Scheduled_Appointment\" " +
+                "where \"appointment_id\"=?");
+        statement.setString(1, id);
         return new Query(statement);
     }
 
     /*
      ******************************************************************************************************************
-     *                                 Queries for getting all rows of a table                                        *
+     *                                 Queries for getting multiple rows of a table                                   *
      *                        These queries return a prepared statement ready to be executed                          *
      ******************************************************************************************************************
      */
@@ -91,6 +87,31 @@ public class Query {
 
     public static Query getAllScheduledAppointments(Connection connection) throws SQLException {
         return new Query(connection.prepareStatement("select * from \"Scheduled_Appointment\""));
+    }
+
+    public static Query getAvailableAppointmentsByDoctorAmka(Connection connection, String doctorAmka) throws SQLException {
+        PreparedStatement statement = connection.prepareStatement("select * from \"Available_Appointment\" where \"doctor_amka\"=?");
+        statement.setString(1, doctorAmka);
+        return new Query(statement);
+    }
+
+    public static Query getAvailableAppointmentsByDoctorSpecialty(Connection connection, String specialty) throws SQLException {
+        PreparedStatement statement = connection.prepareStatement("select * from \"Available_Appointment\" INNER JOIN \"Doctor\"" +
+                "ON \"Doctor\".amka = \"Available_Appointment\".doctor_amka WHERE (\"speciality\" = ?) ORDER BY date");
+        statement.setString(1, specialty);
+        return new Query(statement);
+    }
+
+    public static Query getScheduledAppointmentsByDoctorAmka(Connection connection, String doctorAmka) throws SQLException {
+        PreparedStatement statement = connection.prepareStatement("select * from \"Scheduled_Appointment\" where \"doctor_amka\"=?");
+        statement.setString(1, doctorAmka);
+        return new Query(statement);
+    }
+
+    public static Query getScheduledAppointmentsByPatientAmka(Connection connection, String patientAmka) throws SQLException {
+        PreparedStatement statement = connection.prepareStatement("select * from \"Scheduled_Appointment\" where \"patient_amka\"=?");
+        statement.setString(1, patientAmka);
+        return new Query(statement);
     }
 
     /*

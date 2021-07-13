@@ -16,63 +16,32 @@ import java.io.IOException;
 @WebServlet("/login-servlet")
 public class LoginServlet extends HttpServlet {
 
+    // Attributes
     private static Boolean isLoggedIn;
     private static String whoLoggedIn;
+    private String address;
 
-    public static String getWhoLoggedIn() {
-        return whoLoggedIn;
-    }
+    // Getters and Setters
+    public static String getWhoLoggedIn() { return whoLoggedIn; }
 
     public static void setWhoLoggedIn(String whoLoggedIn) {
         LoginServlet.whoLoggedIn = whoLoggedIn;
     }
 
-    public void prepareAdminSession(Admin admin, HttpSession session) {
-        session.setAttribute("username", admin.getUsername());
-        session.setAttribute("firstname", admin.getFirstName());
-        session.setAttribute("surname", admin.getSurname());
-        session.setAttribute("email", admin.getEmail());
-        session.setAttribute( "adminID", admin.getAdminID());
-        session.setAttribute( "IsSuperUser", String.valueOf(admin.IsSuperUser()));
-    }
-    public void preparePatientSession(Patient patient, HttpSession session) {
-        session.setAttribute("amka", patient.getAmka());
-        session.setAttribute("username", patient.getUsername());
-        session.setAttribute("firstname", patient.getFirstName());
-        session.setAttribute("surname", patient.getSurname());
-        session.setAttribute("email", patient.getEmail());
-        session.setAttribute("phoneNumber", patient.getPhoneNumber());
-        session.setAttribute("listAppointments", patient.getScheduledAppointments());
-    }
-    public void prepareDoctorSession(Doctor doctor, HttpSession session) {
-        session.setAttribute("amka", doctor.getAmka());
-        session.setAttribute("username", doctor.getUsername());
-        session.setAttribute("firstname", doctor.getFirstName());
-        session.setAttribute("surname", doctor.getSurname());
-        session.setAttribute("email", doctor.getEmail());
-        session.setAttribute("phoneNumber", doctor.getPhoneNum());
-        session.setAttribute("specialty", doctor.getSpecialty());
-    }
-
-
-    String address;
-
     public static Boolean getLoggedIn() {
         return isLoggedIn;
     }
 
-    public static void setLoggedIn(Boolean loggedIn) {
-        isLoggedIn = loggedIn;
-    }
+    public static void setLoggedIn(Boolean loggedIn) { isLoggedIn = loggedIn; }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
-        //User validation
+        // Get the user with the given credentials
         DatabaseManager database = new DatabaseManager();
-        User user = database.validateUser(username, password);
+        User user = User.login(username, password);
 
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession();
@@ -80,16 +49,15 @@ public class LoginServlet extends HttpServlet {
         if (user instanceof Patient)
         {
             Patient patient = (Patient)user;
-            patient.setScheduledAppointments(database.getScheduledAppointmentsByPatient(patient));
-            preparePatientSession(patient, session);
-            setLoggedIn(true);
-            setWhoLoggedIn("patient");
+            SessionManager.preparePatientSession(patient, session);
+            isLoggedIn = true;
+            whoLoggedIn = "patient";
             address= "/profile_patient.jsp";
         }
         else if (user instanceof Doctor) {
             System.out.println("The guy is a doctor");
             Doctor doctor = (Doctor)user;
-            prepareDoctorSession(doctor,session);
+            SessionManager.prepareDoctorSession(doctor,session);
             Doctor.viewScheduledAppointments(request,doctor.getAmka(),database);
             setLoggedIn(true);
             setWhoLoggedIn("doctor");
@@ -98,11 +66,11 @@ public class LoginServlet extends HttpServlet {
         else if (user instanceof Admin) {
             System.out.println("The guy is an admin");
             Admin admin = (Admin) user;
-            prepareAdminSession(admin,session); //preparing admin's session
+            SessionManager.prepareAdminSession(admin,session); //preparing admin's session
 
             System.out.println("Is this admin a super user? "+session.getAttribute("IsSuperUser"));
             if(admin.IsSuperUser())
-               address = "/profile_admin_superuser.jsp"; // forwarding to admin's superuser profile page
+                address = "/profile_admin_superuser.jsp"; // forwarding to admin's superuser profile page
             else
                 address = "/profile_admin.jsp";
             setLoggedIn(true);

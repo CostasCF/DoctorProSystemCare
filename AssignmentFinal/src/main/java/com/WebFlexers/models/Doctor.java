@@ -27,15 +27,15 @@ public class Doctor extends User implements IDatabaseSupport {
         String specialtyTemp = null;
 
         try {
-            amka = resultSet.getString(1);
-            username = resultSet.getString(2);
-            hashedPassword = resultSet.getString(3);
-            firstName = resultSet.getString(4);
-            surname = resultSet.getString(5);
-            specialtyTemp = resultSet.getString(6);
-            email = resultSet.getString(7);
-            phoneNum = resultSet.getString(8);
-            adminID = resultSet.getString(9);
+            amka = resultSet.getString("amka");
+            username = resultSet.getString("username");
+            hashedPassword = resultSet.getString("password");
+            firstName = resultSet.getString("first_name");
+            surname = resultSet.getString("last_name");
+            specialtyTemp = resultSet.getString("speciality");
+            email = resultSet.getString("email");
+            phoneNum = resultSet.getString("phone_num");
+            adminID = resultSet.getString("admin_id");
 
         } catch (SQLException ex) {
             System.out.println("An error occurred while creating a doctor from ResultSet");
@@ -83,32 +83,8 @@ public class Doctor extends User implements IDatabaseSupport {
             request.setAttribute("listAppointments", appointments);
             setScheduledAppointments(appointments);
         }catch (Exception e){
-            System.out.println("Problem with fetching  doctors' appointments : " + e.getMessage());
+            System.out.println("Problem with fetching  doctors appointments : " + e.getMessage());
         }
-    }
-
-    /**
-     * Doctor inserts the date he is available to check in patients
-     */
-    public void insertDateAvailability(String doctorAvailability)
-    {
-        System.out.println("Available date added");
-    }
-
-    /**
-     * View doctor's appointment availability
-     */
-    public void viewAppointmentAvailability()
-    {
-        System.out.println("The doctor is available 24/7");
-    }
-
-    /**
-     * Cancel patient's appointment only if it's scheduled at least 3 days later compared to the current date.
-     */
-    public void cancelAppointment(ScheduledAppointment appointmentToBeCancelled)
-    {
-        System.out.println("Appointment Cancelled");
     }
 
     // Database related methods
@@ -185,7 +161,7 @@ public class Doctor extends User implements IDatabaseSupport {
      * @param query : The query that returns all the doctors from the database
      * @return An ArrayList of type doctor or null if no doctors are found
      */
-    public ArrayList<Doctor> getAllFromDatabase(Query query) {
+    public ArrayList<Doctor> getMultipleFromDatabase(Query query) {
 
         try {
             ResultSet resultSet = query.getStatement().executeQuery();

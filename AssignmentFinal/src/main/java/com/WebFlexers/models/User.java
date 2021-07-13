@@ -8,7 +8,7 @@ import javax.print.Doc;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-public class User implements ILogin {
+public class User {
 
     protected String username;
     protected String hashedPassword;
@@ -63,7 +63,6 @@ public class User implements ILogin {
      * @param password The real password given by the user
      * @return True if the passwords match, false otherwise
      */
-    @Override
     public boolean validatePassword(String password) {
         // Check if the given password corresponds to the stored hash
         PasswordAuthentication crypto = new PasswordAuthentication();
@@ -80,8 +79,7 @@ public class User implements ILogin {
      * Check the database for a user with the given credentials
      * @return The user that is found or null if none exists
      */
-    @Override
-    public User login(String username, String password) {
+    public static User login(String username, String password) {
         try {
             // Open connection to the database
             DatabaseManager databaseManager = new DatabaseManager();

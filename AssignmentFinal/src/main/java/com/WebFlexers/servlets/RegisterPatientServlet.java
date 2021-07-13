@@ -3,7 +3,6 @@ package com.WebFlexers.servlets;
 import com.WebFlexers.DatabaseManager;
 import com.WebFlexers.models.*;
 
-import javax.crypto.spec.PSource;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.ArrayList;
 
 @WebServlet("/register-patient-servlet")
 public class RegisterPatientServlet extends HttpServlet {
@@ -38,7 +36,7 @@ public class RegisterPatientServlet extends HttpServlet {
                     if(isDone)
                     {
                         LoginServlet loginServlet = new LoginServlet();
-                        loginServlet.preparePatientSession(patient,session);
+                        SessionManager.preparePatientSession(patient,session);
                         LoginServlet.setLoggedIn(true);
                         LoginServlet.setWhoLoggedIn("patient");
                         getServletContext().getRequestDispatcher("/profile_patient.jsp").forward(request, response);

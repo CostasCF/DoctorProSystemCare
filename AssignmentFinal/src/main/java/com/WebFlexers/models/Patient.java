@@ -1,14 +1,13 @@
 package com.WebFlexers.models;
 
-import com.WebFlexers.PasswordAuthentication;
 import com.WebFlexers.Query;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Patient extends User implements IDatabaseSupport {
 
-    private ArrayList<ScheduledAppointment> scheduledAppointments = new ArrayList<>();
     private final String amka;
     private String phoneNumber;
     private String email;
@@ -20,16 +19,16 @@ public class Patient extends User implements IDatabaseSupport {
     public Patient(ResultSet resultSet) {
         String tempAmka = "";
         try {
-            tempAmka = resultSet.getString(1);
-            setUsername(resultSet.getString(2));
-            setFirstName(resultSet.getString(4));
-            setSurname(resultSet.getString(5));
-            email = resultSet.getString(6);
-            phoneNumber = resultSet.getString(7);
-            //scheduledAppointments = appointments;
+            tempAmka = resultSet.getString("amka");
+            username = resultSet.getString("username");
+            hashedPassword = resultSet.getString("password");
+            firstName = resultSet.getString("first_name");
+            surname = resultSet.getString("last_name");
+            email = resultSet.getString("email");
+            phoneNumber = resultSet.getString("phone_num");
         } catch (SQLException ex) {
-            System.out.println("An error occured while connecting to database");
-            System.out.println("test 3-4?");
+            System.out.println("An error occurred while creating patient from resultSet");
+            System.out.println(ex.getMessage());
         }
         amka = tempAmka;
     }
@@ -53,63 +52,79 @@ public class Patient extends User implements IDatabaseSupport {
 
     public String getAmka() { return amka; }
 
-    public ArrayList<ScheduledAppointment> getScheduledAppointments() { return scheduledAppointments; }
-
-    public void setScheduledAppointments(ArrayList<ScheduledAppointment> scheduledAppointments) { this.scheduledAppointments = scheduledAppointments; }
-
     /**
-     * Adds an appointment to the schedule
-     * @param appointment: The scheduled appointment between the doctor and the patient
+     * Creates a list of all the previous appointments of this patient
+     * @return An ArrayList of type ScheduledAppointment or null if no old appointments exist
      */
-    public void addAppointment(ScheduledAppointment appointment) { scheduledAppointments.add(appointment); }
+    public ArrayList<ScheduledAppointment> getOldAppointments(Connection connection) {
+        try {
+            // First get all the appointments of this patient
+            ArrayList<ScheduledAppointment> allAppointments = ScheduledAppointment.getMultipleFromDatabase(
+                    Query.getScheduledAppointmentsByPatientAmka(connection, amka));
 
-    /**
-     * Removes appointment from the list of scheduled appointments
-     * @param appointment: The scheduled appointment between the doctor and the patient
-     */
-    public void cancelAppointment(ScheduledAppointment appointment) { scheduledAppointments.remove(appointment); }
+            if (allAppointments != null) {
+                System.out.println(allAppointments.size());
 
-    /**
-     * Replaces the old appointment with the new one in the scheduled appointments list
-     */
-    public void replaceAppointment(ScheduledAppointment oldAppointment, ScheduledAppointment newAppointment) {
-        if (scheduledAppointments.contains(oldAppointment)) {
-            scheduledAppointments.set(scheduledAppointments.indexOf(oldAppointment), newAppointment);
+                ArrayList<ScheduledAppointment> oldAppointments = new ArrayList<>();
+                // Add to the list of old appointments every one of them whose date is less than today's
+                for (var appointment : allAppointments) {
+                    LocalDateTime appointmentDateTime = LocalDateTime.of(appointment.getDate(), appointment.getStartTime());
+                    if (appointmentDateTime.compareTo(LocalDateTime.now()) < 0) {
+                        oldAppointments.add(appointment);
+                    }
+                }
+
+                // Return null if no old appointments exist
+                if (oldAppointments.isEmpty()) {
+                    return null;
+                }
+
+                // Return the list of old appointments if any are found
+                return oldAppointments;
+            }
+
+        } catch (SQLException e) {
+            System.out.println("An error occurred while trying to get old appointments from the database");
+            System.out.println(e.getMessage());
         }
+        return null;
     }
 
     /**
-     * Registers a new patient to the database
+     * Creates a list of this patient's appointments that are scheduled into the future
+     * @return An ArrayList of type ScheduledAppointment or null if no future appointments exist
      */
-    public void register() {
-        System.out.println("Patient registered");
+    public ArrayList<ScheduledAppointment> getScheduledAppointments(Connection connection) {
+        ArrayList<ScheduledAppointment> scheduledAppointments = new ArrayList<>();
+        try {
+            // First get all the appointments of this patient
+            ArrayList<ScheduledAppointment> allAppointments = ScheduledAppointment.getMultipleFromDatabase(
+                    Query.getScheduledAppointmentsByPatientAmka(connection, amka));
+
+            // Add to the list of old appointments every one of them whose date is less than today's
+            for (var appointment : allAppointments) {
+                LocalDateTime appointmentDateTime = LocalDateTime.of(appointment.getDate(), appointment.getStartTime());
+                if (appointmentDateTime.compareTo(LocalDateTime.now()) > 0) {
+                    scheduledAppointments.add(appointment);
+                }
+            }
+
+            // Return null if no scheduled appointments exist
+            if (scheduledAppointments.isEmpty()) {
+                return null;
+            }
+
+            // Return the list of scheduled appointments if any are found
+            return scheduledAppointments;
+        } catch (SQLException e) {
+            System.out.println("An error occurred while trying to get scheduled appointments from the database");
+            System.out.println(e.getMessage());
+        }
+        return  scheduledAppointments;
     }
 
     /**
-     * Finds the available appointments of the given doctor
-     * @return ArrayList of type Appointment
-     */
-    public ArrayList<ScheduledAppointment> getAvailableAppointments(Doctor doctor) {
-        ArrayList<ScheduledAppointment> availableAppointments = new ArrayList<ScheduledAppointment>();
-
-        System.out.println("Found appointments");
-        return availableAppointments;
-    }
-
-    /**
-     * Finds the available appointments of any doctor
-     * of the given specialty
-     * @return ArrayList of type Appointment
-     */
-    public ArrayList<ScheduledAppointment> getAvailableAppointments(String specialty) {
-        ArrayList<ScheduledAppointment> availableAppointments = new ArrayList<>();
-
-        System.out.println("Found appointments");
-        return availableAppointments;
-    }
-
-    /**
-     * Adds this doctor to the database
+     * Adds this patient to the database
      * @param connection A connection to the database
      */
     @Override

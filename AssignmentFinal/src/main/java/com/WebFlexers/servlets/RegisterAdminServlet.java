@@ -1,6 +1,7 @@
 package com.WebFlexers.servlets;
 
 import com.WebFlexers.DatabaseManager;
+import com.WebFlexers.StringUtility;
 import com.WebFlexers.models.Admin;
 
 import javax.servlet.RequestDispatcher;
@@ -34,7 +35,7 @@ public class RegisterAdminServlet extends HttpServlet {
         System.out.println(IsSuperUser);
 
         DatabaseManager database = new DatabaseManager();
-        String adminID = DatabaseManager.generateRandomId();
+        String adminID = StringUtility.generateRandomId();
 
         if (database.getUserByUsername(username) == null) {
             Admin admin = new Admin(username, password, firstName, lastName, email,adminID,IsSuperUser);

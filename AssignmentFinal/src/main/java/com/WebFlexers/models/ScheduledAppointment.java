@@ -3,18 +3,16 @@ package com.WebFlexers.models;
 import com.WebFlexers.DatabaseManager;
 import com.WebFlexers.Query;
 
-import javax.print.Doc;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class ScheduledAppointment implements IDatabaseSupport {
 
-    private String appointment_id;
-    private Patient patient;
-    private Doctor doctor;
+    private String appointmentID;
+    private String patientAmka;
+    private String doctorAmka;
     private LocalDate date;
     private LocalTime startTime;
     private LocalTime endTime;
@@ -27,9 +25,9 @@ public class ScheduledAppointment implements IDatabaseSupport {
             DatabaseManager databaseManager = new DatabaseManager();
             Connection connection = databaseManager.getConnection();
 
-            appointment_id = resultSet.getString("appointment_id");
-            doctor = Doctor.getFromDatabase(Query.getDoctorByAmka(connection, resultSet.getString("doctor_amka")));
-            patient = Patient.getFromDatabase(Query.getPatientByAmka(connection, resultSet.getString("patient_amka")));
+            appointmentID = resultSet.getString("appointment_id");
+            doctorAmka = resultSet.getString("doctor_amka");
+            patientAmka = resultSet.getString("patient_amka");
             date = resultSet.getDate("date").toLocalDate();
             startTime = resultSet.getTime("start_time").toLocalTime();
             endTime = resultSet.getTime("end_time").toLocalTime();
@@ -43,40 +41,27 @@ public class ScheduledAppointment implements IDatabaseSupport {
         }
     }
 
-    public ScheduledAppointment(Patient patient, Doctor doctor, LocalDate date, LocalTime startTime, LocalTime endTime) {
-        this.patient = patient;
-        this.doctor = doctor;
+    public ScheduledAppointment(String appointmentID, String patientAmka, String doctorAmka, LocalDate date, LocalTime startTime, LocalTime endTime) {
+        this.appointmentID = appointmentID;
+        this.patientAmka = patientAmka;
+        this.doctorAmka = doctorAmka;
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
     }
 
-    /**
-     * Creates an open appointment (without a specified doctor and patient)
-     * @param appointment_id : The appointment id
-     * @param date : The date of the appointment
-     * @param startTime : The start time of the appointment
-     * @param endTime : The end time of the appointment
-     */
-    public ScheduledAppointment(String appointment_id, String date, String startTime, String endTime ) {
-        this.appointment_id = appointment_id;
-        this.startTime =  LocalTime.parse(startTime);
-        this.endTime = LocalTime.parse(endTime);
-        this.date= LocalDate.parse(date);
-    }
-
     // Getters and Setters
-    public String getAppointment_id() { return appointment_id; }
+    public String getAppointmentID() { return appointmentID; }
 
-    public void setAppointment_id(String appointment_id) { this.appointment_id = appointment_id; }
+    public void setAppointmentID(String appointmentID) { this.appointmentID = appointmentID; }
 
-    public Patient getPatient() { return patient; }
+    public String getPatientAmka() { return patientAmka; }
 
-    public void setPatient(Patient patient) { this.patient = patient; }
+    public void setPatientAmka(String patientAmka) { this.patientAmka = patientAmka; }
 
-    public Doctor getDoctor() { return doctor; }
+    public String getDoctorAmka() { return doctorAmka; }
 
-    public void setDoctor(Doctor doctor) { this.doctor = doctor; }
+    public void setDoctorAmka(String doctorAmka) { this.doctorAmka = doctorAmka; }
 
     public LocalDate getDate() { return date; }
 
@@ -91,7 +76,6 @@ public class ScheduledAppointment implements IDatabaseSupport {
     public void setEndTime(LocalTime endTime) { this.endTime = endTime; }
 
     // Database related methods
-
     /**
      * Adds this scheduled appointment to the database
      * @param connection A connection to the database
@@ -100,9 +84,9 @@ public class ScheduledAppointment implements IDatabaseSupport {
     public void addToDatabase(Connection connection) {
         try {
             Query query = Query.addScheduledAppointment(connection);
-            query.getStatement().setString(1, appointment_id);
-            query.getStatement().setString(2, doctor.getAmka());
-            query.getStatement().setString(3, patient.getAmka());
+            query.getStatement().setString(1, appointmentID);
+            query.getStatement().setString(2, doctorAmka);
+            query.getStatement().setString(3, patientAmka);
             query.getStatement().setDate(4, Date.valueOf(date));
             query.getStatement().setTime(5, Time.valueOf(startTime));
             query.getStatement().setTime(6, Time.valueOf(endTime));
@@ -123,9 +107,9 @@ public class ScheduledAppointment implements IDatabaseSupport {
     @Override
     public void removeFromDatabase(Connection connection) {
         try {
-            Query query = Query.removeScheduledAppointment(connection, appointment_id);
+            Query query = Query.removeScheduledAppointment(connection, appointmentID);
             query.getStatement().execute();
-            System.out.println("Successfully deleted scheduled appointment with id " + appointment_id + " from the database");
+            System.out.println("Successfully deleted scheduled appointment with id " + appointmentID + " from the database");
 
             query.getStatement().close();
         } catch (SQLException e) {
@@ -162,7 +146,7 @@ public class ScheduledAppointment implements IDatabaseSupport {
      * @param query : The query that returns all the scheduled appointments from the database
      * @return An ArrayList of type ScheduledAppointment or null if none exists
      */
-    public static ArrayList<ScheduledAppointment> getAllFromDatabase(Query query) {
+    public static ArrayList<ScheduledAppointment> getMultipleFromDatabase(Query query) {
 
         try {
             ResultSet resultSet = query.getStatement().executeQuery();
