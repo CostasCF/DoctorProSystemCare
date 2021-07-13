@@ -1,6 +1,7 @@
 package com.WebFlexers.servlets;
 
 import com.WebFlexers.DatabaseManager;
+import com.WebFlexers.Query;
 import com.WebFlexers.models.ScheduledAppointment;
 
 import javax.servlet.*;
@@ -11,17 +12,6 @@ import java.util.ArrayList;
 
 @WebServlet("/appointment-delete-servlet")
 public class AppointmentDeletionServlet extends HttpServlet {
-
-    public static void listAppointments(HttpServletRequest request, String amka, DatabaseManager database){
-        try{
-            HttpSession session = request.getSession();
-            ArrayList<ScheduledAppointment> appointments;
-            appointments = database.getScheduledAppointmentsByPatient(database.getPatientByAmka(amka));
-            session.setAttribute("listAppointments", appointments);
-        }catch (Exception e){
-            System.out.println("Problem with listing doctors on admin's page : " + e.getMessage());
-        }
-    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException

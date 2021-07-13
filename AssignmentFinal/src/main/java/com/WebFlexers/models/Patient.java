@@ -110,18 +110,15 @@ public class Patient extends User implements IDatabaseSupport {
 
     /**
      * Adds this doctor to the database
-     * @param query The query that will be used to add the doctor to the database
+     * @param connection A connection to the database
      */
     @Override
-    public void addToDatabase(Query query) {
+    public void addToDatabase(Connection connection) {
         try {
+            Query query = Query.addPatient(connection);
             query.getStatement().setString(1, amka);
             query.getStatement().setString(2, username);
-
-            PasswordAuthentication cryptography = new PasswordAuthentication();
-            String hashedPassword = cryptography.hash(password.toCharArray());
             query.getStatement().setString(3, hashedPassword);
-
             query.getStatement().setString(4, firstName);
             query.getStatement().setString(5, surname);
             query.getStatement().setString(6, email);
@@ -138,12 +135,12 @@ public class Patient extends User implements IDatabaseSupport {
 
     /**
      * Removes this patient from the database
-     * @param query The query to remove the doctor from the database
+     * @param connection A connection to the database
      */
     @Override
-    public void removeFromDatabase(Query query) {
+    public void removeFromDatabase(Connection connection) {
         try {
-            query.getStatement().setString(1, amka);
+            Query query = Query.removePatient(connection, amka);
             query.getStatement().execute();
             System.out.println("Successfully deleted patient with amka " + amka + " from the database");
 

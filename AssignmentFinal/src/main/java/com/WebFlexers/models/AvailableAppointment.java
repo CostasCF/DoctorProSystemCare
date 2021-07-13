@@ -1,19 +1,15 @@
 package com.WebFlexers.models;
 
-import com.WebFlexers.PasswordAuthentication;
 import com.WebFlexers.Query;
 
-import java.sql.Date;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Time;
+import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class AvailableAppointment implements IDatabaseSupport {
     // Attributes
-    private final String appointment_id;
+    private final String appointmentID;
     private String doctorAmka;
     private LocalDate date;
     private LocalTime startTime;
@@ -38,11 +34,11 @@ public class AvailableAppointment implements IDatabaseSupport {
             System.out.println(e.getMessage());
         }
 
-        appointment_id = tempID;
+        appointmentID = tempID;
     }
 
-    public AvailableAppointment(String appointment_id, String doctorAmka, LocalDate date, LocalTime startTime, LocalTime endTime) {
-        this.appointment_id = appointment_id;
+    public AvailableAppointment(String appointmentID, String doctorAmka, LocalDate date, LocalTime startTime, LocalTime endTime) {
+        this.appointmentID = appointmentID;
         this.doctorAmka = doctorAmka;
         this.date = date;
         this.startTime = startTime;
@@ -50,7 +46,7 @@ public class AvailableAppointment implements IDatabaseSupport {
     }
 
     // Getters and setters
-    public String getAppointment_id() { return appointment_id; }
+    public String getAppointmentID() { return appointmentID; }
 
     public String getDoctorAmka() { return doctorAmka; }
 
@@ -70,13 +66,14 @@ public class AvailableAppointment implements IDatabaseSupport {
 
     // Database related methods
     /**
-     * Adds an available appointment to the database
-     * @param query The query that adds an available appointment to the database
+     * Adds this available appointment to the database
+     * @param connection A connection to the database
      */
     @Override
-    public void addToDatabase(Query query) {
+    public void addToDatabase(Connection connection) {
         try {
-            query.getStatement().setString(1, appointment_id);
+            Query query = Query.addAvailableAppointment(connection);
+            query.getStatement().setString(1, appointmentID);
             query.getStatement().setString(2, doctorAmka);
             query.getStatement().setDate(3, Date.valueOf(date));
             query.getStatement().setTime(4, Time.valueOf(startTime));
@@ -92,14 +89,14 @@ public class AvailableAppointment implements IDatabaseSupport {
 
     /**
      * Removes an available appointment from the database
-     * @param query The query that removes an available appointment to the database
+     * @param connection A connection to the database
      */
     @Override
-    public void removeFromDatabase(Query query) {
+    public void removeFromDatabase(Connection connection) {
         try {
-            query.getStatement().setString(1, appointment_id);
+            Query query = Query.removeAvailableAppointment(connection, appointmentID);
             query.getStatement().execute();
-            System.out.println("Successfully deleted available appointment with id " + appointment_id + " from the database");
+            System.out.println("Successfully deleted available appointment with id " + appointmentID + " from the database");
 
             query.getStatement().close();
         } catch (SQLException e) {

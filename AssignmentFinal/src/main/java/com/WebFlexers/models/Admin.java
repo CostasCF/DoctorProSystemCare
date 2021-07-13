@@ -9,19 +9,10 @@ import java.util.ArrayList;
 
 public class Admin extends User implements IDatabaseSupport {
 	
-	protected String superuserPassword;
+	private String superuserPassword;
 	private String email;
 	private String adminID;
-
-	public String getAdminID() {
-		return adminID;
-	}
-
 	boolean isSuperUser;
-
-	public void setAdminID(String adminID) {
-		this.adminID = adminID;
-	}
 
 	public String getEmail() {
 		return email;
@@ -35,7 +26,7 @@ public class Admin extends User implements IDatabaseSupport {
 		try {
 			adminID = resultSet.getString(1);
 			username = resultSet.getString(2);
-			password = resultSet.getString(3);
+			hashedPassword = resultSet.getString(3);
 			email = resultSet.getString(4);
 			firstName = resultSet.getString(5);
 			surname = resultSet.getString(6);
@@ -53,9 +44,17 @@ public class Admin extends User implements IDatabaseSupport {
 		this.isSuperUser = isSuperUser;
     }
 
+	public String getAdminID() {
+		return adminID;
+	}
+
+	public void setAdminID(String adminID) {
+		this.adminID = adminID;
+	}
+
 	public boolean IsSuperUser() { return isSuperUser; }
 
-	public void setSuperUser(boolean superUser) { isSuperUser = superUser; }
+	public void setSuperUser(boolean isSupperUser) { this.isSuperUser = isSupperUser; }
 
 	public String getSuperuserPassword() {
 		return superuserPassword;
@@ -91,16 +90,17 @@ public class Admin extends User implements IDatabaseSupport {
 
 	/**
 	 * Adds this admin to the database
-	 * @param query Determines by which attribute the admin will be searched
+	 * @param connection A connection to the database
 	 */
 	@Override
-	public void addToDatabase(Query query) {
+	public void addToDatabase(Connection connection) {
 		try {
+			Query query = Query.addAdmin(connection);
 			query.getStatement().setString(1, adminID);
 			query.getStatement().setString(2, username);
 
 			PasswordAuthentication cryptography = new PasswordAuthentication();
-			String hashedPassword = cryptography.hash(password.toCharArray());
+			String hashedPassword = cryptography.hash(this.hashedPassword.toCharArray());
 			query.getStatement().setString(3, hashedPassword);
 
 			query.getStatement().setString(4, email);
@@ -121,9 +121,9 @@ public class Admin extends User implements IDatabaseSupport {
 	 * Removes this admin from the database
 	 */
 	@Override
-	public void removeFromDatabase(Query query) {
+	public void removeFromDatabase(Connection connection) {
 		try {
-			query.getStatement().setString(1, adminID);
+			Query query = Query.removeAdmin(connection, adminID);
 			query.getStatement().execute();
 			System.out.println("Successfully deleted admin with id: " + adminID +" from the database");
 

@@ -3,6 +3,9 @@
 <%@ page import="com.WebFlexers.models.ScheduledAppointment" %>
 <%@ page import="com.WebFlexers.DatabaseManager" %>
 <%@ page import="com.WebFlexers.servlets.AppointmentDeletionServlet" %>
+<%@ page import="com.WebFlexers.Query" %>
+<%@ page import="java.sql.SQLException" %>
+
 <!--Template: W3layouts
 Template URL: http://w3layouts.com
 License: Creative Commons Attribution 3.0 Unported
@@ -42,13 +45,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     response.setHeader("Pragma", "no-cache"); // HTTP 1
     response.setHeader("Expires", "0");
 
-    DatabaseManager database = new DatabaseManager();
-    AppointmentDeletionServlet.listAppointments(request, (String)session.getAttribute("amka"), database);  // list doctors every time page refreshes
-    database.closeConnection();
-
     if(session.getAttribute("username") == null)
         response.sendRedirect("index.jsp");
-
 %>
     <!-- header -->
     <header>
@@ -116,7 +114,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <section class="wthree-row pt-sm-3  pb-sm-5 pb-3">
         <div class="container py-sm-5 py-3">
             <!-- section title -->
-
 				<h2 class="heading-agileinfo"> Welcome, <% out.println("<font color=black size=6px>"+ session.getAttribute("username")+"</font>"); %></h2>
             <!-- //section title -->
             <div class="pb-5 mt-md-5 typo-wthree">
@@ -144,9 +141,19 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         </tr>
                         </tr>
                         <%
-                            ArrayList<ScheduledAppointment> appointmentsList = (ArrayList<ScheduledAppointment>)session.getAttribute("listAppointments");
-                            if(appointmentsList==null) return;
-                            for (ScheduledAppointment appointment: appointmentsList) {
+                            ArrayList<ScheduledAppointment> appointments = null;
+                            try {
+                                DatabaseManager dbManager = new DatabaseManager();
+                                appointments = ScheduledAppointment.getAllFromDatabase(
+                                        Query.getScheduledAppointmentsByPatientAmka(dbManager.getConnection(), (String)session.getAttribute("amka")));
+                            } catch (SQLException e) {
+                                System.out.println("An error occurred while getting all scheduled appointments in profile patient");
+                                System.out.println(e.getMessage());
+                            }
+
+                            if (appointments == null) return;
+
+                            for (var appointment: appointments) {
                                 out.println("<tr>");
                                 out.println("<td>" + appointment.getAppointment_id() + "</td>" +
                                         "<td>" + appointment.getDoctor().getAmka() +"</td>" +

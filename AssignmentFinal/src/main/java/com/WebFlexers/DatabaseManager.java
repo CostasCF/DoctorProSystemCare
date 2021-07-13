@@ -32,7 +32,7 @@ public class DatabaseManager {
             System.out.println("Connected Successfully to the database");
 
         } catch (SQLException e) {
-            System.out.println("An error occured while connecting to the database");
+            System.out.println("An error occurred while connecting to the database");
             System.out.println(e.getMessage());
         }
     }
@@ -44,39 +44,11 @@ public class DatabaseManager {
         try {
             connection.close();
         } catch (SQLException e) {
-            System.out.println("An error occured while trying to terminate the connection to the database");
+            System.out.println("An error occurred while trying to terminate the connection to the database");
         }
     }
 
     //-----------------PATIENT-----------------
-    /**
-     * Searches the database for a user that is a patient
-     * @param username : The username of the user
-     * @param password : The password of the user
-     * @return The corresponding patient if they exist and null otherwise
-     */
-    public Patient validatePatient(String username, String password) {
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement("select * from \"Patient\" where \"username\"=?");
-            preparedStatement.setString(1, username);
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            // Check if the given password corresponds to the stored hash
-            PasswordAuthentication crypto = new PasswordAuthentication();
-            if (resultSet.next() && crypto.authenticate(password.toCharArray(), resultSet.getString(3))) {
-                System.out.println("Password match");
-                return new Patient(resultSet);
-            }
-            else {
-                return null;
-            }
-
-        } catch (SQLException e) {
-            System.out.println("An error occurred while connecting to the database");
-            return null;
-        }
-    }
-
     /**
      * Searches the database for a user with the given credential that is a patient
      * @param amka : The patient's amka
@@ -318,7 +290,7 @@ public class DatabaseManager {
             preparedStatement.setString(2, patient.getUsername());
 
             PasswordAuthentication cryptography = new PasswordAuthentication();
-            String hashedPassword = cryptography.hash(patient.getPassword().toCharArray());
+            String hashedPassword = cryptography.hash(patient.getHashedPassword().toCharArray());
             preparedStatement.setString(3, hashedPassword);
 
             preparedStatement.setString(4, patient.getFirstName());
@@ -349,7 +321,7 @@ public class DatabaseManager {
             preparedStatement.setString(2, admin.getUsername());
 
             PasswordAuthentication cryptography = new PasswordAuthentication();
-            String hashedPassword = cryptography.hash(admin.getPassword().toCharArray());
+            String hashedPassword = cryptography.hash(admin.getHashedPassword().toCharArray());
             preparedStatement.setString(3, hashedPassword);
 
             preparedStatement.setString(4, admin.getEmail());
@@ -380,7 +352,7 @@ public class DatabaseManager {
             preparedStatement.setString(2, doctor.getUsername());
 
             PasswordAuthentication cryptography = new PasswordAuthentication();
-            String hashedPassword = cryptography.hash(doctor.getPassword().toCharArray());
+            String hashedPassword = cryptography.hash(doctor.getHashedPassword().toCharArray());
             preparedStatement.setString(3, hashedPassword);
 
             preparedStatement.setString(4, doctor.getEmail());
@@ -426,7 +398,7 @@ public class DatabaseManager {
                     "SET \"username\" = ? ,\"password\" = ?,\"email\" = ?,\"first_name\" =? ,\"last_name\" =?, \"speciality\" = ?, \"phone_num\" = ? , \"admin_id\"= ?" +
                     " WHERE \"amka\"= ?");
             preparedStatement.setString(1,doctor.getAmka());
-            preparedStatement.setString(1,doctor.getPassword());
+            preparedStatement.setString(1,doctor.getHashedPassword());
             preparedStatement.setString(1,doctor.getEmail());
             preparedStatement.setString(1,doctor.getFirstName());
             preparedStatement.setString(1,doctor.getSurname());

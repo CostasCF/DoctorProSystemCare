@@ -4,12 +4,9 @@ import com.WebFlexers.DatabaseManager;
 import com.WebFlexers.PasswordAuthentication;
 import com.WebFlexers.Query;
 
-import javax.print.Doc;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.List;
 
 public class Doctor extends User implements IDatabaseSupport {
 
@@ -21,27 +18,7 @@ public class Doctor extends User implements IDatabaseSupport {
     private final String specialty;
     private static ArrayList<ScheduledAppointment> scheduledAppointments;
 
-    // Getters and Setters
-    public String getAmka() { return amka; }
-
-    public void setAmka(String amka) { this.amka = amka; }
-
-    public String getEmail() { return email; }
-
-    public void setEmail(String email) { this.email = email; }
-
-    public String getPhoneNum() { return phoneNum; }
-
-    public void setPhoneNum(String phoneNum) { this.phoneNum = phoneNum; }
-
-    public String getAdminID() { return adminID; }
-
-    public String getSpecialty() { return specialty; }
-
-    public static ArrayList<ScheduledAppointment> getScheduledAppointments() { return scheduledAppointments; }
-
-    public static void setScheduledAppointments(ArrayList<ScheduledAppointment> scheduledAppointments) { Doctor.scheduledAppointments = scheduledAppointments; }
-
+    // Constructors
     /**
      * A doctor that is instantiated with data from a database
      * @param resultSet : The data from the database
@@ -52,7 +29,7 @@ public class Doctor extends User implements IDatabaseSupport {
         try {
             amka = resultSet.getString(1);
             username = resultSet.getString(2);
-            password = resultSet.getString(3);
+            hashedPassword = resultSet.getString(3);
             firstName = resultSet.getString(4);
             surname = resultSet.getString(5);
             specialtyTemp = resultSet.getString(6);
@@ -77,6 +54,28 @@ public class Doctor extends User implements IDatabaseSupport {
         this.email = email;
     }
 
+    // Getters and Setters
+    public String getAmka() { return amka; }
+
+    public void setAmka(String amka) { this.amka = amka; }
+
+    public String getEmail() { return email; }
+
+    public void setEmail(String email) { this.email = email; }
+
+    public String getPhoneNum() { return phoneNum; }
+
+    public void setPhoneNum(String phoneNum) { this.phoneNum = phoneNum; }
+
+    public String getAdminID() { return adminID; }
+
+    public String getSpecialty() { return specialty; }
+
+    public static ArrayList<ScheduledAppointment> getScheduledAppointments() { return scheduledAppointments; }
+
+    public static void setScheduledAppointments(ArrayList<ScheduledAppointment> scheduledAppointments) { Doctor.scheduledAppointments = scheduledAppointments; }
+
+    // Methods
     public static void viewScheduledAppointments(HttpServletRequest request, String doctor_amka, DatabaseManager database){
         try{
             ArrayList<ScheduledAppointment> appointments;
@@ -115,18 +114,15 @@ public class Doctor extends User implements IDatabaseSupport {
     // Database related methods
     /**
      * Adds this doctor to the database
-     * @param query The query that will be used to add the doctor to the database
+     * @param connection A connection to the database
      */
     @Override
-    public void addToDatabase(Query query) {
+    public void addToDatabase(Connection connection) {
         try {
+            Query query = Query.addDoctor(connection);
             query.getStatement().setString(1, amka);
             query.getStatement().setString(2, username);
-
-            PasswordAuthentication cryptography = new PasswordAuthentication();
-            String hashedPassword = cryptography.hash(password.toCharArray());
             query.getStatement().setString(3, hashedPassword);
-
             query.getStatement().setString(4, firstName);
             query.getStatement().setString(5, surname);
             query.getStatement().setString(6, specialty);
@@ -145,12 +141,12 @@ public class Doctor extends User implements IDatabaseSupport {
 
     /**
      * Removes this doctor from the database
-     * @param query The query to remove the doctor from the database
+     * @param connection A connection to the database
      */
     @Override
-    public void removeFromDatabase(Query query) {
+    public void removeFromDatabase(Connection connection) {
         try {
-            query.getStatement().setString(1, amka);
+            Query query = Query.removeDoctor(connection, amka);
             query.getStatement().execute();
             System.out.println("Successfully deleted doctor with amka " + amka + " from the database");
 

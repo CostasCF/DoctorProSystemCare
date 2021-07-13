@@ -3,10 +3,8 @@ package com.WebFlexers.models;
 import com.WebFlexers.DatabaseManager;
 import com.WebFlexers.Query;
 
-import java.sql.Date;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Time;
+import javax.print.Doc;
+import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -27,30 +25,30 @@ public class ScheduledAppointment implements IDatabaseSupport {
         try
         {
             DatabaseManager databaseManager = new DatabaseManager();
+            Connection connection = databaseManager.getConnection();
 
-            appointment_id = resultSet.getString(1);
-            doctor = databaseManager.getDoctorByAmka(resultSet.getString(2));
-            patient = databaseManager.getPatientByAmka(resultSet.getString(3));
+            appointment_id = resultSet.getString("appointment_id");
+            doctor = Doctor.getFromDatabase(Query.getDoctorByAmka(connection, resultSet.getString("doctor_amka")));
+            patient = Patient.getFromDatabase(Query.getPatientByAmka(connection, resultSet.getString("patient_amka")));
+            date = resultSet.getDate("date").toLocalDate();
+            startTime = resultSet.getTime("start_time").toLocalTime();
+            endTime = resultSet.getTime("end_time").toLocalTime();
 
-            //Converting string to Local Date Time
-            String tempDate = resultSet.getString(4);
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            date = LocalDate.parse(tempDate, formatter);
-
-            startTime = LocalTime.parse(resultSet.getString(5));
-            endTime = LocalTime.parse(resultSet.getString(6));
+            databaseManager.closeConnection();
         }
         catch (SQLException ex)
         {
-            System.out.println("An error occured while connecting to database");
+            System.out.println("An error occurred while creating scheduled appointment from result set");
             System.out.println(ex.toString());
         }
     }
 
-    public ScheduledAppointment(Patient patient, Doctor doctor, LocalDate date) {
+    public ScheduledAppointment(Patient patient, Doctor doctor, LocalDate date, LocalTime startTime, LocalTime endTime) {
         this.patient = patient;
         this.doctor = doctor;
         this.date = date;
+        this.startTime = startTime;
+        this.endTime = endTime;
     }
 
     /**
@@ -93,13 +91,15 @@ public class ScheduledAppointment implements IDatabaseSupport {
     public void setEndTime(LocalTime endTime) { this.endTime = endTime; }
 
     // Database related methods
+
     /**
      * Adds this scheduled appointment to the database
-     * @param query The query that will be used to add the scheduled appointment to the database
+     * @param connection A connection to the database
      */
     @Override
-    public void addToDatabase(Query query) {
+    public void addToDatabase(Connection connection) {
         try {
+            Query query = Query.addScheduledAppointment(connection);
             query.getStatement().setString(1, appointment_id);
             query.getStatement().setString(2, doctor.getAmka());
             query.getStatement().setString(3, patient.getAmka());
@@ -118,12 +118,12 @@ public class ScheduledAppointment implements IDatabaseSupport {
 
     /**
      * Removes a scheduled appointment from the database
-     * @param query The query that removes a scheduled appointment from the database
+     * @param connection A connection to the database
      */
     @Override
-    public void removeFromDatabase(Query query) {
+    public void removeFromDatabase(Connection connection) {
         try {
-            query.getStatement().setString(1, appointment_id);
+            Query query = Query.removeScheduledAppointment(connection, appointment_id);
             query.getStatement().execute();
             System.out.println("Successfully deleted scheduled appointment with id " + appointment_id + " from the database");
 
@@ -135,11 +135,34 @@ public class ScheduledAppointment implements IDatabaseSupport {
     }
 
     /**
+     * Search for an available appointment in the database
+     * @param query : The query that determines by which field the appointment will be selected
+     * @return An available appointment created from the data provided by the database, or null if he doesn't exist
+     */
+    public static ScheduledAppointment getFromDatabase(Query query) {
+        try {
+            ResultSet resultSet = query.getStatement().executeQuery();
+
+            ScheduledAppointment appointment = null;
+            if (resultSet.next()) {
+                appointment = new ScheduledAppointment(resultSet);
+            }
+
+            query.getStatement().close();
+            return appointment;
+        } catch (SQLException e) {
+            System.out.println("An error occurred while getting a Scheduled Appointment from the database");
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+
+    /**
      * Gets all the scheduled appointments from the database
      * @param query : The query that returns all the scheduled appointments from the database
      * @return An ArrayList of type ScheduledAppointment or null if none exists
      */
-    public ArrayList<ScheduledAppointment> getAllFromDatabase(Query query) {
+    public static ArrayList<ScheduledAppointment> getAllFromDatabase(Query query) {
 
         try {
             ResultSet resultSet = query.getStatement().executeQuery();
