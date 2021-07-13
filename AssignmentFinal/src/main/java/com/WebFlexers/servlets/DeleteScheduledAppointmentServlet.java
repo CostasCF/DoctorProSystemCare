@@ -16,15 +16,19 @@ public class DeleteScheduledAppointmentServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        Patient patient = (Patient)session.getAttribute("patient");
+
         DatabaseManager databaseManager = new DatabaseManager();
         try {
+            // Get the appointment id in order to delete the appointment
             String appointmentID = request.getParameter("appointment_id");
 
             ScheduledAppointment appointment = ScheduledAppointment.getFromDatabase(
                     Query.getScheduledAppointmentByID(databaseManager.getConnection(), appointmentID));
 
             if (appointment != null)
-                appointment.removeFromDatabase(databaseManager.getConnection());
+                patient.cancelAppointment(databaseManager.getConnection(), appointment);
 
         } catch (SQLException e) {
             System.out.println("An error occurred while deleting a scheduled appointment");
@@ -34,8 +38,7 @@ public class DeleteScheduledAppointmentServlet extends HttpServlet {
         databaseManager.closeConnection();
 
         // Prepare the patient session again to update data and refresh the page
-        HttpSession session = request.getSession();
-        SessionManager.preparePatientSession((Patient)session.getAttribute("patient"), session);
+        SessionManager.preparePatientSession(patient, session);
         getServletContext().getRequestDispatcher("/profile_patient.jsp").forward(request, response);
     }
 }

@@ -103,13 +103,13 @@ public class Query {
     }
 
     public static Query getScheduledAppointmentsByDoctorAmka(Connection connection, String doctorAmka) throws SQLException {
-        PreparedStatement statement = connection.prepareStatement("select * from \"Scheduled_Appointment\" where \"doctor_amka\"=?");
+        PreparedStatement statement = connection.prepareStatement("select * from \"Scheduled_Appointment\" where (\"doctor_amka\")=? ORDER BY \"date\"");
         statement.setString(1, doctorAmka);
         return new Query(statement);
     }
 
     public static Query getScheduledAppointmentsByPatientAmka(Connection connection, String patientAmka) throws SQLException {
-        PreparedStatement statement = connection.prepareStatement("select * from \"Scheduled_Appointment\" where \"patient_amka\"=?");
+        PreparedStatement statement = connection.prepareStatement("select * from \"Scheduled_Appointment\" where \"patient_amka\"=? ORDER BY \"date\"");
         statement.setString(1, patientAmka);
         return new Query(statement);
     }

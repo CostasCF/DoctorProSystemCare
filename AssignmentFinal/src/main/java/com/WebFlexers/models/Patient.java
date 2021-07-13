@@ -6,6 +6,8 @@ import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
+import static java.time.temporal.ChronoUnit.DAYS;
+
 public class Patient extends User implements IDatabaseSupport {
 
     private final String amka;
@@ -121,6 +123,25 @@ public class Patient extends User implements IDatabaseSupport {
             System.out.println(e.getMessage());
         }
         return  scheduledAppointments;
+    }
+
+    /**
+     * Cancels this appointment if it is more than 3 days away and deletes it from the database
+     * @param connection A connection to the database
+     * @return True if the appointment got cancelled, false otherwise
+     */
+    public void cancelAppointment(Connection connection, ScheduledAppointment appointment) {
+        // Get the date and time of the appointment and compare them with now
+        LocalDateTime appointmentDateTime = LocalDateTime.of(appointment.getDate(), appointment.getStartTime());
+        System.out.println("Number of days: " + DAYS.between(LocalDateTime.now(), appointmentDateTime));
+        if (DAYS.between(LocalDateTime.now(), appointmentDateTime) > 3) {
+            appointment.removeFromDatabase(connection);
+            System.out.println("Successfully deleted appointment with ID " + appointment.getAppointmentID());
+        }
+        else {
+            System.out.println("Couldn't delete appointment with ID " + appointment.getAppointmentID() + ", because " +
+                    "it is scheduled for less than 3 days from now");
+        }
     }
 
     /**
