@@ -178,6 +178,12 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 </div>
             </div>
 
+            <%
+                String deleteAppointmentError = (String)session.getAttribute("justAMessage");
+                if(deleteAppointmentError!=null)
+                    out.println("<font color=blue  align=center size=4px>"+deleteAppointmentError+"</font>");
+            %>
+
             <!--------------------- Table of available appointments --------------------->
             <%
                 // Get the available appointments from the database

@@ -36,7 +36,7 @@ public class DeleteScheduledAppointmentServlet extends HttpServlet {
         }
 
         databaseManager.closeConnection();
-
+        SessionManager.prepareAppointmentDeletionMessage(Patient.getMessage(),session);
         // Prepare the patient session again to update data and refresh the page
         SessionManager.preparePatientSession(patient, session);
         getServletContext().getRequestDispatcher("/profile_patient.jsp").forward(request, response);

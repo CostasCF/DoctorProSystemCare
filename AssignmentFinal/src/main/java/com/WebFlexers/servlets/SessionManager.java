@@ -27,4 +27,10 @@ public class SessionManager {
     public static void prepareDoctorSession(Doctor doctor, HttpSession session) {
         session.setAttribute("doctor", doctor);
     }
+
+    public static void prepareAppointmentDeletionMessage(String message, HttpSession session) {
+        session.setAttribute("AppointmentDeletionMessage", message);
+    }
+
+
 }
