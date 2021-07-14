@@ -1,4 +1,5 @@
 <%@ page import="com.WebFlexers.servlets.LoginServlet" %>
+<%@ page import="com.WebFlexers.models.Admin" %>
 <!--Template: W3layouts
 Template URL: http://w3layouts.com
 License: Creative Commons Attribution 3.0 Unported
@@ -36,8 +37,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <%
 	if (LoginServlet.getLoggedIn() == null)
 		LoginServlet.setLoggedIn(false);
-	if (LoginServlet.getLoggedIn())
-		request.setAttribute("whoLoggedIn",LoginServlet.getWhoLoggedIn());
+	if (LoginServlet.getLoggedIn()) {
+		request.setAttribute("whoLoggedIn", LoginServlet.getWhoLoggedIn());
+	}
 	request.setAttribute("isLoggedin",LoginServlet.getLoggedIn()); //this commands runs on index.jsp loading and checks if a user is logged in
 %>
         <!-- header -->
