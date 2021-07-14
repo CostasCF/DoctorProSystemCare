@@ -63,21 +63,6 @@ public class Admin extends User implements IDatabaseSupport {
 	public void setSuperuserPassword(String superuserPassword) {
 		this.superuserPassword = superuserPassword;
 	}
-	
-	/**
-     * Removes Doctor from database
-     */
-	public static void DeleteDoctor(Doctor doc)	{
-		try{
-		DatabaseManager database = new DatabaseManager();
-		 doc  =  database.getDoctorByAmka(doc.getAmka());
-		database.deleteDoctor(doc);
-	//	System.out.println(doc.getFirstName() + " " + doc.getSurname() + " removed from database");
-		}
-		catch (Exception e){
-			System.out.println(e.getMessage());
-		}
-	}
 
 	// Database related methods
 

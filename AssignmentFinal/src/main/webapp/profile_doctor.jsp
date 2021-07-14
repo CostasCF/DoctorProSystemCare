@@ -188,16 +188,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         <button href="#" data-toggle="modal" data-target="#addAvailabilityForAppointments" class="text-dark font-weight-bold">
             Add availability</button>
 
-        <%
-            /*String insertAvailabilityMsg = (String)request.getAttribute("insertAvailabilityMsg");
-            if (insertAvailabilityMsg != null)
-                if (insertAvailabilityMsg.equals("Success inserting available appointments."))
-                    out.println("<font color=green size=4px>"+ insertAvailabilityMsg +"</font>");
-                else {
-                    out.println("<font color=red size=4px>"+ insertAvailabilityMsg +"</font>");
-                }*/
-        %>
-
         <!--/Register Availability for appointments Modal-->
         <div class="modal fade" id="addAvailabilityForAppointments" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
@@ -210,21 +200,21 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     <div class="modal-body">
                         <div class="login px-4 mx-auto mw-100">
                             <h5 class="modal-title text-center text-dark mb-4">Add availability for appointments</h5>
-                            <form action="InsertAvailableAppointmentServlet" method="post">
+                            <form action="/add-available-appointment-servlet" method="post">
 
                                 <div class="form-group">
                                     <label class="col-form-label">Date</label>
-                                    <input type="date" class="form-control" name="dateInsert" id="dateInsert" required>
+                                    <input type="date" class="form-control" name="date" id="dateInsert" required>
                                 </div>
 
                                 <div class="form-group">
                                     <label class="col-form-label">Start Time</label>
-                                    <input type="time" class="form-control" name="startTimeInsert" id="startTimeInsert" required>
+                                    <input type="time" class="form-control" name="startTime" id="startTimeInsert" required>
                                 </div>
 
                                 <div class="form-group">
                                     <label class="col-form-label">End Time</label>
-                                    <input type="time" class="form-control" name="endTimeInsert" id="endTimeInsert" required>
+                                    <input type="time" class="form-control" name="endTime" id="endTimeInsert" required>
                                 </div>
 
                                 <div class="reg-w3l">
@@ -233,6 +223,11 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
                             </form>
                         </div>
+                        <%
+                            String addAvailableAppointmentMessage = (String)request.getAttribute("addAppointmentAvailabilityMessage");
+                            if (addAvailableAppointmentMessage != null)
+                                out.println("<font color=blue  align=center size=4px>" + addAvailableAppointmentMessage + "</font>");
+                        %>
                     </div>
                 </div>
             </div>

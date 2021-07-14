@@ -69,7 +69,6 @@ public class LoginServlet extends HttpServlet {
             Admin admin = (Admin) user;
             SessionManager.prepareAdminSession(admin,session); // preparing admin's session
 
-            System.out.println("Is this admin a super user? "+session.getAttribute("IsSuperUser"));
             if(admin.IsSuperUser())
                 address = "/profile_admin_superuser.jsp"; // forwarding to admin's superuser profile page
             else

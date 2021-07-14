@@ -17,8 +17,6 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Random;
 
-import static com.WebFlexers.servlets.AdminServlet.listDoctors;
-
 @WebServlet("/register-admin-servlet")
 public class RegisterAdminServlet extends HttpServlet {
 

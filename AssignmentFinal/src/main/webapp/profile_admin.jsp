@@ -7,9 +7,8 @@
 --%>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="com.WebFlexers.models.Doctor" %>
-<%@ page import="com.WebFlexers.servlets.AdminServlet" %>
-<%@ page import="javax.xml.crypto.Data" %>
 <%@ page import="com.WebFlexers.DatabaseManager" %>
+<%@ page import="com.WebFlexers.models.Admin" %>
 <!--Template: W3layouts
 Template URL: http://w3layouts.com
 License: Creative Commons Attribution 3.0 Unported
@@ -49,12 +48,12 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     response.setHeader("Pragma", "no-cache"); // HTTP 1
     response.setHeader("Expires", "0");
 
-    DatabaseManager database = new DatabaseManager();
-    AdminServlet.listDoctors(request,database);  // list doctors every time page refreshes
-    database.closeConnection();
-
-    if(session.getAttribute("username") == null)
+    Admin admin = null;
+    if (session.getAttribute("user") == null)
         response.sendRedirect("index.jsp");
+    else {
+        admin = (Admin)session.getAttribute("user");
+    }
 
 %>
 <!-- header -->
@@ -124,17 +123,17 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <div class="container py-sm-5 py-3">
         <!-- section title -->
 
-        <h2 class="heading-agileinfo"> Welcome, <% out.println("<font color=black size=6px>"+ session.getAttribute("username")+"</font>"); %></h2>
+        <h2 class="heading-agileinfo"> Welcome, <% out.println("<font color=black size=6px>"+ admin.getUsername() +"</font>"); %></h2>
         <!-- //section title -->
         <div class="pb-5 mt-md-5 typo-wthree">
             <h4 class="pt-4 pb-3">Admin's Profile</h4>
 
             <div class="d-flex flex-column bg-flex">
-                <div class="p-2 bg-flex mb-1 bg-flex-item">ID: <% out.println("<font color=black size=4px>"+ session.getAttribute("adminID")+"</font>"); %> </div>
-                <div class="p-2 bg-flex mb-1 bg-flex-item">Firstname:  <% out.println("<font color=black size=4px>"+ session.getAttribute("firstname")+"</font>"); %></div>
-                <div class="p-2 bg-flex mb-1 bg-flex-item">Surname:  <% out.println("<font color=black size=4px>"+ session.getAttribute("surname")+"</font>"); %> </div>
-                <div class="p-2 bg-flex mb-1 bg-flex-item">Username: <% out.println("<font color=black size=4px>"+ session.getAttribute("username")+"</font>"); %></div>
-                <div class="p-2 bg-flex mb-1 bg-flex-item">Email: <% out.println("<font color=black size=4px>"+ session.getAttribute("email")+"</font>"); %> </div>
+                <div class="p-2 bg-flex mb-1 bg-flex-item">ID: <% out.println("<font color=black size=4px>"+ admin.getAdminID() +"</font>"); %> </div>
+                <div class="p-2 bg-flex mb-1 bg-flex-item">Firstname:  <% out.println("<font color=black size=4px>"+ admin.getFirstName() +"</font>"); %></div>
+                <div class="p-2 bg-flex mb-1 bg-flex-item">Surname:  <% out.println("<font color=black size=4px>"+ admin.getSurname() +"</font>"); %> </div>
+                <div class="p-2 bg-flex mb-1 bg-flex-item">Username: <% out.println("<font color=black size=4px>"+ admin.getUsername() +"</font>"); %></div>
+                <div class="p-2 bg-flex mb-1 bg-flex-item">Email: <% out.println("<font color=black size=4px>"+ admin.getEmail() +"</font>"); %> </div>
 
             </div>
             <br><br>
@@ -154,10 +153,11 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
                     </tr>
                     <%
-                        ArrayList<Doctor> doctorList = (ArrayList<Doctor>)request.getAttribute("listDoctors");
-                        for (Doctor doctor: doctorList) {
-                            out.println("<tr>");
-                            out.println("<td>" + doctor.getAmka() + "</td> " +
+                        ArrayList<Doctor> doctorList = (ArrayList<Doctor>)request.getAttribute("allDoctors");
+                        if (doctorList != null) {
+                            for (Doctor doctor: doctorList) {
+                                out.println("<tr>");
+                                out.println("<td>" + doctor.getAmka() + "</td> " +
                                         "<td>" + doctor.getUsername() + "</td> " +
                                         "<td>" + doctor.getFirstName() + "</td> " +
                                         "<td>" + doctor.getSurname() + "</td> " +
@@ -165,8 +165,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                         "<td>" + doctor.getEmail() + "</td> " +
                                         "<td>" + doctor.getPhoneNum() + "</td> " +
                                         "<td>" + doctor.getAdminID() + "</td> "
-                            );
-                            out.println("</tr>");
+                                );
+                                out.println("</tr>");
+                            }
                         }
                     %>
                 </table>
@@ -201,7 +202,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     <div class="modal-body">
                         <div class="login px-4 mx-auto mw-100">
                             <h5 class="modal-title text-center text-dark mb-4">Add a doctor</h5>
-                            <form action="register-doctor-servlet" method="post">
+                            <form action="/add-doctor-servlet" method="post">
                                 <div class="form-group">
                                     <label class="col-form-label">Amka</label>
                                     <input type="text" pattern="^(\d{11})$" class="form-control" name="amkaD" id="amkaDoctor" required>
@@ -245,7 +246,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
                                 <div class="form-group">
                                     <label class="col-form-label">Phone number</label>
-                                    <input type="text" pattern="^(\d{10})$" class="form-control" name="phoneNumD" id="phoneNumDoctor" required>
+                                    <input type="text" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" class="form-control" name="phoneNumD" id="phoneNumDoctor" required>
                                 </div>
 
                                 <%

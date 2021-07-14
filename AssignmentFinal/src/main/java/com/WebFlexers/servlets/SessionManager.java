@@ -9,7 +9,17 @@ import java.sql.SQLException;
 
 public class SessionManager {
     public static void prepareAdminSession(Admin admin, HttpSession session) {
-        session.setAttribute("admin", admin);
+        session.setAttribute("user", admin);
+
+        try {
+            DatabaseManager dbManager = new DatabaseManager();
+            session.setAttribute("allDoctors", Admin.getMultipleFromDatabase(Query.getAllAdmins(dbManager.getConnection())));
+            dbManager.closeConnection();
+        } catch (SQLException e) {
+            System.out.println("An error occurred while getting all admins from the database");
+            System.out.println(e.getMessage());
+        }
+
     }
 
     public static void preparePatientSession(Patient patient, HttpSession session) {
@@ -38,5 +48,7 @@ public class SessionManager {
         session.setAttribute("AppointmentDeletionMessage", message);
     }
 
-
+    public static void prepareDoctorRegistrationMessage(String message, HttpSession session) {
+        session.setAttribute("registerDoctorError", message);
+    }
 }
