@@ -146,7 +146,7 @@ public class Doctor extends User implements IDatabaseSupport {
      * @param query : The query that returns all the doctors from the database
      * @return An ArrayList of type doctor or null if no doctors are found
      */
-    public ArrayList<Doctor> getMultipleFromDatabase(Query query) {
+    public static ArrayList<Doctor> getMultipleFromDatabase(Query query) {
 
         try {
             ResultSet resultSet = query.getStatement().executeQuery();

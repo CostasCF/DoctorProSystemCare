@@ -1,14 +1,12 @@
 <%--
   Created by IntelliJ IDEA.
-  User: COSTAS
-  Date: 7/6/2021
-  Time: 8:59 PM
+  User: Michalis
+  Date: 14/07/2021
+  Time: 6:43 AM
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="com.WebFlexers.models.Doctor" %>
-<%@ page import="com.WebFlexers.servlets.AdminServlet" %>
-<%@ page import="javax.xml.crypto.Data" %>
 <%@ page import="com.WebFlexers.DatabaseManager" %>
 <%@ page import="com.WebFlexers.models.Admin" %>
 <!--Template: W3layouts
@@ -45,19 +43,16 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 </head>
 <body>
 <%
-
     response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
     response.setHeader("Pragma", "no-cache"); // HTTP 1
     response.setHeader("Expires", "0");
 
-    DatabaseManager database = new DatabaseManager();
-    AdminServlet.listDoctors(request,database);  // list doctors every time page refreshes
-    AdminServlet.listAdmins(request,database);  // list doctors every time page refreshes
-    database.closeConnection();
-
-    if((session.getAttribute("username") == null) ||  session.getAttribute("IsSuperUser").equals("false"))
+    Admin admin = null;
+    if (session.getAttribute("user") == null)
         response.sendRedirect("index.jsp");
-
+    else {
+        admin = (Admin)session.getAttribute("user");
+    }
 %>
 <!-- header -->
 <header>
@@ -100,7 +95,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
 
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="profile_admin_superuser.jsp">Profile</a>
+                        <a class="dropdown-item" href="profile_admin.jsp">Profile</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="logout-servlet">Logout</a>
                     </div>
@@ -126,22 +121,22 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <div class="container py-sm-5 py-3">
         <!-- section title -->
 
-        <h2 class="heading-agileinfo"> Welcome, <% out.println("<font color=black size=6px>"+ session.getAttribute("username")+"</font>"); %></h2>
+        <h2 class="heading-agileinfo"> Welcome, <% out.println("<font color=black size=6px>"+ admin.getUsername() +"</font>"); %></h2>
         <!-- //section title -->
         <div class="pb-5 mt-md-5 typo-wthree">
             <h4 class="pt-4 pb-3">Admin's Profile</h4>
 
             <div class="d-flex flex-column bg-flex">
-                <div class="p-2 bg-flex mb-1 bg-flex-item">ID: <% out.println("<font color=black size=4px>"+ session.getAttribute("adminID")+"</font>"); %> </div>
-                <div class="p-2 bg-flex mb-1 bg-flex-item">Firstname:  <% out.println("<font color=black size=4px>"+ session.getAttribute("firstname")+"</font>"); %></div>
-                <div class="p-2 bg-flex mb-1 bg-flex-item">Surname:  <% out.println("<font color=black size=4px>"+ session.getAttribute("surname")+"</font>"); %> </div>
-                <div class="p-2 bg-flex mb-1 bg-flex-item">Username: <% out.println("<font color=black size=4px>"+ session.getAttribute("username")+"</font>"); %></div>
-                <div class="p-2 bg-flex mb-1 bg-flex-item">Email: <% out.println("<font color=black size=4px>"+ session.getAttribute("email")+"</font>"); %> </div>
+                <div class="p-2 bg-flex mb-1 bg-flex-item">ID: <% out.println("<font color=black size=4px>"+ admin.getAdminID() +"</font>"); %> </div>
+                <div class="p-2 bg-flex mb-1 bg-flex-item">Firstname:  <% out.println("<font color=black size=4px>"+ admin.getFirstName() +"</font>"); %></div>
+                <div class="p-2 bg-flex mb-1 bg-flex-item">Surname:  <% out.println("<font color=black size=4px>"+ admin.getSurname() +"</font>"); %> </div>
+                <div class="p-2 bg-flex mb-1 bg-flex-item">Username: <% out.println("<font color=black size=4px>"+ admin.getUsername() +"</font>"); %></div>
+                <div class="p-2 bg-flex mb-1 bg-flex-item">Email: <% out.println("<font color=black size=4px>"+ admin.getEmail() +"</font>"); %> </div>
 
             </div>
             <br><br>
-
             <h4>List of Doctors</h4><br>
+
             <div>
                 <table border="1" cellpadding="5">
                     <tr>
@@ -156,233 +151,135 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
                     </tr>
                     <%
-                        ArrayList<Doctor> doctorList = (ArrayList<Doctor>)request.getAttribute("listDoctors");
-                        for (Doctor doctor: doctorList) {
-                            out.println("<tr>");
-                            out.println("<td>" + doctor.getAmka() + "</td> " +
-                                    "<td>" + doctor.getUsername() + "</td> " +
-                                    "<td>" + doctor.getFirstName() + "</td> " +
-                                    "<td>" + doctor.getSurname() + "</td> " +
-                                    "<td>" + doctor.getSpecialty() + "</td> " +
-                                    "<td>" + doctor.getEmail() + "</td> " +
-                                    "<td>" + doctor.getPhoneNum() + "</td> " +
-                                    "<td>" + doctor.getAdminID() + "</td> "
-                            );
-                            out.println("</tr>");
+                        ArrayList<Doctor> doctorList = (ArrayList<Doctor>)session.getAttribute("allDoctors");
+                        if (doctorList != null) {
+                            for (Doctor doctor: doctorList) {
+                                out.println("<tr>");
+                                out.println("<td>" + doctor.getAmka() + "</td> " +
+                                        "<td>" + doctor.getUsername() + "</td> " +
+                                        "<td>" + doctor.getFirstName() + "</td> " +
+                                        "<td>" + doctor.getSurname() + "</td> " +
+                                        "<td>" + doctor.getSpecialty() + "</td> " +
+                                        "<td>" + doctor.getEmail() + "</td> " +
+                                        "<td>" + doctor.getPhoneNum() + "</td> " +
+                                        "<td>" + doctor.getAdminID() + "</td> "
+                                );
+                                out.println("</tr>");
+                            }
                         }
                     %>
                 </table>
             </div>
             <br>
-            <%-- Add a doctor - button --%>
-            <button href="#" data-toggle="modal" data-target="#registerDoctorModal" class="text-dark font-weight-bold">
-                Add a doctor</button>
-            <br>
-
-            <br>
-            <%--            Deletion form--%>
-            <form action="admin-servlet" method="post">
+            <%--            Deletion form            --%>
+            <form action="/delete-doctor-servlet" method="post">
                 <div class="form-group">
                     <label for="recipient-name">Enter Doctor's AMKA for deletion:</label>
-                    <input type="text" placeholder="Doctor's AMKA.. " name="AMKA" id="doctor-amka" required="">
+                    <input type="text" placeholder="Doctor's AMKA.. " name="amka" id="doctor-amka" required="">
                 </div>
                 <div class="right-w3l">
                     <input type="submit" value="Delete">
                 </div>
             </form>
+                <%
+                    String deleteDoctorMessage = (String)session.getAttribute("deleteDoctorMessage");
+                    if (deleteDoctorMessage != null)
+                        out.println("<font color=blue size=4px>" + deleteDoctorMessage + "</font>");
+                %>
             <br>
 
-    <br>    <br>
+            <%-- Add an admin - button --%>
+            <button href="#" data-toggle="modal" data-target="#registerAdminModal" class="text-dark font-weight-bold">
+                Add an admin</button>
 
-        <h4>List of Admins</h4><br>
-        <div>
-            <table border="1" cellpadding="5">
-                <tr>
-                    <th>Username</th>
-                    <th>First_name</th>
-                    <th>Last_name</th>
-                    <th>email</th>
-                    <th>admin_id</th>
-                    <th>IsSuperUser</th>
-                </tr>
-                <%--                    "<td>" + doctor.getPassword() + "</td> " +--%>
-                <%
-                    ArrayList<Admin> adminList = (ArrayList<Admin>)request.getAttribute("listAdmins");
-                    for (Admin admin: adminList) {
-                        out.println("<tr>");
-                        out.println("<td>" + admin.getUsername() + "</td> " +
-                                "<td>" + admin.getFirstName() + "</td> " +
-                                "<td>" + admin.getSurname() + "</td> " +
-                                "<td>" + admin.getEmail() + "</td> " +
-                                "<td>" + admin.getAdminID() + "</td> "+
-                                "<td>" + admin.IsSuperUser() + "</td> "
-                        );
-                        out.println("</tr>");
-                    }
-                %>
-            </table>
-        </div>
-        <br>
+            <%-- Add a doctor - button --%>
+            <button href="#" data-toggle="modal" data-target="#registerDoctorModal" class="text-dark font-weight-bold">
+                Add a doctor</button>
 
+            <%-- Add a doctor--%>
+            <div class="modal fade" id="registerDoctorModal" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header text-center">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="login px-4 mx-auto mw-100">
+                                <h5 class="modal-title text-center text-dark mb-4">Add a doctor</h5>
+                                <form action="/add-doctor-servlet" method="post">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Amka</label>
+                                        <input type="text" pattern="^(\d{11})$" class="form-control" name="amkaD" id="amkaDoctor" required>
+                                    </div>
 
-    <%-- Add an admin - button --%>
-        <button href="#" data-toggle="modal" data-target="#registerAdminModal" class="text-dark font-weight-bold">
-            Add an admin</button>
+                                    <div class="form-group">
+                                        <label class="col-form-label">Specialty</label>
+                                        <input type="text" class="form-control" name="specialtyD" id="specialtyDoctor" required>
+                                    </div>
 
-        <%-- Add a doctor--%>
-        <div class="modal fade" id="registerDoctorModal" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header text-center">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="login px-4 mx-auto mw-100">
-                            <h5 class="modal-title text-center text-dark mb-4">Add a doctor</h5>
-                            <form action="register-doctor-servlet" method="post">
-                                <div class="form-group">
-                                    <label class="col-form-label">Amka</label>
-                                    <input type="text" pattern="^(\d{11})$" class="form-control" name="amkaD" id="amkaDoctor" required>
-                                </div>
+                                    <div class="form-group">
+                                        <label class="col-form-label">Username</label>
+                                        <input type="text" class="form-control" name="usernameD" id="usernameDoctor" required>
+                                    </div>
 
-                                <div class="form-group">
-                                    <label class="col-form-label">Specialty</label>
-                                    <input type="text" class="form-control" name="specialtyD" id="specialtyDoctor" required>
-                                </div>
+                                    <div class="form-group">
+                                        <label class="mb-2 col-form-label">Password</label>
+                                        <input type="password" class="form-control" name="passwordD" id="passwordDoctor" required>
+                                    </div>
 
-                                <div class="form-group">
-                                    <label class="col-form-label">Username</label>
-                                    <input type="text" class="form-control" name="usernameD" id="usernameDoctor" required>
-                                </div>
+                                    <div class="form-group">
+                                        <label class="col-form-label">Confirm Password</label>
+                                        <input type="password" class="form-control" name="confirmPasswordD" id="passwordConfirmDoctor" required>
+                                    </div>
 
-                                <div class="form-group">
-                                    <label class="mb-2 col-form-label">Password</label>
-                                    <input type="password" class="form-control" name="passwordD" id="passwordDoctor" required>
-                                </div>
+                                    <div class="form-group">
+                                        <label class="col-form-label">First name</label>
+                                        <input type="text" class="form-control" name="firstNameD" id="firstNameDoctor" required>
+                                    </div>
 
-                                <div class="form-group">
-                                    <label class="col-form-label">Confirm Password</label>
-                                    <input type="password" class="form-control" name="confirmPasswordD" id="passwordConfirmDoctor" required>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="col-form-label">First name</label>
-                                    <input type="text" class="form-control" name="firstNameD" id="firstNameDoctor" required>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="col-form-label">Last name</label>
-                                    <input type="text" class="form-control" name="lastNameD" id="lastNameDoctor" required>
-                                </div>
+                                    <div class="form-group">
+                                        <label class="col-form-label">Last name</label>
+                                        <input type="text" class="form-control" name="lastNameD" id="lastNameDoctor" required>
+                                    </div>
 
 
-                                <div class="form-group">
-                                    <label class="col-form-label">Email</label>
-                                    <input type="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" class="form-control" name="emailD" id="emailDoctor" required>
-                                </div>
+                                    <div class="form-group">
+                                        <label class="col-form-label">Email</label>
+                                        <input type="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" class="form-control" name="emailD" id="emailDoctor" required>
+                                    </div>
 
-                                <div class="form-group">
-                                    <label class="col-form-label">Phone number</label>
-                                    <input type="text" pattern="^(\d{10})$" class="form-control" name="phoneNumD" id="phoneNumDoctor" required>
-                                </div>
+                                    <div class="form-group">
+                                        <label class="col-form-label">Phone number</label>
+                                        <input type="text" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" class="form-control" name="phoneNumD" id="phoneNumDoctor" required>
+                                    </div>
 
-                                <%
-                                    String registerDoctorError = (String)request.getAttribute("registerDoctorError");
-                                    if(registerDoctorError!=null)
-                                        out.println("<font color=red size=4px>"+registerDoctorError+"</font>");
-                                %>
-                                <div class="reg-w3l">
-                                    <button type="submit" class="form-control submit mb-4">Add doctor</button>
-                                </div>
+                                    <div class="reg-w3l">
+                                        <button type="submit" class="form-control submit mb-4">Add doctor</button>
+                                    </div>
 
-                                <p class="text-center pb-4">
-                                    <a href="#" class="text-secondary">By adding a doctor into the database, I agree to your terms</a>
-                                </p>
-                            </form>
+                                    <p class="text-center pb-4">
+                                        <a href="#" class="text-secondary">By adding a doctor into the database, I agree to your terms</a>
+                                    </p>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
+                <!-- //typo container -->
             </div>
+                <%
+                    String registerDoctorMessage = (String)session.getAttribute("registerDoctorMessage");
+                    if( registerDoctorMessage != null )
+                        out.println("<font color=green size=4px>" + registerDoctorMessage + "</font>");
+                %>
 
-
-            </div>
-        </div>
-
-
-    <!--/Register Admin-->
-    <div class="modal fade" id="registerAdminModal" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header text-center">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="login px-4 mx-auto mw-100">
-                        <h5 class="modal-title text-center text-dark mb-4">Add an Admin</h5>
-                        <form action="register-admin-servlet" method="post">
-
-                            <div class="form-group">
-                                <label class="col-form-label">Username</label>
-                                <input type="text" class="form-control" name="usernameA" id="usernameAdmin" required>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="mb-2 col-form-label">Password</label>
-                                <input type="password" class="form-control" name="passwordA" id="passwordAdmin" required>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="col-form-label">Confirm Password</label>
-                                <input type="password" class="form-control" name="confirmPasswordA" id="passwordConfirmAdmin" required>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="col-form-label">First name</label>
-                                <input type="text" class="form-control" name="firstNameA" id="firstNameAdmin" required>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="col-form-label">Last name</label>
-                                <input type="text" class="form-control" name="lastNameA" id="lastNameAdmin" required>
-                            </div>
-
-
-                            <div class="form-group">
-                                <label class="col-form-label">Email</label>
-                                <input type="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" class="form-control" name="emailA" id="emailAdmin" required>
-                            </div>
-
-
-
-                            <div class="form-group">
-                                <label class="col-form-label">Super User</label>
-                                <input type="checkbox" class="form-control" name="isSuperUserA" id="isSuperUserA" >
-                            </div>
-
-                            <%
-                                String register_msg = (String)request.getAttribute("registerError");
-                                if(register_msg!=null)
-                                    out.println("<font color=red size=4px>"+register_msg+"</font>");
-                            %>
-                            <div class="reg-w3l">
-                                <button type="submit" class="form-control submit mb-4">Add Admin</button>
-                            </div>
-
-                            <p class="text-center pb-4">
-                                <a href="#" class="text-secondary">By adding an admin into the database, I agree to your terms</a>
-                            </p>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!--//Register Admin-->
-
-    </div>
+                <%
+                    String register_msg = (String)session.getAttribute("registerMessage");
+                    if (register_msg != null)
+                        out.println("<font color=blue size=4px>" + register_msg + "</font>");
+                %>
 </section>
 <!-- //typography -->
 
@@ -506,53 +403,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <!-- //footer container -->
 </footer>
 <!-- //footer -->
-
-<!-- login  -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Login</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form action="#" method="post">
-                    <div class="form-group">
-                        <label for="recipient-name" class="col-form-label">Username</label>
-                        <input type="text" class="form-control" placeholder=" " name="Name" id="recipient-name" required="">
-                    </div>
-                    <div class="form-group">
-                        <label for="password" class="col-form-label">Password</label>
-                        <input type="password" class="form-control" placeholder=" " name="Password" id="password" required="">
-                    </div>
-                    <div class="right-w3l">
-                        <input type="submit" class="form-control" value="Login">
-                    </div>
-                    <div class="row sub-w3l my-3">
-                        <div class="col sub-agile">
-                            <input type="checkbox" id="brand1" value="">
-                            <label for="brand1" class="text-secondary">
-                                <span></span>Remember me?</label>
-                        </div>
-                        <div class="col forgot-w3l text-right">
-                            <a href="#" class="text-secondary">Forgot Password?</a>
-                        </div>
-                    </div>
-                    <p class="text-center dont-do">Don't have an account?
-                        <a href="#" data-toggle="modal" data-target="#exampleModalCenter2" class="text-dark font-weight-bold">
-                            Register Now</a>
-
-                    </p>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- //login -->
-<!--/Register-->
-<div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-hidden="true">
+<!--/Register Admin-->
+<div class="modal fade" id="registerAdminModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header text-center">
@@ -562,37 +414,57 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             </div>
             <div class="modal-body">
                 <div class="login px-4 mx-auto mw-100">
-                    <h5 class="modal-title text-center text-dark mb-4">REGISTER NOW</h5>
-                    <form action="#" method="post">
-                        <div class="form-group">
-                            <label class="col-form-label">First name</label>
+                    <h5 class="modal-title text-center text-dark mb-4">Add an Admin</h5>
+                    <form action="/register-admin-servlet" method="post">
 
-                            <input type="text" class="form-control" id="validationDefault01" placeholder="" required="">
-                        </div>
                         <div class="form-group">
-                            <label class="col-form-label">Last name</label>
-                            <input type="text" class="form-control" id="validationDefault02" placeholder="" required="">
+                            <label class="col-form-label">Username</label>
+                            <input type="text" class="form-control" name="usernameA" id="usernameAdmin" required>
                         </div>
 
                         <div class="form-group">
                             <label class="mb-2 col-form-label">Password</label>
-                            <input type="password" class="form-control" id="password1" placeholder="" required="">
+                            <input type="password" class="form-control" name="passwordA" id="passwordAdmin" required>
                         </div>
+
                         <div class="form-group">
                             <label class="col-form-label">Confirm Password</label>
-                            <input type="password" class="form-control" id="password2" placeholder="" required="">
+                            <input type="password" class="form-control" name="confirmPasswordA" id="passwordConfirmAdmin" required>
                         </div>
+
+                        <div class="form-group">
+                            <label class="col-form-label">First name</label>
+                            <input type="text" class="form-control" name="firstNameA" id="firstNameAdmin" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-form-label">Last name</label>
+                            <input type="text" class="form-control" name="lastNameA" id="lastNameAdmin" required>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="col-form-label">Email</label>
+                            <input type="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" class="form-control" name="emailA" id="emailAdmin" required>
+                        </div>
+
+
+
+                        <div class="form-group">
+                            <label class="col-form-label">Super User</label>
+                            <input type="checkbox" class="form-control" name="isSuperUserA" id="isSuperUserA" >
+                        </div>
+
                         <div class="reg-w3l">
-                            <button type="submit" class="form-control submit mb-4">Register</button>
+                            <button type="submit" class="form-control submit mb-4">Add Admin</button>
                         </div>
+
                         <p class="text-center pb-4">
-                            <a href="#" class="text-secondary">By clicking Register, I agree to your terms</a>
+                            <a href="#" class="text-secondary">By adding an admin into the database, I agree to your terms</a>
                         </p>
                     </form>
-
                 </div>
             </div>
-
         </div>
     </div>
 </div>
@@ -602,37 +474,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <!-- js -->
 <script src="js/jquery-2.2.3.min.js"></script>
 <!-- //js -->
-<!-- script for password match -->
-<script>
-    window.onload = function () {
-        document.getElementById("passwordAdmin").onchange = validatePasswordAdmin;
-        document.getElementById("passwordConfirmAdmin").onchange = validatePasswordAdmin;
-        document.getElementById("passwordDoctor").onchange = validatePasswordDoctor;
-        document.getElementById("passwordConfirmDoctor").onchange = validatePasswordDoctor;
-    }
 
-    function validatePasswordAdmin() {
-        var passwordField = document.getElementById("passwordAdmin");
-        var passwordConfirmField = document.getElementById("passwordConfirmAdmin");
-        if (passwordField.value != passwordConfirmField.value)
-            passwordConfirmField.setCustomValidity("Passwords Don't Match");
-        else
-            passwordConfirmField.setCustomValidity('');
-        //empty string means no validation error
-    }
-
-    function validatePasswordDoctor() {
-        var passwordField = document.getElementById("passwordDoctor");
-        var passwordConfirmField = document.getElementById("passwordConfirmDoctor");
-        if (passwordField.value != passwordConfirmField.value)
-            passwordConfirmField.setCustomValidity("Passwords Don't Match");
-        else
-            passwordConfirmField.setCustomValidity('');
-        //empty string means no validation error
-    }
-
-</script>
-<!-- script for password match -->
 <!-- start-smooth-scrolling -->
 <script src="js/move-top.js"></script>
 <script src="js/easing.js"></script>

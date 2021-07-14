@@ -43,7 +43,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 </head>
 <body>
 <%
-
     response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
     response.setHeader("Pragma", "no-cache"); // HTTP 1
     response.setHeader("Expires", "0");
@@ -54,7 +53,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     else {
         admin = (Admin)session.getAttribute("user");
     }
-
 %>
 <!-- header -->
 <header>
@@ -153,7 +151,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
                     </tr>
                     <%
-                        ArrayList<Doctor> doctorList = (ArrayList<Doctor>)request.getAttribute("allDoctors");
+                        ArrayList<Doctor> doctorList = (ArrayList<Doctor>)session.getAttribute("allDoctors");
                         if (doctorList != null) {
                             for (Doctor doctor: doctorList) {
                                 out.println("<tr>");
@@ -173,16 +171,21 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 </table>
             </div>
             <br>
-            <%--            Deletion form--%>
-            <form action="admin-servlet" method="post">
+            <%--            Deletion form            --%>
+            <form action="/delete-doctor-servlet" method="post">
                 <div class="form-group">
                     <label for="recipient-name">Enter Doctor's AMKA for deletion:</label>
-                    <input type="text" placeholder="Doctor's AMKA.. " name="AMKA" id="doctor-amka" required="">
+                    <input type="text" placeholder="Doctor's AMKA.. " name="amka" id="doctor-amka" required="">
                 </div>
                 <div class="right-w3l">
                     <input type="submit" value="Delete">
                 </div>
             </form>
+                <%
+                    String deleteDoctorMessage = (String)session.getAttribute("deleteDoctorMessage");
+                    if (deleteDoctorMessage != null)
+                        out.println("<font color=blue size=4px>" + deleteDoctorMessage + "</font>");
+                %>
             <br>
 
         <%-- Add a doctor - button --%>
@@ -249,12 +252,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                     <input type="text" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" class="form-control" name="phoneNumD" id="phoneNumDoctor" required>
                                 </div>
 
-                                <%
-                                    String registerDoctorError = (String)request.getAttribute("registerDoctorError");
-                                    if(registerDoctorError!=null)
-                                        out.println("<font color=red size=4px>"+registerDoctorError+"</font>");
-                                %>
-
                                 <div class="reg-w3l">
                                     <button type="submit" class="form-control submit mb-4">Add doctor</button>
                                 </div>
@@ -269,6 +266,11 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             </div>
     <!-- //typo container -->
     </div>
+    <%
+        String registerDoctorMessage = (String)session.getAttribute("registerDoctorMessage");
+        if( registerDoctorMessage != null )
+            out.println("<font color=green size=4px>" + registerDoctorMessage + "</font>");
+    %>
 </section>
 <!-- //typography -->
 
@@ -488,25 +490,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <!-- js -->
 <script src="js/jquery-2.2.3.min.js"></script>
 <!-- //js -->
-<!-- script for password match -->
-<script>
-    window.onload = function () {
-        document.getElementById("passwordDoctor").onchange = validatePasswordDoctor;
-        document.getElementById("passwordConfirmDoctor").onchange = validatePasswordDoctor;
-    }
 
-    function validatePasswordDoctor() {
-        var pass2 = document.getElementById("passwordConfirmDoctor").value;
-        var pass1 = document.getElementById("passwordDoctor").value;
-        if (pass1 != pass2)
-            document.getElementById("passwordDoctor").setCustomValidity("Passwords Don't Match");
-        else
-            document.getElementById("passwordConfirmDoctor").setCustomValidity('');
-        //empty string means no validation error
-    }
-
-</script>
-<!-- script for password match -->
 <!-- start-smooth-scrolling -->
 <script src="js/move-top.js"></script>
 <script src="js/easing.js"></script>

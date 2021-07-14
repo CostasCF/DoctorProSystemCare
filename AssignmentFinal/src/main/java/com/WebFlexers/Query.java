@@ -139,7 +139,7 @@ public class Query {
     }
 
     public static Query addDoctor(Connection connection) throws SQLException {
-        return new Query(connection.prepareStatement("insert into \"Doctor\" (\"amka\", \"username\", \"password\", \"email\", \"first_name\", \"last_name\" , speciality ,phone_num,admin_id) " +
+        return new Query(connection.prepareStatement("insert into \"Doctor\" (\"amka\", \"username\", \"password\", \"first_name\", \"last_name\" , speciality , \"email\", \"phone_num\", \"admin_id\") " +
                 "values (?, ?, ?, ?, ?, ?, ?, ?, ?)"));
     }
 

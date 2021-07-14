@@ -223,16 +223,16 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
                             </form>
                         </div>
-                        <%
-                            String addAvailableAppointmentMessage = (String)request.getAttribute("addAppointmentAvailabilityMessage");
-                            if (addAvailableAppointmentMessage != null)
-                                out.println("<font color=blue  align=center size=4px>" + addAvailableAppointmentMessage + "</font>");
-                        %>
                     </div>
                 </div>
             </div>
             <!--//Register Admin-->
         </div>
+        <%
+            String addAvailableAppointmentMessage = (String)session.getAttribute("addAppointmentAvailabilityMessage");
+            if (addAvailableAppointmentMessage != null)
+                out.println("<font color=blue  align=center size=4px>" + addAvailableAppointmentMessage + "</font>");
+        %>
     </div>
 
 </section>

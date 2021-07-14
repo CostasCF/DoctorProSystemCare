@@ -33,10 +33,10 @@ public class RegisterAdminServlet extends HttpServlet {
         // Check if the admin is super user
         IsSuperUser = checkbox != null;
 
-        System.out.println("Admin is super user: " + IsSuperUser);
-
         DatabaseManager database = new DatabaseManager();
         String adminID = StringUtility.generateRandomId();
+
+        HttpSession session = request.getSession();
 
         try {
             // Check if a user with the same username already exists
@@ -45,17 +45,18 @@ public class RegisterAdminServlet extends HttpServlet {
                 if (Admin.getFromDatabase(Query.getAdminByEmail(database.getConnection(), email)) == null) {
                     Admin admin = new Admin(username, password, firstName, lastName, email, adminID, IsSuperUser);
                     admin.addToDatabase(database.getConnection());
-                    getServletContext().getRequestDispatcher("/profile_admin_superuser.jsp").forward(request, response);
+                    session.setAttribute("registerMessage","Successfully registered admin!");
+                    getServletContext().getRequestDispatcher("/profile_admin.jsp").forward(request, response);
                 }
                 else {
-                    request.setAttribute("registerError","Email already exists.");
+                    session.setAttribute("registerMessage","Email already exists.");
                     RequestDispatcher dispatcher = request.getRequestDispatcher("/profile_admin_superuser.jsp");
                     dispatcher.forward(request,response);
                 }
             }
             else {
                 System.out.println("Username already exists");
-                request.setAttribute("registerError","Username already exists.");
+                session.setAttribute("registerMessage","Username already exists.");
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/profile_admin_superuser.jsp");
                 dispatcher.forward(request,response);
             }

@@ -13,7 +13,7 @@ public class SessionManager {
 
         try {
             DatabaseManager dbManager = new DatabaseManager();
-            session.setAttribute("allDoctors", Admin.getMultipleFromDatabase(Query.getAllAdmins(dbManager.getConnection())));
+            session.setAttribute("allDoctors", Doctor.getMultipleFromDatabase(Query.getAllDoctors(dbManager.getConnection())));
             dbManager.closeConnection();
         } catch (SQLException e) {
             System.out.println("An error occurred while getting all admins from the database");
@@ -49,6 +49,10 @@ public class SessionManager {
     }
 
     public static void prepareDoctorRegistrationMessage(String message, HttpSession session) {
-        session.setAttribute("registerDoctorError", message);
+        session.setAttribute("registerDoctorMessage", message);
+    }
+
+    public static void prepareDoctorDeleteMessage(String message, HttpSession session) {
+        session.setAttribute("deleteDoctorMessage", message);
     }
 }
