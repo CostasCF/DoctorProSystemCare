@@ -1,7 +1,0 @@
-Host: ec2-63-33-239-176.eu-west-1.compute.amazonaws.com
-Database: da2pcm0gjc5hrv
-User: egclbbfjnxflqx
-Port: 5432
-Password: 1595f9de3818f63fd7a8373098250bc31ff7803dd70dbfe9ba868a1e001655e6
-URI: postgres://egclbbfjnxflqx:1595f9de3818f63fd7a8373098250bc31ff7803dd70dbfe9ba868a1e001655e6@ec2-63-33-239-176.eu-west-1.compute.amazonaws.com:5432/da2pcm0gjc5hrv
-URL: jdbc:postgresql://ec2-63-33-239-176.eu-west-1.compute.amazonaws.com:5432/da2pcm0gjc5hrv
