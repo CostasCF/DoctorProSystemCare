@@ -27,7 +27,7 @@ Settings -\> Build, Execution, Deployment -\> Application Servers
 
 ![image](https://user-images.githubusercontent.com/52785685/154546715-adee953e-c934-4ca1-9331-1890eca1959c.png)
 
-## Database Server {#database-server .Επικεφαλίδα-2-ΠΤΥΧΙΑΚΗΣ}
+## Database Server
 
 Για Database Server έγινε χρήση του PostgresSQL. Η σύνδεση του με τον
 Tomcat 9 έγινε με τη χρήση του JDBC driver, μετακινώντας το αρχείο
